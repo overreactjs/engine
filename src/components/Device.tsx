@@ -1,13 +1,14 @@
 import { useEffect, useLayoutEffect, useMemo } from "react";
 import { FrameRate } from "./FrameRate";
 import { useElement, useKeyAxis, useKeyPressed, useProperty, useRender, useShaker } from "../hooks";
-import { Prop, Size } from "../types";
+import { DeviceMode, Prop, Size } from "../types";
 import { DeviceContext } from "../context";
 
 import "../styles/device.css";
 
 type DeviceProps = {
   children: React.ReactNode;
+  mode?: DeviceMode;
   angle?: Prop<number>;
   allowShake?: boolean;
   allowTilt?: boolean;
@@ -23,7 +24,14 @@ type DeviceProps = {
  * Try to mimic a real device, to improve the developer experience by allowing us to trigger shake
  * actions, adjust the device orientation, and track the dimensions.
  */
-export const Device: React.FC<DeviceProps> = ({ children, bg = 'white', hideClose = false, showFPS = false, ...props }) => {
+export const Device: React.FC<DeviceProps> = ({
+  children,
+  mode = 'desktop',
+  bg = 'white',
+  hideClose = false,
+  showFPS = false,
+  ...props
+}) => {
   const device = useShaker();
   const screen = useElement<HTMLDivElement>();
 
@@ -70,7 +78,7 @@ export const Device: React.FC<DeviceProps> = ({ children, bg = 'white', hideClos
 
   return (
     <DeviceContext.Provider value={context}>
-      <div className="device-outer">
+      <div className={`device-outer device-${mode}`}>
         <div className="device-inner" ref={device.ref}>
           <div className="device-screen shadow-2xl" style={{ background: bg }} ref={screen.ref}>
             {children}
