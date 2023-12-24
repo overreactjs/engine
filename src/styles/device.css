@@ -17,7 +17,7 @@
 }
 
 @media (hover: hover) {
-  .device-mobile .device-outer {
+  .device-mobile.device-outer {
     display: grid;
     place-content: center;
     background: #778899;
