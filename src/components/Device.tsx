@@ -4,6 +4,8 @@ import { useElement, useKeyAxis, useKeyPressed, useProperty, useRender, useShake
 import { Prop, Size } from "../types";
 import { DeviceContext } from "../context";
 
+import "../styles/device.css";
+
 type DeviceProps = {
   children: React.ReactNode;
   angle?: Prop<number>;
@@ -68,9 +70,9 @@ export const Device: React.FC<DeviceProps> = ({ children, bg = 'white', hideClos
 
   return (
     <DeviceContext.Provider value={context}>
-      <div className="engine">
-        <div className="engine-device" ref={device.ref}>
-          <div className="engine-screen shadow-2xl" style={{ background: bg }} ref={screen.ref}>
+      <div className="device-outer">
+        <div className="device-inner" ref={device.ref}>
+          <div className="device-screen shadow-2xl" style={{ background: bg }} ref={screen.ref}>
             {children}
             {!hideClose && <Close />}
             {showFPS && <FrameRate />}
