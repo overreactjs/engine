@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { Engine, Composite, Events } from "matter-js";
+import { Engine, Composite, Events, Body } from "matter-js";
 import { PhysicsContext } from "../context";
 import { useEventListeners, useUpdate } from "../hooks";
 import { PhysicsEvent, PhysicsEventType, PhysicsUpdateFunction } from "../types";
@@ -43,6 +43,13 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   }, []);
 
   /**
+   * Set the velocity of a physics body.
+   */
+  const setVelocity = useCallback((body: Matter.Body, x: number, y: number) => {
+    Body.setVelocity(body, { x, y });
+  }, []);
+
+  /**
    * 
    */
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<PhysicsEventType, PhysicsEvent>();
@@ -70,8 +77,8 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   });
 
   const context = useMemo(() => ({
-    engine, register, setGravity, addEventListener, removeEventListener
-  }), [engine, register, setGravity, addEventListener, removeEventListener]);
+    engine, register, setGravity, setVelocity, addEventListener, removeEventListener
+  }), [engine, register, setGravity, setVelocity, addEventListener, removeEventListener]);
 
   return (
     <PhysicsContext.Provider value={context}>
