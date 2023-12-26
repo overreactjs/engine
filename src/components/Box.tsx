@@ -28,7 +28,7 @@ export const Box: React.FC<BoxProps> = ({ className, ...props }) => {
 
   useRender(() => {
     element.setBaseStyles({ pos, size, angle });
-    element.setStyle('backgroundColor', color.current);
+    element.setStyle('background-color', color.current);
   });
 
   return (

@@ -2,6 +2,8 @@ import { MutableRefObject } from "react";
 import { Body } from "detect-collisions";
 import { Engine } from "matter-js";
 
+export type ElementType = InnerHTML & ElementCSSInlineStyle & Element;
+
 export type Property<T> = MutableRefObject<T>;
 
 export type Prop<T> = T | Property<T>;

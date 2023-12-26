@@ -1,7 +1,5 @@
 import { RefObject, useCallback, useMemo, useRef } from "react";
-import { Position, Size } from "../types";
-
-export type SetStyleFn = (key: keyof CSSStyleDeclaration, value: string | number) => void;
+import { ElementType, Position, Size } from "../types";
 
 export type SetBaseStyles = {
   pos?: RefObject<Position>;
@@ -10,17 +8,18 @@ export type SetBaseStyles = {
   flip?: RefObject<boolean>;
 }
 
-export type UseElementResult<E extends Element> = {
+export type UseElementResult<E extends ElementType> = {
   ref: RefObject<E>;
   setText: (text: string) => void;
   setAttribute: (key: string, value: unknown) => void;
   setData: (key: string, value: unknown) => void;
-  setStyle: SetStyleFn;
+  setStyle: (key: string, value: CSSStyleValue | string | number) => void;
+  setLegacyStyle: (key: string, value: string | number) => void;
   setBaseStyles: (options: SetBaseStyles) => void;
 }
 
-export function useElement<E extends Element = HTMLDivElement>(element?: UseElementResult<E>): UseElementResult<E> {
-  const generatedRef = useRef<Element>(null) as RefObject<E>;
+export function useElement<E extends ElementType = HTMLDivElement>(element?: UseElementResult<E>): UseElementResult<E> {
+  const generatedRef = useRef<E>(null);
   const ref = element?.ref || generatedRef;
 
   /**
@@ -55,9 +54,18 @@ export function useElement<E extends Element = HTMLDivElement>(element?: UseElem
   /**
    * Set a style property on the element.
    */
-  const setStyle = useCallback((key: keyof CSSStyleDeclaration, value: string | number) => {
+  const setStyle = useCallback((key: string, value: CSSStyleValue | string | number) => {
     if (ref.current && value !== undefined) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ref.current.attributeStyleMap.set(key, value);
+    }
+  }, [ref]);
+
+  /**
+   * Set a style property on the element, using "style" instead of the newer "attributeStyleMap"
+   * API which doesn't seem to work for some things in Chrome!
+   */
+  const setLegacyStyle = useCallback((key: string, value: string | number) => {
+    if (ref.current && value !== undefined) {
       ((ref.current as any).style as any)[key] = value;
     }
   }, [ref]);
@@ -68,26 +76,26 @@ export function useElement<E extends Element = HTMLDivElement>(element?: UseElem
   const setBaseStyles = useCallback((options: SetBaseStyles) => {
     const { pos, size, angle, flip } = options;
 
-    const transforms = [];
+    const transforms: CSSTransformComponent[] = [];
 
     if (pos?.current) {
-      transforms.push(`translate(${Math.round(pos.current[0])}px, ${Math.round(pos.current[1])}px)`);
+      transforms.push(new CSSTranslate(CSS.px(Math.round(pos.current[0])), CSS.px(Math.round(pos.current[1]))))
     }
     if (angle?.current) {
-      transforms.push(`rotate(${angle.current}deg)`);
+      transforms.push(new CSSRotate(CSS.deg(angle.current)));
     }
     if (flip?.current) {
-      transforms.push(`scaleX(-1)`);
+      transforms.push(new CSSScale(-1, 1));
     }
 
     if (transforms.length > 0) {
-      setStyle('transform', transforms.join(' '));
+      ref.current?.attributeStyleMap.set('transform', new CSSTransformValue(transforms));
     }
 
     if (size?.current) {
       const [width, height] = size.current;
-      setStyle('width', `${width}px`);
-      setStyle('height', `${height}px`);
+      ref.current?.attributeStyleMap.set('width', CSS.px(width));
+      ref.current?.attributeStyleMap.set('height', CSS.px(height));
     }
   }, [setStyle]);
 
@@ -95,7 +103,33 @@ export function useElement<E extends Element = HTMLDivElement>(element?: UseElem
     if (element) {
       return element;
     } else {
-      return { ref, setText, setAttribute, setData, setStyle, setBaseStyles };
+      return { ref, setText, setAttribute, setData, setStyle, setLegacyStyle, setBaseStyles };
     }
   }, [element, ref, setAttribute, setBaseStyles, setData, setStyle, setText]);
 }
+
+// const setBaseStyles = useCallback((options: SetBaseStyles) => {
+//   const { pos, size, angle, flip } = options;
+
+//   const transforms = [];
+
+//   if (pos?.current) {
+//     transforms.push(`translate(${Math.round(pos.current[0])}px, ${Math.round(pos.current[1])}px)`);
+//   }
+//   if (angle?.current) {
+//     transforms.push(`rotate(${angle.current}deg)`);
+//   }
+//   if (flip?.current) {
+//     transforms.push(`scaleX(-1)`);
+//   }
+
+//   if (transforms.length > 0) {
+//     setStyle('transform', transforms.join(' '));
+//   }
+
+//   if (size?.current) {
+//     const [width, height] = size.current;
+//     setStyle('width', `${width}px`);
+//     setStyle('height', `${height}px`);
+//   }
+// }, [setStyle]);

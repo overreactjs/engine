@@ -35,10 +35,10 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
     const height = image.current.size[1] * scale.current;
 
     element.setBaseStyles({ pos, size, flip });
-    element.setStyle('imageRendering', 'pixelated');
-    element.setStyle('backgroundImage', `url(${image.current.url})`);
-    element.setStyle('backgroundSize', `${width}px ${height}px`);
-    element.setStyle('backgroundPosition', `${-offset.current[0]}px ${-offset.current[1]}px`);
+    element.setStyle('image-rendering', 'pixelated');
+    element.setStyle('background-image', `url(${image.current.url})`);
+    element.setStyle('background-position', `${-offset.current[0]}px ${-offset.current[1]}px`);
+    element.setLegacyStyle('backgroundSize', `${width}px ${height}px`);
   });
 
   return (
