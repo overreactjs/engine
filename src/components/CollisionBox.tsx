@@ -28,7 +28,7 @@ export const CollisionBox: React.FC<CollisionBoxProps> = ({ id, ...props }) => {
 
   useRender(() => {
     if (debug) {
-      element.setBaseStyles({ pos, size });
+      element.setBaseStyles({ pos, size, force: true });
     }
   });
 

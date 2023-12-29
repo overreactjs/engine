@@ -1,14 +1,14 @@
-import { useCallback, useContext, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useContext, useEffect, useRef } from "react";
 import { Bodies, Body } from "matter-js";
 import { PhysicsContext } from "../context";
-import { PhysicsUpdateFunction, Position, Property, Size } from "../types";
+import { Property, PhysicsUpdateFunction, Position, Size } from "../types";
 import { useProperty } from "./useProperty";
 
 /**
  * Register a new physics body.
  */
 export const usePhysicsBody = (
-  body: Property<Matter.Body>,
+  body: MutableRefObject<Matter.Body>,
   update: PhysicsUpdateFunction,
 ) => {
   const { register } = useContext(PhysicsContext);
@@ -67,8 +67,7 @@ const useSyncPositions = (pos: Property<Position>) => {
       last.current = [pos.current[0], pos.current[1]];
 
     } else if (body.position.x !== pos.current[0] || body.position.y !== pos.current[1]) {
-      pos.current[0] = body.position.x;
-      pos.current[1] = body.position.y;
+      pos.current = [body.position.x, body.position.y];
     }
   }, [pos]);
 };

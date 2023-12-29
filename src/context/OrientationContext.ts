@@ -1,5 +1,6 @@
 import React from "react";
 import { Property } from "../types";
+import { VariableProperty } from "../utils";
 
 export type OrientationContextProps = {
   alpha: Property<number>;
@@ -8,7 +9,7 @@ export type OrientationContextProps = {
 };
 
 export const OrientationContext = React.createContext<OrientationContextProps>({
-  alpha: { current: 0 },
-  beta: { current: 0 },
-  gamma: { current: 0 },
+  alpha: new VariableProperty(0),
+  beta: new VariableProperty(0),
+  gamma: new VariableProperty(0),
 });

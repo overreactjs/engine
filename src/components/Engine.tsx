@@ -1,6 +1,7 @@
 import { useMemo, useRef, useCallback, useEffect, useState } from "react";
-import { useNode } from "../hooks";
 import { EngineContext, NodeContext } from "../context";
+import { useNode } from "../hooks";
+import { Validator } from "../utils";
 import { Keyboard } from "./Keyboard";
 import { Mouse } from "./Mouse";
 import { Touch } from "./Touch";
@@ -34,13 +35,17 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
     const delta = t - time.current;
     time.current = t;
 
+    // The ticker phase runs even when the engine is paused.
     node.ticker(delta, t);
 
-    if (!paused.current) {
-      node.update(delta, t);
-    }
+    // The update phase only runs when the engine is running.
+    if (!paused.current) node.update(delta, t);
     
+    // The render phase always runs.
     node.render();
+
+    // Revalidate all properties that were previously invalidated.
+    Validator.run();
   }, [node]);
 
   // Start the game loop.

@@ -1,6 +1,7 @@
 import { useElement, useDebug, usePosition, useProperty, useRender } from "../hooks";
 import { useBoxPhysics } from "../hooks/usePhysics";
 import { Prop, Position, Size } from "../types";
+import { VariableProperty } from "../utils";
 
 const CLASS_NAME = "absolute outline outline-2 outline-[#f0f] bg-[#f0f3] -outline-offset-1";
 
@@ -29,7 +30,7 @@ export const PhysicsBox: React.FC<PhysicsBoxProps> = (props) => {
   useRender(() => {
     if (debug) {
       element.setBaseStyles({
-        pos: { current: [pos.current[0] - size.current[0] / 2, pos.current[1] - size.current[1] / 2]},
+        pos: new VariableProperty([pos.current[0] - size.current[0] / 2, pos.current[1] - size.current[1] / 2]),
         size,
       });
     }

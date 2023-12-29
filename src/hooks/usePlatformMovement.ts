@@ -1,10 +1,11 @@
-import { useMemo, useRef } from "react";
-import { Position, Property, Velocity } from "../types";
+import { useMemo } from "react";
+import { Property, Position, Velocity } from "../types";
 import { lerp } from "../utils";
 import { useKeyboard } from "./useKeyboard";
 import { useUpdate } from "./useUpdate";
 import { useEventListeners } from "./useEventListeners";
 import { useOverlap } from "./useOverlap";
+import { useProperty } from ".";
 
 const DEFAULT_OPTIONS = {
   gravity: [0, 0.002],
@@ -39,6 +40,7 @@ type UsePlatformMovementResult = {
   isFalling: Property<boolean>;
   jumpCount: Property<number>;
   direction: Property<'left' | 'right'>;
+  updater: string;
   addEventListener: (type: PlatformMovementEventType, fn: () => void) => void;
 }
 
@@ -47,14 +49,14 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
   const { isKeyDown, hasKeyAxis } = useKeyboard();
   const { addEventListener, fireEvent } = useEventListeners<PlatformMovementEventType>();
 
-  const change = useRef([0, 0]);
-  const isOnFloor = useRef(false);
-  const isJumping = useRef(false);
-  const isFalling = useRef(false);
-  const jumpCount = useRef(0);
-  const direction = useRef<'left' | 'right'>('right');
+  const change = useProperty([0, 0]);
+  const isOnFloor = useProperty(false);
+  const isJumping = useProperty(false);
+  const isFalling = useProperty(false);
+  const jumpCount = useProperty(0);
+  const direction = useProperty<'left' | 'right'>('right');
 
-  useUpdate((delta) => {
+  const updater = useUpdate((delta) => {
     // Apply keyboard input to the player's velocity.
     const keyboardHorizontal = hasKeyAxis(leftKey, rightKey);
     const accelerationFactor = isOnFloor.current ? 1 : 0.2;
@@ -89,7 +91,7 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
     pos.current[0] += change.current[0];
     pos.current[1] += change.current[1];
 
-    // Update the players direction.
+    // Update the player's direction.
     if (isOnFloor.current) {
       if (keyboardHorizontal < 0) {
         direction.current = 'left';
@@ -119,6 +121,6 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
     }
   });
 
-  return useMemo(() => ({ isOnFloor, isJumping, isFalling, jumpCount, direction, addEventListener }), [addEventListener]);
+  return useMemo(() => ({ isOnFloor, isJumping, isFalling, jumpCount, direction, updater, addEventListener }), [addEventListener]);
 };
 

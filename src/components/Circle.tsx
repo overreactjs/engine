@@ -25,7 +25,10 @@ export const Circle: React.FC<CircleProps> = ({ className, ...props }) => {
 
   useRender(() => {
     element.setBaseStyles({ pos, size });
-    element.setStyle('background', color.current);
+
+    if (color.invalidated) {
+      element.setStyle('background', color.current);
+    }
   });
 
   return (

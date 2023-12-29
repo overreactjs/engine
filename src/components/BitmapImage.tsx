@@ -31,19 +31,29 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
   const scale = useProperty(props.scale || 1);
 
   useRender(() => {
-    const width = image.current.size[0] * scale.current;
-    const height = image.current.size[1] * scale.current;
-
     element.setBaseStyles({ pos, size, flip });
-    element.setStyle('image-rendering', 'pixelated');
-    element.setStyle('background-image', `url(${image.current.url})`);
-    element.setStyle('background-position', `${-offset.current[0]}px ${-offset.current[1]}px`);
-    element.setLegacyStyle('backgroundSize', `${width}px ${height}px`);
+
+    if (image.invalidated) {
+      console.log('bg image changed...');
+      element.setLegacyStyle('backgroundImage', `url(${image.current.url})`);
+    }
+
+    if (offset.invalidated) {
+      console.log('bg pos changed...');
+      element.setLegacyStyle('backgroundPosition', `${-offset.current[0]}px ${-offset.current[1]}px`);
+    }
+
+    if (image.invalidated || scale.invalidated) {
+      console.log('bg size changed...');
+      const width = image.current.size[0] * scale.current;
+      const height = image.current.size[1] * scale.current;
+      element.setLegacyStyle('backgroundSize', `${width}px ${height}px`);
+    }
   });
 
   return (
     <Node pos={pos}>
-      <div ref={element.ref} className="absolute bg-no-repeat" />
+      <div ref={element.ref} className="absolute bg-no-repeat" style={{ imageRendering: 'pixelated' }} />
     </Node>
   )
 };

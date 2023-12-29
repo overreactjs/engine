@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Property, Position, Prop } from "../types";
+import { Position, Prop, Property } from "../types";
 import { useProperty } from "./useProperty";
 
 export const useOffsetPosition = (value: Property<Position>, offset: Prop<Position>) => {
@@ -21,5 +21,13 @@ export class DynamicPosition {
     const x = this.value.current[0] + this.offset.current[0];
     const y = this.value.current[1] + this.offset.current[1];
     return [x, y];
+  }
+
+  get invalidated(): boolean {
+    return this.value.invalidated || this.offset.invalidated;
+  }
+
+  set invalidated(_: boolean) {
+    // Do nothing!
   }
 }

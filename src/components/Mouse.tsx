@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { MutableRefObject, useCallback, useEffect, useMemo, useRef } from "react";
 import { MouseContext } from "../context";
 import { useProperty } from "../hooks";
-import { Position, Property } from "../types";
+import { Position } from "../types";
 
 type MouseProps = {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export const Mouse: React.FC<MouseProps> = ({ children }) => {
   const down = useRef<Set<number>>(new Set());
   const pressed = useRef<Set<number>>(new Set());
   const pos = useProperty<Position>([0, 0]);
-  const target = useProperty<Element | null>(null);
+  const target = useRef<Element | null>(null);
 
   /**
    * Returns true if the given mouse button is down.
@@ -37,7 +37,7 @@ export const Mouse: React.FC<MouseProps> = ({ children }) => {
   /**
    * Returns true if the given element is inside of the current target.
    */
-  const isTarget = useCallback((element: Property<Element | null> | Element | null) => {
+  const isTarget = useCallback((element: MutableRefObject<Element | null> | Element | null) => {
     if (element !== null) {
       if ('current' in element) {
         return element.current !== null && element.current.contains(target.current);

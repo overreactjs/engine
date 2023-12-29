@@ -1,9 +1,9 @@
-import React, { useRef, useCallback, useMemo } from "react";
+import React, { useRef, useCallback, useMemo, MutableRefObject } from "react";
 import { useProperty, useRender } from "../hooks";
-import { Prop, Property } from "../types";
+import { Prop } from "../types";
 
 type AnimationConfig = {
-  element: Property<HTMLOrSVGElement | null>;
+  element: MutableRefObject<HTMLOrSVGElement | null>;
   reset: () => void;
 }
 
@@ -23,7 +23,7 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
   const animation = useProperty(props.animation);
   const animations = useRef<Map<string, AnimationConfig>>(new Map());
   
-  const register = useCallback((animation: string, element: Property<HTMLOrSVGElement | null>, reset: () => void) => {
+  const register = useCallback((animation: string, element: MutableRefObject<HTMLOrSVGElement | null>, reset: () => void) => {
     animations.current.set(animation, { element, reset });
     return () => animations.current.delete(animation);
   }, []);
@@ -31,14 +31,16 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
   const context = useMemo(() => ({ register }), [register]);
 
   useRender(() => {
-    for (const [id, { element, reset }] of animations.current) {
-      const elem = element.current as HTMLElement;
+    if (animation.invalidated) {
+      for (const [id, { element, reset }] of animations.current) {
+        const elem = element.current as HTMLElement;
 
-      if (elem.style.visibility === 'hidden' && id === animation.current) {
-        reset();
+        if (elem.style.visibility === 'hidden' && id === animation.current) {
+          reset();
+        }
+
+        elem.style.visibility = id === animation.current ? 'visible' : 'hidden';
       }
-
-      elem.style.visibility = id === animation.current ? 'visible' : 'hidden';
     }
   });
   
@@ -50,7 +52,7 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
 };
 
 type SpriteSetContextProps = {
-  register: (animation: string, element: Property<HTMLOrSVGElement | null>, reset: () => void) => () => void;
+  register: (animation: string, element: MutableRefObject<HTMLOrSVGElement | null>, reset: () => void) => () => void;
 }
 
 export const SpriteSetContext = React.createContext<SpriteSetContextProps>({

@@ -1,11 +1,11 @@
 import React from "react";
-import { Prop, Position, UpdateFunction, RenderFunction, TickerFunction } from "../types";
+import { Prop, Position, UpdateFunction, RenderFunction, TickerFunction, UpdateOptions } from "../types";
 
 type NodeContextProps = {
   debug?: boolean;
   pos?: Prop<Position>;
   registerTicker: (id: string, fn: TickerFunction) => void;
-  registerUpdate: (id: string, fn: UpdateFunction) => void;
+  registerUpdate: (id: string, fn: UpdateFunction, options?: UpdateOptions) => void;
   registerRender: (id: string, fn: RenderFunction) => void;
 }
 

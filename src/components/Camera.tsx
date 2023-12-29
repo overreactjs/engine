@@ -1,4 +1,4 @@
-import { useDebug, useElement, usePosition, useRender, useUpdate, useViewport } from "../hooks";
+import { useDebug, useElement, usePosition, useRender, useViewport } from "../hooks";
 import { CameraAxis, Position } from "../types";
 import { lerp } from "../utils";
 
@@ -25,18 +25,22 @@ export const Camera: React.FC<CameraProps> = ({ axis = 'xy', offset = [0, 0], sm
   const { origin } = useViewport();
   const pos = usePosition();
 
-  useUpdate(() => {
+  useRender(() => {
+    // TEMPORARY HACK: WE NEED THE CAMERA POSITION TO UPDATE LAST, SO IT'S BEEN ADDED TO THE RENDER
+    // FUNCTION, EVEN THOUGH IT BELONGS IN THE UPDATE FUNCTION.
     if (origin) {
+      const newOrigin: Position = [origin.current[0], origin.current[1]];
+
       if (axis === 'x' || axis === 'xy') {
-        origin.current[0] = lerp(origin.current[0], pos.current[0] + offset[0], smooth ? SMOOTH_FACTOR : 1);
+        newOrigin[0] = lerp(origin.current[0], pos.current[0] + offset[0], smooth ? SMOOTH_FACTOR : 1);
       }
       if (axis === 'y' || axis === 'xy') {
-        origin.current[1] = lerp(origin.current[1], pos.current[1] + offset[1], smooth ? SMOOTH_FACTOR : 1);
+        newOrigin[1] = lerp(origin.current[1], pos.current[1] + offset[1], smooth ? SMOOTH_FACTOR : 1);
       }
-    }
-  });
 
-  useRender(() => {
+      origin.current = newOrigin;
+    }
+
     if (debug) {
       element.setBaseStyles({ pos: origin });
     }

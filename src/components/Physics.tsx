@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Engine, Composite, Events, Body } from "matter-js";
 import { PhysicsContext } from "../context";
-import { useEventListeners, useUpdate } from "../hooks";
+import { useEventListeners, useProperty, useUpdate } from "../hooks";
 import { PhysicsEvent, PhysicsEventType, PhysicsUpdateFunction } from "../types";
 
 type PhysicsProps = {
@@ -16,7 +16,7 @@ type PhysicsProps = {
  * bodies via context.
  */
 export const Physics: React.FC<PhysicsProps> = ({ children }) => {
-  const engine = useRef(Engine.create());
+  const engine = useProperty(Engine.create());
   const updaters = useRef<Map<Matter.Body, PhysicsUpdateFunction>>(new Map());
   
   /**

@@ -1,11 +1,12 @@
 import { RefObject, useCallback, useMemo, useRef } from "react";
-import { ElementType, Position, Size } from "../types";
+import { ElementType, Property, Position, Size } from "../types";
 
 export type SetBaseStyles = {
-  pos?: RefObject<Position>;
-  size?: RefObject<Size>;
-  angle?: RefObject<number>;
-  flip?: RefObject<boolean>;
+  pos?: Property<Position>;
+  size?: Property<Size>;
+  angle?: Property<number>;
+  flip?: Property<boolean>;
+  force?: boolean;
 }
 
 export type UseElementResult<E extends ElementType> = {
@@ -21,6 +22,7 @@ export type UseElementResult<E extends ElementType> = {
 export function useElement<E extends ElementType = HTMLDivElement>(element?: UseElementResult<E>): UseElementResult<E> {
   const generatedRef = useRef<E>(null);
   const ref = element?.ref || generatedRef;
+  const transforms = useRef<Map<string, CSSTransformComponent>>(new Map());
 
   /**
    * Set the inner text of the element.
@@ -74,25 +76,31 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
    * Set the commonly used base styles: position, size, angle, and flip.
    */
   const setBaseStyles = useCallback((options: SetBaseStyles) => {
-    const { pos, size, angle, flip } = options;
+    const { pos, size, angle, flip, force = false } = options;
 
-    const transforms: CSSTransformComponent[] = [];
+    let changed = false;
 
-    if (pos?.current) {
-      transforms.push(new CSSTranslate(CSS.px(Math.round(pos.current[0])), CSS.px(Math.round(pos.current[1]))))
+    if (pos?.invalidated || (force && pos)) {
+      const [x, y] = pos.current;
+      transforms.current.set('pos', new CSSTranslate(CSS.px(Math.round(x)), CSS.px(Math.round(y))));
+      changed = true;
     }
-    if (angle?.current) {
-      transforms.push(new CSSRotate(CSS.deg(angle.current)));
-    }
-    if (flip?.current) {
-      transforms.push(new CSSScale(-1, 1));
-    }
-
-    if (transforms.length > 0) {
-      ref.current?.attributeStyleMap.set('transform', new CSSTransformValue(transforms));
+    
+    if (angle?.invalidated || (force && angle)) {
+      transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
+      changed = true;
     }
 
-    if (size?.current) {
+    if (flip?.invalidated || (force && flip)) {
+      transforms.current.set('flip', new CSSScale(flip.current ? -1 : 1, 1));
+      changed = true;
+    }
+
+    if (changed) {
+      ref.current?.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
+    }
+
+    if (size?.invalidated || (force && size)) {
       const [width, height] = size.current;
       ref.current?.attributeStyleMap.set('width', CSS.px(width));
       ref.current?.attributeStyleMap.set('height', CSS.px(height));

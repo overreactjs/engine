@@ -1,4 +1,4 @@
-import { useId, useEffect, useRef, useCallback } from "react";
+import { useId, useEffect, useCallback, useRef, MutableRefObject } from "react";
 import { Body, Box } from "detect-collisions";
 import { CollisionUpdateFunction, Position, Property, Size } from "../types";
 import { useWorld } from "./useWorld";
@@ -9,7 +9,7 @@ import { useWorld } from "./useWorld";
 export const useCollider = (
   id: string | undefined,
   tags: Property<string[]>,
-  body: Property<Body>,
+  body: MutableRefObject<Body>,
   update: CollisionUpdateFunction
 ) => {
   const { registerCollider } = useWorld();

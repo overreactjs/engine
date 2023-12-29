@@ -28,12 +28,15 @@ export const Box: React.FC<BoxProps> = ({ className, ...props }) => {
 
   useRender(() => {
     element.setBaseStyles({ pos, size, angle });
-    element.setStyle('background-color', color.current);
+
+    if (color.invalidated) {
+      element.setStyle('background-color', color.current);
+    }
   });
 
   return (
     <Node pos={pos}>
-      <div ref={element.ref} className={`absolute ${className}`} style={{ contain: 'content' }}>
+      <div ref={element.ref} className={`absolute ${className || ''}`} style={{ contain: 'content' }}>
         {props.children}
       </div>
     </Node>

@@ -1,12 +1,12 @@
 import { useRef, useCallback, useMemo } from "react";
-import { UpdateFunction, RenderFunction, TickerFunction } from "../types";
+import { UpdateFunction, RenderFunction, TickerFunction, UpdateConfig, UpdateOptions } from "../types";
 import { useRender } from "./useRender";
 import { useUpdate } from "./useUpdate";
 import { useTicker } from "./useTicker";
 
 export const useNode = () => {
   const tickers = useRef<Map<string, TickerFunction>>(new Map());
-  const updates = useRef<Map<string, UpdateFunction>>(new Map());
+  const updates = useRef<Map<string, UpdateConfig>>(new Map());
   const renders = useRef<Map<string, RenderFunction>>(new Map());
 
   const ticker = useCallback((delta: number, time: number) => {
@@ -16,8 +16,21 @@ export const useNode = () => {
   }, []);
 
   const update = useCallback((delta: number, time: number) => {
-    for (const entry of updates.current) {
-      entry[1](delta, time);
+    const waiting: Map<string, UpdateFunction> = new Map();
+    const completed: Set<string> = new Set();
+
+    for (const [id, config] of updates.current) {
+      const { fn, after } = config;
+      if (after && !completed.has(after)) {
+        waiting.set(after, fn);
+      } else {
+        fn(delta, time);
+        completed.add(id);
+      }
+
+      if (waiting.has(id)) {
+        waiting.get(id)?.(delta, time);
+      }
     }
   }, []);
 
@@ -32,8 +45,8 @@ export const useNode = () => {
     return () => tickers.current.delete(id);
   }, []);
 
-  const registerUpdate = useCallback((id: string, fn: UpdateFunction) => {
-    updates.current.set(id, fn);
+  const registerUpdate = useCallback((id: string, fn: UpdateFunction, options?: UpdateOptions) => {
+    updates.current.set(id, { ...options, fn });
     return () => updates.current.delete(id);
   }, []);
 

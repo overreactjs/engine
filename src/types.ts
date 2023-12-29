@@ -1,10 +1,12 @@
-import { MutableRefObject } from "react";
 import { Body } from "detect-collisions";
 import { Engine } from "matter-js";
 
 export type ElementType = InnerHTML & ElementCSSInlineStyle & Element;
 
-export type Property<T> = MutableRefObject<T>;
+export type Property<T> = {
+  current: T;
+  invalidated: boolean;
+}
 
 export type Prop<T> = T | Property<T>;
 
@@ -33,6 +35,14 @@ export type Tileset = {
 export type TickerFunction = (delta: number, time: number) => void;
 
 export type UpdateFunction = (delta: number, time: number) => void;
+
+export type UpdateOptions = {
+  after?: string;
+}
+
+export type UpdateConfig = UpdateOptions & {
+  fn: UpdateFunction;
+}
 
 export type RenderFunction = () => void;
 

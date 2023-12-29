@@ -1,6 +1,7 @@
 import React from "react";
 import { Engine } from "matter-js";
 import { PhysicsEvent, PhysicsEventType, PhysicsUpdateFunction, Property } from "../types";
+import { VariableProperty } from "../utils";
 
 type PhysicsContextProps = {
   engine: Property<Engine | null>;
@@ -12,7 +13,7 @@ type PhysicsContextProps = {
 }
 
 export const PhysicsContext = React.createContext<PhysicsContextProps>({
-  engine: { current: null },
+  engine: new VariableProperty(null),
   register: () => () => {},
   setGravity: () => {},
   setVelocity: () => {},

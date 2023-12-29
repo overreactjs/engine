@@ -1,5 +1,6 @@
 import React from "react";
 import { Position, Property } from "../types";
+import { VariableProperty } from "../utils";
 
 type TouchContextProps = {
   pos: Property<Position>;
@@ -8,7 +9,7 @@ type TouchContextProps = {
 };
 
 export const TouchContext = React.createContext<TouchContextProps>({
-  pos: { current: [0, 0] },
+  pos: new VariableProperty([0, 0]),
   isDown: () => false,
   isPressed: () => false,
 });

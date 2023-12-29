@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import { System, Body, Point } from "detect-collisions";
 import { Node } from "./Node";
-import { CollisionEventFunction, CollisionUpdateFunction, Position, Property } from "../types";
+import { CollisionEventFunction, CollisionUpdateFunction, Property, Position } from "../types";
 import { useDynamicProperty, useMouse, useTouch, useUpdate } from "../hooks";
 import { WorldContext } from "../context";
+import { MapSet } from "../utils";
 
 type WorldProps = {
   children: React.ReactNode;
@@ -21,8 +22,9 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   const bodies = useRef<Map<string, Body>>(new Map());
   const bodyTags = useRef<Map<Body, string[]>>(new Map());
   const updaters = useRef<Map<Body, CollisionUpdateFunction>>(new Map());
-  const handlers = useRef<Map<Body, Set<CollisionEventFunction>>>(new Map());
-  const overlaps = useRef(new OverlappingSet());
+  const handlers = useRef<Map<Body, Set<CollisionEventFunction>>>(new Map());;
+  const overlaps = useRef<MapSet<Body, Body>>(new MapSet());
+  const postHandlers = useRef<Set<() => void>>(new Set());
 
   const registerCollider = useCallback((id: string, tags: string[], body: Body, fn: CollisionUpdateFunction) => {
     if (!bodies.current.has(id)) {
@@ -45,6 +47,9 @@ export const World: React.FC<WorldProps> = ({ children }) => {
     }
   }, []);
 
+  /**
+   * 
+   */
   const registerHandler = useCallback((id: string, fn: CollisionEventFunction) => {
     const body = bodies.current.get(id);
     if (body) {
@@ -62,6 +67,14 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   }, []);
 
   /**
+   * 
+   */
+  const registerPostHandler = useCallback((fn: () => void) => {
+    postHandlers.current.add(fn);
+    return () => postHandlers.current.delete(fn);
+  }, []);
+
+  /**
    * Check to see if the given point is inside of the body with the given identifier.
    */
   const isInside = useCallback((id: string, pos?: Property<Position>) => {
@@ -72,7 +85,6 @@ export const World: React.FC<WorldProps> = ({ children }) => {
     }
     return false;
   }, []);
-
   
   /**
    * Update all bodies so that they 
@@ -83,7 +95,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
       update(body);
     }
 
-    const newOverlaps = new OverlappingSet();
+    const newOverlaps = new MapSet<Body, Body>();
 
     // Check for collisions.
     system.current.checkAll((collision) => {
@@ -97,6 +109,11 @@ export const World: React.FC<WorldProps> = ({ children }) => {
     });
 
     overlaps.current = newOverlaps;
+
+    // Run all post-collisions updater functions.
+    for (const handler of postHandlers.current) {
+      handler();
+    }
   });
 
   /**
@@ -118,8 +135,8 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   });
 
   const worldContext = useMemo(
-    () => ({ registerCollider, registerHandler, isInside, mouse: worldMousePos, touch: worldTouchPos }),
-    [registerCollider, registerHandler, isInside, worldMousePos, worldTouchPos],
+    () => ({ registerCollider, registerHandler, registerPostHandler, isInside, mouse: worldMousePos, touch: worldTouchPos }),
+    [registerCollider, registerHandler, registerPostHandler, isInside, worldMousePos, worldTouchPos],
   );
 
   return (
@@ -130,18 +147,3 @@ export const World: React.FC<WorldProps> = ({ children }) => {
     </WorldContext.Provider>
   );
 };
-
-class OverlappingSet {
-  overlaps: Map<Body, Set<Body>> = new Map();
-
-  add(a: Body, b: Body) {
-    if (!this.overlaps.has(a)) {
-      this.overlaps.set(a, new Set());
-    }
-    this.overlaps.get(a)?.add(b);
-  }
-
-  has(a: Body, b: Body) {
-    return !!this.overlaps.get(a)?.has(b);
-  }
-}

@@ -1,8 +1,7 @@
-import { useContext, useLayoutEffect } from "react";
-import { Property } from "../types";
+import { MutableRefObject, useContext, useLayoutEffect } from "react";
 import { SpriteSetContext } from "../components";
 
-export const useSpriteSet = (name: string | undefined, element: Property<HTMLOrSVGElement | null>, reset: () => void) => {
+export const useSpriteSet = (name: string | undefined, element: MutableRefObject<HTMLOrSVGElement | null>, reset: () => void) => {
   const { register } = useContext(SpriteSetContext);
   
   useLayoutEffect(() => {

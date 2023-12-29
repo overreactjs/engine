@@ -1,5 +1,6 @@
 import React from "react";
 import { Property } from "../types";
+import { VariableProperty } from "../utils";
 
 export type MotionContextProps = {
   acceleration: Property<[number, number, number]>;
@@ -7,6 +8,6 @@ export type MotionContextProps = {
 };
 
 export const MotionContext = React.createContext<MotionContextProps>({
-  acceleration: { current: [0, 0, 0] },
+  acceleration: new VariableProperty([0, 0, 0]),
   isShaking: () => false,
 });

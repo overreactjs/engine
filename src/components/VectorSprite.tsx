@@ -54,16 +54,16 @@ export const VectorSprite: React.FC<VectorSpriteProps> = ({ sprite: Sprite, ...p
 
   useRender(() => {
     element.setBaseStyles({ pos, size });
-    element.setStyle('position', 'absolute');
-    element.setStyle('contain', 'content');
 
-    const viewBox = `${frameIndex.current * frameWidth.current} 0 ${frameWidth.current} ${frameHeight.current}`;
-    element.ref.current?.setAttribute('viewBox', viewBox);
+    if (frameIndex.invalidated || frameWidth.invalidated || frameHeight.invalidated) {
+      const viewBox = `${frameIndex.current * frameWidth.current} 0 ${frameWidth.current} ${frameHeight.current}`;
+      element.ref.current?.setAttribute('viewBox', viewBox);
+    }
   });
 
   return (
     <Node pos={pos}>
-      <Sprite ref={element.ref} style={{ userSelect: 'none' }} />
+      <Sprite ref={element.ref} className="absolute" style={{ contain: 'content', userSelect: 'none' }} />
     </Node>
   );
 };

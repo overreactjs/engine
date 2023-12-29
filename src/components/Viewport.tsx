@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Position, Prop, Property } from "../types";
+import { Property, Position, Prop } from "../types";
 import { useElement, useProperty, useRender } from "../hooks";
 
 type ViewportContextProps = {
@@ -31,9 +31,11 @@ export const Viewport: React.FC<ViewportProps> = ({ children, ...props }) => {
   const context = useMemo(() => ({ origin }), [origin]);
 
   useRender(() => {
-    const x = -Math.round(origin.current[0] * scale.current);
-    const y = -Math.round(origin.current[1] * scale.current);
-    element.setStyle('transform', `translate(${x}px, ${y}px) scale(${scale.current})`);
+    if (origin.invalidated || scale.invalidated) {
+      const x = -Math.round(origin.current[0] * scale.current);
+      const y = -Math.round(origin.current[1] * scale.current);
+      element.setStyle('transform', `translate(${x}px, ${y}px) scale(${scale.current})`);
+    }
   });
 
   return (

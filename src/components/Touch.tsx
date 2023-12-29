@@ -42,8 +42,7 @@ export const Touch: React.FC<TouchProps> = ({ children }) => {
    * Keep track of which buttons are pressed down.
    */
   const handleTouchStart = useCallback((event: TouchEvent) => {
-    pos.current[0] = event.touches[0].clientX;
-    pos.current[1] = event.touches[0].clientY;
+    pos.current = [event.touches[0].clientX, event.touches[0].clientY];
     down.current.add(event.target as Element);
   }, [pos]);
 
@@ -62,8 +61,7 @@ export const Touch: React.FC<TouchProps> = ({ children }) => {
    * Track the current screen position of the mouse.
    */
   const handleTouchMove = useCallback((event: TouchEvent) => {
-    pos.current[0] = event.touches[0].clientX;
-    pos.current[1] = event.touches[0].clientY;
+    pos.current = [event.touches[0].clientX, event.touches[0].clientY];
   }, [pos]);
 
   /**
