@@ -21,9 +21,9 @@ export const Touch: React.FC<TouchProps> = ({ children }) => {
   /**
    * Returns true if the given mouse button is down.
    */
-  const isDown = useCallback((element: Element) => {
+  const isDown = useCallback((element?: Element) => {
     for (const target of down.current) {
-      if (element === target || element.contains(target)) {
+      if (!element || element === target || element.contains(target)) {
         return true;
       }
     }
@@ -34,8 +34,8 @@ export const Touch: React.FC<TouchProps> = ({ children }) => {
   /**
    * Returns true if the given mouse button was *just* released.
    */
-  const isPressed = useCallback((element: Element) => {
-    return pressed.current.has(element);
+  const isPressed = useCallback((element?: Element) => {
+    return element ? pressed.current.has(element) : pressed.current.size > 0;
   }, []);
 
   /**

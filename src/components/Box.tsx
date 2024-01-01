@@ -31,6 +31,7 @@ export const Box: React.FC<BoxProps> = ({ className, ...props }) => {
 
     if (color.invalidated) {
       element.setStyle('background-color', color.current);
+      color.invalidated = false;
     }
   });
 

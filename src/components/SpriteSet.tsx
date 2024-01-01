@@ -41,6 +41,8 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
 
         elem.style.visibility = id === animation.current ? 'visible' : 'hidden';
       }
+
+      animation.invalidated = false;
     }
   });
   

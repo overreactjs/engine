@@ -28,6 +28,7 @@ export const Circle: React.FC<CircleProps> = ({ className, ...props }) => {
 
     if (color.invalidated) {
       element.setStyle('background', color.current);
+      color.invalidated = false;
     }
   });
 

@@ -35,6 +35,8 @@ export const Viewport: React.FC<ViewportProps> = ({ children, ...props }) => {
       const x = -Math.round(origin.current[0] * scale.current);
       const y = -Math.round(origin.current[1] * scale.current);
       element.setStyle('transform', `translate(${x}px, ${y}px) scale(${scale.current})`);
+      origin.invalidated = false;
+      scale.invalidated = false;
     }
   });
 

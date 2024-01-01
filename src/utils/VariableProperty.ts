@@ -4,12 +4,12 @@ import { Validator } from "./Validator";
 export class VariableProperty<T> extends ObjectState {
 
   _current: T;
-  invalidated: boolean = false;
+  _invalidated: boolean = false;
 
   constructor(initial: T) {
     super();
     this._current = this.proxy(initial);
-    this.invalidate();
+    this._invalidated = true;
   }
 
   /**
@@ -17,7 +17,7 @@ export class VariableProperty<T> extends ObjectState {
    * property, so that any dependant DOM elements will be updated in the next render pass.
    */
   proxy(value: T) {
-    const invalidate = () => this.invalidate();
+    const invalidate = () => this.invalidated = true;
 
     return value instanceof Object
       ? new Proxy(value, {
@@ -29,21 +29,24 @@ export class VariableProperty<T> extends ObjectState {
       : value;
   }
 
-  invalidate() {
-    if (this.invalidated === false) {
-      this.invalidated = true;
-      Validator.add(() => {
-        this.invalidated = false;
-      });
-    }
-  }
-
   get current() {
     return this._current;
   }
 
   set current(value: T) {
     this._current = this.proxy(value);
-    this.invalidate();
+    this._invalidated = true;
+  }
+
+  get invalidated() {
+    return this._invalidated;
+  }
+
+  set invalidated(value: boolean) {
+    if (value) {
+      this._invalidated = true;
+    } else {
+      Validator.add(() => this._invalidated = false);
+    }
   }
 }

@@ -34,20 +34,21 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
     element.setBaseStyles({ pos, size, flip });
 
     if (image.invalidated) {
-      console.log('bg image changed...');
       element.setLegacyStyle('backgroundImage', `url(${image.current.url})`);
+      image.invalidated = false;
     }
 
     if (offset.invalidated) {
-      console.log('bg pos changed...');
       element.setLegacyStyle('backgroundPosition', `${-offset.current[0]}px ${-offset.current[1]}px`);
+      offset.invalidated = false;
     }
 
     if (image.invalidated || scale.invalidated) {
-      console.log('bg size changed...');
       const width = image.current.size[0] * scale.current;
       const height = image.current.size[1] * scale.current;
       element.setLegacyStyle('backgroundSize', `${width}px ${height}px`);
+      image.invalidated = false;
+      scale.invalidated = false;
     }
   });
 

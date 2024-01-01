@@ -4,8 +4,8 @@ import { VariableProperty } from "../utils";
 
 type TouchContextProps = {
   pos: Property<Position>;
-  isDown: (element: Element) => boolean;
-  isPressed: (element: Element) => boolean;
+  isDown: (element?: Element) => boolean;
+  isPressed: (element?: Element) => boolean;
 };
 
 export const TouchContext = React.createContext<TouchContextProps>({

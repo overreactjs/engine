@@ -84,16 +84,19 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       const [x, y] = pos.current;
       transforms.current.set('pos', new CSSTranslate(CSS.px(Math.round(x)), CSS.px(Math.round(y))));
       changed = true;
+      pos.invalidated = false;
     }
     
     if (angle?.invalidated || (force && angle)) {
       transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
       changed = true;
+      angle.invalidated = false;
     }
 
     if (flip?.invalidated || (force && flip)) {
       transforms.current.set('flip', new CSSScale(flip.current ? -1 : 1, 1));
       changed = true;
+      flip.invalidated = false;
     }
 
     if (changed) {
@@ -104,6 +107,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       const [width, height] = size.current;
       ref.current?.attributeStyleMap.set('width', CSS.px(width));
       ref.current?.attributeStyleMap.set('height', CSS.px(height));
+      size.invalidated = false;
     }
   }, [setStyle]);
 
@@ -115,29 +119,3 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
     }
   }, [element, ref, setAttribute, setBaseStyles, setData, setStyle, setText]);
 }
-
-// const setBaseStyles = useCallback((options: SetBaseStyles) => {
-//   const { pos, size, angle, flip } = options;
-
-//   const transforms = [];
-
-//   if (pos?.current) {
-//     transforms.push(`translate(${Math.round(pos.current[0])}px, ${Math.round(pos.current[1])}px)`);
-//   }
-//   if (angle?.current) {
-//     transforms.push(`rotate(${angle.current}deg)`);
-//   }
-//   if (flip?.current) {
-//     transforms.push(`scaleX(-1)`);
-//   }
-
-//   if (transforms.length > 0) {
-//     setStyle('transform', transforms.join(' '));
-//   }
-
-//   if (size?.current) {
-//     const [width, height] = size.current;
-//     setStyle('width', `${width}px`);
-//     setStyle('height', `${height}px`);
-//   }
-// }, [setStyle]);

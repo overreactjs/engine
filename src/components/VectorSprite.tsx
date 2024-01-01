@@ -58,6 +58,9 @@ export const VectorSprite: React.FC<VectorSpriteProps> = ({ sprite: Sprite, ...p
     if (frameIndex.invalidated || frameWidth.invalidated || frameHeight.invalidated) {
       const viewBox = `${frameIndex.current * frameWidth.current} 0 ${frameWidth.current} ${frameHeight.current}`;
       element.ref.current?.setAttribute('viewBox', viewBox);
+      frameIndex.invalidated = false;
+      frameWidth.invalidated = false;
+      frameHeight.invalidated = false;
     }
   });
 
