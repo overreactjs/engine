@@ -1,6 +1,6 @@
 {
   "name": "@overreact/engine",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "type": "module",
   "main": "./dist/engine.umd.cjs",
   "module": "./dist/engine.js",
