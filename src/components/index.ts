@@ -11,6 +11,7 @@ export { Motion } from './Motion';
 export { Mouse } from './Mouse';
 export { Node } from './Node';
 export { Orientation } from './Orientation';
+export { ParticleGenerator } from './ParticleGenerator';
 export { Physics } from './Physics';
 export { PhysicsBox } from './PhysicsBox';
 export { PhysicsCircle } from './PhysicsCircle';

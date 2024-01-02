@@ -1,13 +1,20 @@
 import { useRef, useCallback, useMemo } from "react";
-import { UpdateFunction, RenderFunction, TickerFunction, UpdateConfig, UpdateOptions } from "../types";
+import { UpdateFunction, RenderFunction, TickerFunction, UpdateConfig, UpdateOptions, Prop } from "../types";
 import { useRender } from "./useRender";
 import { useUpdate } from "./useUpdate";
 import { useTicker } from "./useTicker";
+import { useProperty } from ".";
 
-export const useNode = () => {
+type UseNodeOptions = {
+  timeScale?: Prop<number>;
+}
+
+export const useNode = (options?: UseNodeOptions) => {
   const tickers = useRef<Map<string, TickerFunction>>(new Map());
   const updates = useRef<Map<string, UpdateConfig>>(new Map());
   const renders = useRef<Map<string, RenderFunction>>(new Map());
+
+  const timeScale = useProperty(options?.timeScale || 1);
 
   const ticker = useCallback((delta: number, time: number) => {
     for (const entry of tickers.current) {
@@ -24,12 +31,12 @@ export const useNode = () => {
       if (after && !completed.has(after)) {
         waiting.set(after, fn);
       } else {
-        fn(delta, time);
+        fn(delta * timeScale.current, time);
         completed.add(id);
       }
 
       if (waiting.has(id)) {
-        waiting.get(id)?.(delta, time);
+        waiting.get(id)?.(delta * timeScale.current, time);
       }
     }
   }, []);

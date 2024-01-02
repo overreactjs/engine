@@ -6,6 +6,7 @@ export type SetBaseStyles = {
   size?: Property<Size>;
   angle?: Property<number>;
   flip?: Property<boolean>;
+  opacity?: Property<number>;
   force?: boolean;
 }
 
@@ -76,30 +77,30 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
    * Set the commonly used base styles: position, size, angle, and flip.
    */
   const setBaseStyles = useCallback((options: SetBaseStyles) => {
-    const { pos, size, angle, flip, force = false } = options;
+    const { pos, size, angle, flip, opacity, force = false } = options;
 
-    let changed = false;
+    let transformsChanges = false;
 
     if (pos?.invalidated || (force && pos)) {
       const [x, y] = pos.current;
       transforms.current.set('pos', new CSSTranslate(CSS.px(Math.round(x)), CSS.px(Math.round(y))));
-      changed = true;
+      transformsChanges = true;
       pos.invalidated = false;
     }
     
     if (angle?.invalidated || (force && angle)) {
       transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
-      changed = true;
+      transformsChanges = true;
       angle.invalidated = false;
     }
 
     if (flip?.invalidated || (force && flip)) {
       transforms.current.set('flip', new CSSScale(flip.current ? -1 : 1, 1));
-      changed = true;
+      transformsChanges = true;
       flip.invalidated = false;
     }
 
-    if (changed) {
+    if (transformsChanges) {
       ref.current?.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
     }
 
@@ -108,6 +109,11 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       ref.current?.attributeStyleMap.set('width', CSS.px(width));
       ref.current?.attributeStyleMap.set('height', CSS.px(height));
       size.invalidated = false;
+    }
+
+    if (opacity?.invalidated || (force && opacity)) {
+      ref.current?.attributeStyleMap.set('opacity', CSS.number(opacity.current));
+      opacity.invalidated = false;
     }
   }, [setStyle]);
 

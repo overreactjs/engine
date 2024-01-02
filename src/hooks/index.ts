@@ -25,7 +25,7 @@ export { useSpriteSet } from './useSpriteSet';
 export { useSync } from './useSync';
 export { useTicker } from './useTicker';
 export { useTouch } from './useTouch';
-export { useUpdate, useUpdateAfter } from './useUpdate';
+export { useUpdate, useUpdateAfter, useFixedUpdate } from './useUpdate';
 export { useViewport } from './useViewport';
 export { useWorld } from './useWorld';
 export { usePhysicsBody, useBoxPhysics, useCirclePhysics } from './usePhysics';
