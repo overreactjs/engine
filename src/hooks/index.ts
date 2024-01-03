@@ -21,6 +21,7 @@ export { usePostCollisions } from './usePostCollisions';
 export { useProperty } from './useProperty';
 export { useRender } from './useRender';
 export { useShaker } from './useShaker';
+export { useSpeech } from './useSpeech';
 export { useSpriteSet } from './useSpriteSet';
 export { useSync } from './useSync';
 export { useTicker } from './useTicker';
