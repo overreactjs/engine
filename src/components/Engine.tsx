@@ -3,8 +3,6 @@ import { EngineContext, NodeContext } from "../context";
 import { useNode } from "../hooks";
 import { Validator } from "../utils";
 import { Keyboard } from "./Keyboard";
-import { Mouse } from "./Mouse";
-import { Touch } from "./Touch";
 import { Motion } from "./Motion";
 import { Orientation } from "./Orientation";
 import { Pointer } from "./Pointer";
@@ -73,15 +71,11 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
       <NodeContext.Provider value={node}>
         <Keyboard>
           <Pointer>
-            <Mouse>
-              <Touch>
-                <Motion>
-                  <Orientation>
-                    {children}
-                  </Orientation>
-                </Motion>
-              </Touch>
-            </Mouse>
+            <Motion>
+              <Orientation>
+                {children}
+              </Orientation>
+            </Motion>
           </Pointer>
         </Keyboard>
       </NodeContext.Provider>

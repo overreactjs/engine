@@ -8,8 +8,6 @@ type WorldContextProps = {
   registerHandler: (id: string, fn: CollisionEventFunction) => () => void;
   registerPostHandler: (fn: () => void) => () => void;
   isInside: (id: string, pos?: Property<Position>) => boolean;
-  mouse: Property<Position>;
-  touch: Property<Position>;
   pointer: Property<Position>;
 }
 
@@ -18,7 +16,5 @@ export const WorldContext = React.createContext<WorldContextProps>({
   registerHandler: () => () => {},
   registerPostHandler: () => () => {},
   isInside: () => false,
-  mouse: new VariableProperty([0, 0]),
-  touch: new VariableProperty([0, 0]),
   pointer: new VariableProperty([0, 0]),
 });

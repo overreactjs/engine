@@ -16,6 +16,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
   const { onPause, onDebug } = useContext(EngineContext);
   const down = useRef<Set<string>>(new Set());
   const pressed = useRef<Set<string>>(new Set());
+  const _pressed = useRef<Set<string>>(new Set());
 
   /**
    * Return true if the given key is being held down.
@@ -66,9 +67,22 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
    */
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     down.current.delete(event.code);
-    pressed.current.add(event.code);
-    requestAnimationFrame(() => pressed.current.delete(event.code));
+    _pressed.current.add(event.code);
   }, []);
+
+  /**
+   * Ensure that the 'pressed' state is in place for exactly one frame, and no more.
+   */
+  useTicker(() => {
+    for (const code of pressed.current) {
+      pressed.current.delete(code);
+    }
+
+    for (const code of _pressed.current) {
+      pressed.current.add(code);
+      _pressed.current.delete(code);
+    }
+  })
 
   /**
    * Attach key event handlers to the window, to capture all events.

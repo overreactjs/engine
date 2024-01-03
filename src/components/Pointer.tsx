@@ -1,6 +1,6 @@
 import React, { MutableRefObject, useCallback, useEffect, useMemo, useRef } from "react";
 import { PointerContext } from "../context";
-import { useProperty } from "../hooks";
+import { useProperty, useTicker } from "../hooks";
 import { Position } from "../types";
 
 type PointerProps = {
@@ -15,6 +15,7 @@ type PointerProps = {
  */
 export const Pointer: React.FC<PointerProps> = ({ children }) => {
   const down = useRef<Set<number>>(new Set());
+  const _pressed = useRef<Set<number>>(new Set());
   const pressed = useRef<Set<number>>(new Set());
   const pos = useProperty<Position>([0, 0]);
   const target = useRef<Element | null>(null);
@@ -52,9 +53,8 @@ export const Pointer: React.FC<PointerProps> = ({ children }) => {
    */
   const handlePointerDown = useCallback((event: PointerEvent) => {
     pos.current = [event.clientX, event.clientY];
-    down.current.add(0);
     target.current = event.target as Element;
-
+    down.current.add(0);
   }, [pos]);
 
   /**
@@ -62,11 +62,7 @@ export const Pointer: React.FC<PointerProps> = ({ children }) => {
    */
   const handlePointerUp = useCallback(() => {
     down.current.delete(0);
-    pressed.current.add(0);
-    requestAnimationFrame(() => {
-      pressed.current.delete(0);
-      target.current = null;
-    });
+    _pressed.current.add(0);
   }, []);
 
   /**
@@ -75,6 +71,18 @@ export const Pointer: React.FC<PointerProps> = ({ children }) => {
   const handlePointerMove = useCallback((event: PointerEvent) => {
     pos.current = [event.clientX, event.clientY];
   }, [pos]);
+
+  /**
+   * Ensure that the 'pressed' state is in place for exactly one frame, and no more.
+   */
+  useTicker(() => {
+    if (_pressed.current.has(0) && !pressed.current.has(0)) {
+      pressed.current.add(0);
+      _pressed.current.delete(0);
+    } else if (!_pressed.current.has(0) && pressed.current.has(0)) {
+      pressed.current.delete(0);
+    }
+  })
 
   /**
    * Attach key event handlers to the window, to capture all events.
