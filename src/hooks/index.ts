@@ -23,6 +23,7 @@ export { useRender } from './useRender';
 export { useShaker } from './useShaker';
 export { useSpeech } from './useSpeech';
 export { useSpriteSet } from './useSpriteSet';
+export { useSwipe } from './useSwipe';
 export { useSync } from './useSync';
 export { useTicker } from './useTicker';
 export { useUpdate, useUpdateAfter, useFixedUpdate } from './useUpdate';
