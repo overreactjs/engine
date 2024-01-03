@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { System, Body, Point } from "detect-collisions";
 import { Node } from "./Node";
 import { CollisionEventFunction, CollisionUpdateFunction, Property, Position } from "../types";
-import { useDynamicProperty, useMouse, useTouch, useUpdate } from "../hooks";
+import { useDynamicProperty, useMouse, usePointer, useTouch, useUpdate } from "../hooks";
 import { WorldContext } from "../context";
 import { MapSet } from "../utils";
 
@@ -134,9 +134,18 @@ export const World: React.FC<WorldProps> = ({ children }) => {
     return [x - (rect?.x || 0), y - (rect?.y || 0)];
   });
 
+  /**
+   * Convert the global pointer position to world co-ordinates.
+   */
+  const pointer = usePointer();
+  const worldPointerPos = useDynamicProperty(pointer.pos, ([x, y]): Position => {
+    const rect = ref.current?.getBoundingClientRect();
+    return [x - (rect?.x || 0), y - (rect?.y || 0)];
+  });
+
   const worldContext = useMemo(
-    () => ({ registerCollider, registerHandler, registerPostHandler, isInside, mouse: worldMousePos, touch: worldTouchPos }),
-    [registerCollider, registerHandler, registerPostHandler, isInside, worldMousePos, worldTouchPos],
+    () => ({ registerCollider, registerHandler, registerPostHandler, isInside, mouse: worldMousePos, touch: worldTouchPos, pointer: worldPointerPos }),
+    [registerCollider, registerHandler, registerPostHandler, isInside, worldMousePos, worldTouchPos, worldPointerPos],
   );
 
   return (

@@ -6,5 +6,6 @@ export { MouseContext } from './MouseContext';
 export { NodeContext } from './NodeContext';
 export { OrientationContext } from './OrientationContext';
 export { PhysicsContext } from './PhysicsContext';
+export { PointerContext } from './PointerContext';
 export { TouchContext } from './TouchContext';
 export { WorldContext } from './WorldContext';

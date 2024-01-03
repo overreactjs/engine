@@ -16,6 +16,7 @@ export { useOffsetPosition } from './useOffsetPosition';
 export { useOrientation } from './useOrientation';
 export { usePhysicsEngine, usePhysicsCollision } from './usePhysicsEngine';
 export { usePlatformMovement } from './usePlatformMovement';
+export { usePointer } from './usePointer';
 export { usePosition } from './usePosition';
 export { usePostCollisions } from './usePostCollisions';
 export { useProperty } from './useProperty';

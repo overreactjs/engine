@@ -7,6 +7,7 @@ import { DeviceContext } from "../context";
 import "../styles/device.css";
 
 type DeviceProps = {
+  className?: string;
   children: React.ReactNode;
   mode?: DeviceMode;
   angle?: Prop<number>;
@@ -25,6 +26,7 @@ type DeviceProps = {
  * actions, adjust the device orientation, and track the dimensions.
  */
 export const Device: React.FC<DeviceProps> = ({
+  className = '',
   children,
   mode = 'desktop',
   bg = 'white',
@@ -78,7 +80,7 @@ export const Device: React.FC<DeviceProps> = ({
 
   return (
     <DeviceContext.Provider value={context}>
-      <div className={`device-outer device-${mode}`}>
+      <div className={`device-outer device-${mode} ${className}`}>
         <div className="device-inner" ref={device.ref}>
           <div className="device-screen shadow-2xl" style={{ background: bg }} ref={screen.ref}>
             {children}

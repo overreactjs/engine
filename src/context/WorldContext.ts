@@ -10,6 +10,7 @@ type WorldContextProps = {
   isInside: (id: string, pos?: Property<Position>) => boolean;
   mouse: Property<Position>;
   touch: Property<Position>;
+  pointer: Property<Position>;
 }
 
 export const WorldContext = React.createContext<WorldContextProps>({
@@ -19,4 +20,5 @@ export const WorldContext = React.createContext<WorldContextProps>({
   isInside: () => false,
   mouse: new VariableProperty([0, 0]),
   touch: new VariableProperty([0, 0]),
+  pointer: new VariableProperty([0, 0]),
 });
