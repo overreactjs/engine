@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo } from "react";
 import { FrameRate } from "./FrameRate";
 import { useElement, useKeyAxis, useKeyPressed, useProperty, useRender, useShaker } from "../hooks";
-import { DeviceMode, Prop, Size } from "../types";
+import { DeviceMode, Size } from "../types";
 import { DeviceContext } from "../context";
 
 import "../styles/device.css";
@@ -10,9 +10,6 @@ type DeviceProps = {
   className?: string;
   children: React.ReactNode;
   mode?: DeviceMode;
-  angle?: Prop<number>;
-  allowShake?: boolean;
-  allowTilt?: boolean;
   hideClose?: boolean;
   showFPS?: boolean;
   bg?: string;
@@ -32,22 +29,19 @@ export const Device: React.FC<DeviceProps> = ({
   bg = 'white',
   hideClose = false,
   showFPS = false,
-  ...props
 }) => {
   const device = useShaker();
   const screen = useElement<HTMLDivElement>();
 
   const size = useProperty<Size>([0, 0]);
-  const angle = useProperty(props.angle || 0);
+  const angle = useProperty(0);
   
   useKeyPressed('KeyS', () => {
-    if (props.allowShake) {
-      device.shake();
-    }
+    device.shake();
   });
 
   useKeyAxis('KeyG', 'KeyH', (value) => {
-    if (props.allowTilt && value !== 0) {
+    if (value !== 0) {
       angle.current += value * 2;
     }
   });
@@ -87,6 +81,12 @@ export const Device: React.FC<DeviceProps> = ({
             {!hideClose && <Close />}
             {showFPS && <FrameRate />}
           </div>
+        </div>
+        <div className="absolute left-8 bottom-8 text-white">
+          <div>"O": Toggle debug mode</div>
+          <div>"P": Pause/unpause</div>
+          <div>"S": Shake device</div>
+          <div>"G/H": Rotate device</div>
         </div>
       </div>
     </DeviceContext.Provider>
