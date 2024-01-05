@@ -19,3 +19,4 @@ export { Tilemap } from './Tilemap';
 export { VectorSprite } from './VectorSprite';
 export { Viewport, ViewportContext } from './Viewport';
 export { World } from './World';
+export { Coordinates } from './Coordinates';
