@@ -18,10 +18,12 @@ export const Coordinates: React.FC<CoordinatesProps> = (props) => {
 
   useRender(() => {
     if (debug) {
-      labelElement.setBaseStyles({ pos });
-      titleElement.setText(props.isAbsolutePosition ? 'Absolute:' : 'Relative:');
-      posXElement.setText(`x: ${Math.round(pos.current[0]).toString()}`);
-      posYElement.setText(`y: ${Math.round(pos.current[1]).toString()}`);
+      if (pos.invalidated) {
+        labelElement.setBaseStyles({ pos });
+        titleElement.setText(props.isAbsolutePosition ? 'Absolute:' : 'Relative:');
+        posXElement.setText(`x: ${Math.round(pos.current[0]).toString()}`);
+        posYElement.setText(`y: ${Math.round(pos.current[1]).toString()}`);
+      }
     }
   });
 
