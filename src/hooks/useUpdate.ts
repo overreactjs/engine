@@ -33,12 +33,24 @@ export const useUpdateAfter = (target: string, fn: UpdateFunction): string => {
  * rate. If the desired rate is greater than the maximum frame rate, then the update function will
  * run multiple times each frame.
  */
-export const useFixedUpdate = (rate: Prop<number>, fn: UpdateFunction): string => {
+export const useFixedUpdate = (rate: Prop<number>, fn: UpdateFunction, runImmediately: boolean = false, shouldRun = () => true): string => {
   const elapsed = useProperty(0);
   const ups = useProperty(rate);
   const period = useProperty(1000 / ups.current);
 
   return useUpdate((delta, time) => {
+    if (!shouldRun()) {
+      elapsed.current = 0;
+
+      return
+    }
+
+    if (runImmediately) {
+      fn(period.current, time);
+
+      return;
+    }
+
     elapsed.current += delta;
 
     if (elapsed.current >= period.current) {
