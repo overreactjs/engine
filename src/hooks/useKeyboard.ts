@@ -16,11 +16,13 @@ export const useKeyPressed = (key: string, fn: () => void) => {
   });
 };
 
-export const useKeyAxis = (negative: string, positive: string, fn: (value: number) => void) => {
+type UseKeyAxisHandler = (value: number, delta: number) => void
+
+export const useKeyAxis = (negative: string, positive: string, fn: UseKeyAxisHandler) => {
   const { hasKeyAxis } = useKeyboard();
 
-  useUpdate(() => {
+  useUpdate((delta) => {
     const value = hasKeyAxis(negative, positive);
-    fn(value);
+    fn(value, delta);
   });
 };

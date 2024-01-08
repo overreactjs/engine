@@ -36,11 +36,11 @@ export const Device: React.FC<DeviceProps> = ({
   const size = useProperty<Size>([0, 0]);
   const angle = useProperty(0);
   
-  useKeyPressed('KeyS', () => {
+  useKeyPressed('Digit3', () => {
     device.shake();
   });
 
-  useKeyAxis('KeyG', 'KeyH', (value) => {
+  useKeyAxis('Digit4', 'Digit5', (value) => {
     if (value !== 0) {
       angle.current += value * 2;
     }
@@ -83,10 +83,10 @@ export const Device: React.FC<DeviceProps> = ({
           </div>
         </div>
         <div className="absolute left-8 bottom-8 text-white">
-          <div>"O": Toggle debug mode</div>
-          <div>"P": Pause/unpause</div>
-          <div>"S": Shake device</div>
-          <div>"G/H": Rotate device</div>
+          <div>"1": Toggle debug mode</div>
+          <div>"2": Pause/unpause</div>
+          <div>"3": Shake device</div>
+          <div>"4/5": Rotate device</div>
         </div>
       </div>
     </DeviceContext.Provider>

@@ -13,6 +13,7 @@ export { useMotion, useDeviceShaken } from './useMotion';
 export { useNode } from './useNode';
 export { useOffsetPosition } from './useOffsetPosition';
 export { useOrientation } from './useOrientation';
+export { useOverlap } from './useOverlap';
 export { usePhysicsEngine, usePhysicsCollision } from './usePhysicsEngine';
 export { usePlatformMovement } from './usePlatformMovement';
 export { usePointer } from './usePointer';

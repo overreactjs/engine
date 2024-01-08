@@ -101,10 +101,10 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
    * Toggle pause, and toggle debug mode.
    */
   useTicker(() => {
-    if (isKeyPressed('KeyP')) {
+    if (isKeyPressed('Digit2')) {
       onPause();
     }
-    if (isKeyPressed('KeyO')) {
+    if (isKeyPressed('Digit1')) {
       onDebug();
     }
   });
