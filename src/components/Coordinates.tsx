@@ -2,6 +2,7 @@ import { Prop, Position, useElement, useRender, usePosition, useDebug } from "..
 
 type CoordinatesProps = {
   pos: Prop<Position>;
+  isAbsolutePosition: boolean;
 }
 
 /**
@@ -10,6 +11,7 @@ type CoordinatesProps = {
 export const Coordinates: React.FC<CoordinatesProps> = (props) => {
   const posXElement = useElement<HTMLDivElement>();
   const posYElement = useElement<HTMLDivElement>();
+  const titleElement = useElement<HTMLDivElement>();
   const labelElement = useElement<HTMLDivElement>();
   const pos = usePosition(props.pos);
   const debug = useDebug();
@@ -17,6 +19,7 @@ export const Coordinates: React.FC<CoordinatesProps> = (props) => {
   useRender(() => {
     if (debug) {
       labelElement.setBaseStyles({ pos });
+      titleElement.setText(props.isAbsolutePosition ? 'Absolute:' : 'Relative:');
       posXElement.setText(`x: ${Math.round(pos.current[0]).toString()}`);
       posYElement.setText(`y: ${Math.round(pos.current[1]).toString()}`);
     }
@@ -28,6 +31,7 @@ export const Coordinates: React.FC<CoordinatesProps> = (props) => {
 
   return (
     <div ref={labelElement.ref} className="text-white text-2xl font-bold">
+      <div className="tabular-nums w-[150px]" ref={titleElement.ref} />
       <div className="tabular-nums w-[100px]" ref={posXElement.ref} />
       <div className="tabular-nums w-[100px]" ref={posYElement.ref} />
     </div>
