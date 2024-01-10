@@ -12,6 +12,7 @@ type DeviceProps = {
   mode?: DeviceMode;
   hideClose?: boolean;
   showFPS?: boolean;
+  showInfo?: boolean;
   bg?: string;
 };
 
@@ -29,6 +30,7 @@ export const Device: React.FC<DeviceProps> = ({
   bg = 'white',
   hideClose = false,
   showFPS = false,
+  showInfo = false,
 }) => {
   const device = useShaker();
   const screen = useElement<HTMLDivElement>();
@@ -82,12 +84,14 @@ export const Device: React.FC<DeviceProps> = ({
             {showFPS && <FrameRate />}
           </div>
         </div>
-        <div className="absolute left-8 bottom-8 text-white">
-          <div>"1": Toggle debug mode</div>
-          <div>"2": Pause/unpause</div>
-          <div>"3": Shake device</div>
-          <div>"4/5": Rotate device</div>
-        </div>
+        {showInfo && (
+          <div className="absolute left-8 bottom-8 text-white">
+            <div>"1": Toggle debug mode</div>
+            <div>"2": Pause/unpause</div>
+            <div>"3": Shake device</div>
+            <div>"4/5": Rotate device</div>
+          </div>
+        )}
       </div>
     </DeviceContext.Provider>
   );

@@ -8,6 +8,7 @@ type PhysicsCircleProps = {
   id?: string;
   pos?: Prop<Position>;
   radius: Prop<number>;
+  static?: boolean;
 }
 
 /**
@@ -25,7 +26,7 @@ export const PhysicsCircle: React.FC<PhysicsCircleProps> = (props) => {
   const debugPos = useOffsetPosition(pos, [-radius.current, -radius.current]);
   const debugSize = useDynamicProperty(radius, (value): Size => [value * 2, value * 2]);
 
-  useCirclePhysics(pos, radius, { friction: 0.5, restitution: 0.5, slop: 0.01 });
+  useCirclePhysics(pos, radius, { friction: 0.5, restitution: 0.5, slop: 0.01, isStatic: props.static });
 
   useRender(() => {
     if (debug) {

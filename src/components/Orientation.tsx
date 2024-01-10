@@ -40,7 +40,7 @@ export const Orientation: React.FC<OrientationProps> = ({ children }) => {
    * In development, when the app is running in a browser, simulate tilting the device using the
    * G and H keys.
    */
-  useKeyAxis('KeyG', 'KeyH', (value) => {
+  useKeyAxis('Digit4', 'Digit5', (value) => {
     if (value !== 0) {
       angle.current += value;
       gamma.current = Math.sin(angle.current * Math.PI / 90) * 45;
