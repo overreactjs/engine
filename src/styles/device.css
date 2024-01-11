@@ -17,7 +17,8 @@
 }
 
 @media (hover: hover) {
-  .device-mobile.device-outer {
+  .device-mobile.device-outer,
+  .device-mobile-landscape.device-outer {
     display: grid;
     place-content: center;
     background: #778899;
@@ -27,8 +28,14 @@
     width: 390px;
     height: 844px;
   }
+
+  .device-mobile-landscape .device-inner {
+    width: 844px;
+    height: 390px;
+  }
   
-  .device-mobile .device-screen {
+  .device-mobile .device-screen,
+  .device-mobile-landscape .device-screen {
     border-radius: 1.5rem;
     background: white;
     overflow: hidden;

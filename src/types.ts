@@ -66,4 +66,4 @@ export type PhysicsEvent = Matter.IEventCollision<Engine>;
 
 export type CameraAxis = 'x' | 'y' | 'xy';
 
-export type DeviceMode = 'mobile' | 'tablet' | 'desktop';
+export type DeviceMode = 'mobile' | 'mobile-landscape' | 'tablet' | 'desktop';
