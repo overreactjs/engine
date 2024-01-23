@@ -1,4 +1,4 @@
-import { useMemo, useRef, useCallback, useEffect, useState } from "react";
+import { useMemo, useRef, useCallback, useEffect, useLayoutEffect, MutableRefObject } from "react";
 import { EngineContext, NodeContext } from "../context";
 import { useNode, useProperty } from "../hooks";
 import { Validator } from "../utils";
@@ -30,6 +30,9 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
     document.body.classList[debug.current ? 'add' : 'remove']('debug');
   }, []);
 
+  // Automatically pause and unpause the engine as the page lose and gains visibility.
+  usePauseOnPageHidden(paused);
+
   // Handle one tick of the game loop.
   const tick = useCallback((t: number) => {
     requestAnimationFrame(tick);
@@ -59,14 +62,6 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
     }
   }, [tick]);
 
-  useEffect(() => {
-    if (debug) {
-      document.body.classList.add('debug');
-    } else {
-      document.body.classList.remove('debug');
-    }
-  }, [debug]);
-
   const engineContext = useMemo(() => ({ debug, onDebug, onPause }), [debug, onDebug, onPause]);
 
   return (
@@ -84,4 +79,22 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
       </NodeContext.Provider>
     </EngineContext.Provider>
   );
+};
+
+/**
+ * Listen for page visibility change events, pausing and unpausing the engine accordingly.
+ */
+const usePauseOnPageHidden = (paused: MutableRefObject<boolean>) => {
+  const onVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      paused.current = true;
+    } else {
+      setTimeout(() => paused.current = false, 500);
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, []);
 };
