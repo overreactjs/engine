@@ -29,10 +29,15 @@ export const PhysicsCircle: React.FC<PhysicsCircleProps> = (props) => {
   useCirclePhysics(pos, radius, { friction: 0.5, restitution: 0.5, slop: 0.01, isStatic: props.static });
 
   useRender(() => {
-    if (debug) {
+    if (debug.current) {
       element.setBaseStyles({ pos: debugPos, size: debugSize });
+    }
+
+    if (debug.invalidated) {
+      element.setStyle('display', debug.current ? 'block' : 'none');
+      debug.invalidated = false;
     }
   });
 
-  return debug ? <div ref={element.ref} className={CLASS_NAME} style={{ contain: 'content' }} /> : null;
+  return <div ref={element.ref} className={CLASS_NAME} style={{ contain: 'content' }} />;
 }

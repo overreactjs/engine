@@ -28,13 +28,18 @@ export const PhysicsBox: React.FC<PhysicsBoxProps> = (props) => {
   useBoxPhysics(pos, size, { isStatic: props.static });
 
   useRender(() => {
-    if (debug) {
+    if (debug.current) {
       element.setBaseStyles({
         pos: new VariableProperty([pos.current[0] - size.current[0] / 2, pos.current[1] - size.current[1] / 2]),
         size,
       });
     }
+
+    if (debug.invalidated) {
+      element.setStyle('display', debug.current ? 'block' : 'none');
+      debug.invalidated = false;
+    }
   });
 
-  return debug ? <div ref={element.ref} className={CLASS_NAME} style={{ contain: 'content' }} /> : null;
+  return <div ref={element.ref} className={CLASS_NAME} style={{ contain: 'content' }} />;
 }

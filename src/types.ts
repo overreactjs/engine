@@ -1,4 +1,4 @@
-import { Body } from "detect-collisions";
+import { Body, Vector } from "detect-collisions";
 import { Engine } from "matter-js";
 
 export type ElementType = InnerHTML & ElementCSSInlineStyle & Element;
@@ -28,8 +28,8 @@ export type BitmapSpriteAsset = BitmapAsset & {
 
 export type Tileset = {
   image: BitmapAsset;
-  gridSize: Size;
   cellSize: Size;
+  gridSize: Size;
 }
 
 export type TickerFunction = (delta: number, time: number) => void;
@@ -49,12 +49,14 @@ export type RenderFunction = () => void;
 export type CollisionUpdateFunction = (body: Body) => void;
 
 export type CollisionEventFunctionProps = {
-  collision: SAT.Response;
+  a: Body;
+  b: Body;
+  overlap: Vector;
   tags: string[];
   firstTime: boolean;
 };
 
-export type CollisionEventFunction = (props: CollisionEventFunctionProps) => void;
+export type CollisionEventFunction = (collisions: CollisionEventFunctionProps[], delta: number) => void;
 
 export type CollisionTag = 'solid' | 'platform' | string;
 

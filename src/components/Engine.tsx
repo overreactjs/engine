@@ -1,6 +1,6 @@
 import { useMemo, useRef, useCallback, useEffect, useState } from "react";
 import { EngineContext, NodeContext } from "../context";
-import { useNode } from "../hooks";
+import { useNode, useProperty } from "../hooks";
 import { Validator } from "../utils";
 import { Keyboard } from "./Keyboard";
 import { Motion } from "./Motion";
@@ -21,11 +21,14 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
   const started = useRef(false);
   const paused = useRef(true);
   const time = useRef<number>(0);
-  const [debug, setDebug] = useState(false);
+  const debug = useProperty(false);
   const node = useNode();
 
   const onPause = useCallback(() => paused.current = !paused.current, []);
-  const onDebug = useCallback(() => setDebug((debug) => !debug), []);
+  const onDebug = useCallback(() => {
+    debug.current = !debug.current;
+    document.body.classList[debug.current ? 'add' : 'remove']('debug');
+  }, []);
 
   // Handle one tick of the game loop.
   const tick = useCallback((t: number) => {

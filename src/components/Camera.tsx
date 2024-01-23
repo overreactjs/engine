@@ -41,10 +41,15 @@ export const Camera: React.FC<CameraProps> = ({ axis = 'xy', offset = [0, 0], sm
   })
 
   useRender(() => {
-    if (debug) {
+    if (debug.current) {
       element.setBaseStyles({ pos: origin });
+    }
+
+    if (debug.invalidated) {
+      element.setStyle('display', debug.current ? 'block' : 'none');
+      debug.invalidated = false;
     }
   });
 
-  return debug ? <div ref={element.ref} className={CLASS_NAME} /> : null;
+  return <div ref={element.ref} className={CLASS_NAME} />;
 }

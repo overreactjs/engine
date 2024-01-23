@@ -1,7 +1,14 @@
+import { CSSProperties } from "react";
 import { useElement, useDebug, usePosition, useProperty, useRender, useBoxCollider } from "../hooks";
 import { Prop, Position, Size, CollisionTag } from "../types";
 
-const CLASS_NAME = "absolute outline outline-2 !outline-[#f0f] bg-[#f0f3] -outline-offset-1";
+const DEBUG: CSSProperties = {
+  display: 'none',
+  position: 'absolute',
+  boxSizing: 'border-box',
+  background: '#0ff3',
+  border: '1px solid #0ff',
+};
 
 type CollisionBoxProps = {
   id?: string;
@@ -27,10 +34,13 @@ export const CollisionBox: React.FC<CollisionBoxProps> = ({ id, ...props }) => {
   useBoxCollider(id, tags, pos, size);
 
   useRender(() => {
-    if (debug) {
-      element.setBaseStyles({ pos, size, force: true });
+    element.setBaseStyles({ pos, size });
+
+    if (debug.invalidated) {
+      element.setStyle('display', debug.current ? 'block' : 'none');
+      debug.invalidated = false;
     }
   });
 
-  return debug ? <div ref={element.ref} className={CLASS_NAME} style={{ contain: 'content' }} /> : null;
+  return <div ref={element.ref} style={DEBUG} />;
 }

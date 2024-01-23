@@ -1,13 +1,14 @@
 import React from "react";
+import { Property } from "..";
 
 type EngineContextProps = {
-  debug: boolean;
+  debug: Property<boolean>;
   onDebug: () => void;
   onPause: () => void;
 }
 
 export const EngineContext = React.createContext<EngineContextProps>({
-  debug: false,
+  debug: { current: false, invalidated: true },
   onDebug: () => {},
   onPause: () => {},
 });

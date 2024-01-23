@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useTicker } from "./useTicker";
 
-export function useSync<T>(fn: () => T) {
-  const [value, setValue] = useState<T>();
+export function useSync<T>(fn: () => T): T {
+  const [value, setValue] = useState<T>(fn());
 
   useTicker(() => {
     const newValue = fn();

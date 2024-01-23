@@ -13,7 +13,7 @@ export const useUpdate = (fn: UpdateFunction): string => {
   useEffect(() => registerUpdate?.(id, fn), [fn, id, registerUpdate]);
 
   return id;
-}
+};
 
 /**
  * Register an update function that runs every frame, and is guaranteed to run after another
@@ -26,7 +26,7 @@ export const useUpdateAfter = (target: string, fn: UpdateFunction): string => {
   useEffect(() => registerUpdate?.(id, fn, { after: target }), [fn, id, registerUpdate]);
 
   return id;
-}
+};
 
 /**
  * Register an update function that runs at a fixed rate, regardless of the native device frame
@@ -50,4 +50,4 @@ export const useFixedUpdate = (rate: Prop<number>, fn: UpdateFunction): string =
       }
     }
   });
-}
+};
