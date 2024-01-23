@@ -3,9 +3,11 @@ import { CollisionEventFunction } from "../types";
 import { useOverlap } from "./useOverlap";
 
 export const useCollision = (id: string, handler: CollisionEventFunction) => {
-  const wrappedHandler: CollisionEventFunction = useCallback((props) => {
-    if (props.firstTime) {
-      handler(props);
+  const wrappedHandler: CollisionEventFunction = useCallback((collisions, delta) => {
+    const filtered = collisions.filter(({ firstTime }) => firstTime);
+
+    if (filtered.length > 0) {
+      handler(filtered, delta);
     }
   }, [handler]);
 
@@ -13,9 +15,11 @@ export const useCollision = (id: string, handler: CollisionEventFunction) => {
 };
 
 export const useTaggedCollision = (collider: string, tag: string, handler: CollisionEventFunction) => {
-  useCollision(collider, (props) => {
-    if (props.tags.includes(tag)) {
-      handler(props);
+  useCollision(collider, (collisions, delta) => {
+    const filtered = collisions.filter((props) => props.tags.includes(tag));
+
+    if (filtered.length > 0) {
+      handler(filtered, delta);
     }
   });
 };

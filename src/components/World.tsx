@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from "react";
 import { System, Body, Point } from "detect-collisions";
 import { Node } from "./Node";
-import { CollisionEventFunction, CollisionUpdateFunction, Property, Position } from "../types";
+import { CollisionEventFunction, CollisionUpdateFunction, Property, Position, CollisionEventFunctionProps } from "../types";
 import { useDynamicProperty, usePointer, useUpdate } from "../hooks";
 import { WorldContext } from "../context";
 import { MapSet } from "../utils";
@@ -89,24 +89,34 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   /**
    * Update all bodies so that they 
    */
-  useUpdate(() => {
+  useUpdate((delta) => {
     // Run all body update callbacks.
     for (const [body, update] of updaters.current) {
       update(body);
     }
 
     const newOverlaps = new MapSet<Body, Body>();
+    const collisions = new Map<Body, CollisionEventFunctionProps[]>();
 
     // Check for collisions.
     system.current.checkAll((collision) => {
-      for (const handler of handlers.current.get(collision.a) || []) {
-        const tags = bodyTags.current.get(collision.b) || [];
-        const firstTime = !overlaps.current.has(collision.a, collision.b);
-        
-        handler({ collision, tags, firstTime });
-        newOverlaps.add(collision.a, collision.b);
+      if (!collisions.has(collision.a)) {
+        collisions.set(collision.a, []);
       }
+
+      const tags = bodyTags.current.get(collision.b) || [];
+      const firstTime = !overlaps.current.has(collision.a, collision.b);
+
+      collisions.get(collision.a)?.push({ a: collision.a, b: collision.b, overlap: { ...collision.overlapV }, tags, firstTime });
+      newOverlaps.add(collision.a, collision.b);
     });
+
+    // Call all of the registered handlers for each collision body.
+    for (const [body, events] of collisions) {
+      for (const handler of handlers.current.get(body) || []) {
+        handler(events, delta);
+      }
+    }
 
     overlaps.current = newOverlaps;
 

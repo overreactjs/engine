@@ -67,9 +67,11 @@ export const use8DirectionMovement = (collider: string, pos: Property<Position>,
     }
   });
 
-  useOverlap(collider, ({ collision }) => {
-    pos.current[0] -= collision.overlapV.x;
-    pos.current[1] -= collision.overlapV.y;
+  useOverlap(collider, (collisions) => {
+    for (const { overlap } of collisions) {
+      pos.current[0] -= overlap.x;
+      pos.current[1] -= overlap.y;
+    }
   });
 
   return useMemo(() => ({ direction }), [direction]);
