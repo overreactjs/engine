@@ -1,3 +1,4 @@
+import { CollisionBox } from ".";
 import { usePosition, useProperty } from "../hooks";
 import { Position, Prop, Size, Tileset } from "../types";
 import { BitmapImage } from "./BitmapImage";
@@ -7,6 +8,7 @@ type TilemapProps = {
   pos?: Prop<Position>;
   tileset: Tileset;
   tiles: number[];
+  collisions?: (string | false)[];
   scale?: Prop<number>;
 }
 
@@ -16,7 +18,7 @@ type TilemapProps = {
  * 
  * ...
  */
-export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, ...props }) => {
+export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ...props }) => {
   const { image, cellSize, gridSize } = tileset;
 
   const pos = usePosition(props.pos);
@@ -29,15 +31,26 @@ export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, ...props }) =>
     <Box pos={pos} size={size}>
       {tiles.map((tile, index) => {
         if (tile >= 0) {
+          const key = `${index}_${tile}`;
           const x = (index % gridSize[0]) * cellSize[0];
           const y = Math.floor(index / gridSize[0]) * cellSize[1];
           const ox = (tile % tilesetCols) * cellSize[0];
           const oy = Math.floor(tile / tilesetCols) * cellSize[1];
-          return <BitmapImage key={index} pos={[x, y]} offset={[ox, oy]} image={image} size={cellSize} scale={scale} />;
+          return <BitmapImage key={key} pos={[x, y]} offset={[ox, oy]} image={image} size={cellSize} scale={scale} />;
+        } else {
+          return null;
+        }
+      })}
+      {collisions?.map((tag, index) => {
+        if (tag) {
+          const key = `${index}_${tag}`;
+          const x = (index % gridSize[0]) * cellSize[0];
+          const y = Math.floor(index / gridSize[0]) * cellSize[1];
+          return <CollisionBox key={key} pos={[x, y]} size={cellSize} tags={[tag]} />;
         } else {
           return null;
         }
       })}
     </Box>
   )
-}
+};
