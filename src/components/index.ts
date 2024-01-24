@@ -1,5 +1,6 @@
 export { BitmapImage } from './BitmapImage';
 export { BitmapSprite } from './BitmapSprite';
+export { BitmapText } from './BitmapText';
 export { Box } from './Box';
 export { Camera } from './Camera';
 export { Circle } from './Circle';

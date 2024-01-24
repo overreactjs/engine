@@ -32,6 +32,12 @@ export type Tileset = {
   gridSize: Size;
 }
 
+export type BitmapFontFace = {
+  image: BitmapAsset;
+  glyphSize: Size;
+  glyphs: string;
+};
+
 export type TickerFunction = (delta: number, time: number) => void;
 
 export type UpdateFunction = (delta: number, time: number) => void;
