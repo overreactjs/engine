@@ -21,16 +21,18 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   const system = useRef<System>(new System());
   const bodies = useRef<Map<string, Body>>(new Map());
   const bodyTags = useRef<Map<Body, string[]>>(new Map());
+  const bodyActive = useRef<Map<Body, Property<boolean>>>(new Map());
   const updaters = useRef<Map<Body, CollisionUpdateFunction>>(new Map());
   const handlers = useRef<Map<Body, Set<CollisionEventFunction>>>(new Map());;
   const overlaps = useRef<MapSet<Body, Body>>(new MapSet());
   const postHandlers = useRef<Set<() => void>>(new Set());
 
-  const registerCollider = useCallback((id: string, tags: string[], body: Body, fn: CollisionUpdateFunction) => {
+  const registerCollider = useCallback((id: string, active: Property<boolean>, tags: string[], body: Body, fn: CollisionUpdateFunction) => {
     if (!bodies.current.has(id)) {
       system.current.insert(body);
       bodies.current.set(id, body);
       bodyTags.current.set(body, tags);
+      bodyActive.current.set(body, active);
       updaters.current.set(body, fn);
     }
 
@@ -104,11 +106,22 @@ export const World: React.FC<WorldProps> = ({ children }) => {
         collisions.set(collision.a, []);
       }
 
-      const tags = bodyTags.current.get(collision.b) || [];
-      const firstTime = !overlaps.current.has(collision.a, collision.b);
+      // Only action the collision if the collision box is currently active.
+      if (bodyActive.current.get(collision.a)?.current) {
+        const tags = bodyTags.current.get(collision.b) || [];
+        const firstTime = !overlaps.current.has(collision.a, collision.b);
 
-      collisions.get(collision.a)?.push({ a: collision.a, b: collision.b, overlap: { ...collision.overlapV }, tags, firstTime });
-      newOverlaps.add(collision.a, collision.b);
+        const record = {
+          a: collision.a,
+          b: collision.b,
+          overlap: { ...collision.overlapV },
+          tags,
+          firstTime,
+        };
+
+        collisions.get(collision.a)?.push(record);
+        newOverlaps.add(collision.a, collision.b);
+      }
     });
 
     // Call all of the registered handlers for each collision body.

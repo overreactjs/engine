@@ -1,8 +1,10 @@
 import { useElement, usePosition, useProperty, useRender } from "../hooks";
+import { UseElementResult } from "../hooks/useElement";
 import { Position, Prop, Size } from "../types";
 import { Node } from "./Node";
 
 type BoxProps = {
+  element?: UseElementResult<HTMLDivElement>;
   pos?: Prop<Position>;
   size: Prop<Size>;
   angle?: Prop<number>;
@@ -19,7 +21,7 @@ type BoxProps = {
  * group elements that should be moved as though one.
  */
 export const Box: React.FC<BoxProps> = ({ className, ...props }) => {
-  const element = useElement();
+  const element = useElement(props.element);
 
   const pos = usePosition(props.pos);
   const size = useProperty(props.size);

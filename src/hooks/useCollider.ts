@@ -8,17 +8,18 @@ import { useWorld } from "./useWorld";
  */
 export const useCollider = (
   id: string | undefined,
+  active: Property<boolean>,
   tags: Property<string[]>,
   body: MutableRefObject<Body>,
-  update: CollisionUpdateFunction
+  update: CollisionUpdateFunction,
 ) => {
   const { registerCollider } = useWorld();
   const generatedId = useId();
   const resolvedId = id || generatedId;
 
   useEffect(
-    () => registerCollider(resolvedId, tags.current, body.current, update),
-    [resolvedId, tags, update, registerCollider, body],
+    () => registerCollider(resolvedId, active, tags.current, body.current, update),
+    [resolvedId, active, tags, update, registerCollider, body],
   );
 };
 
@@ -27,9 +28,10 @@ export const useCollider = (
  */
 export const useBoxCollider = (
   id: string | undefined,
+  active: Property<boolean>,
   tags: Property<string[]>,
   pos: Property<Position>,
-  size: Property<Size>
+  size: Property<Size>,
 ) => {
   const [x, y] = pos.current;
   const [w, h] = size.current;
@@ -40,5 +42,5 @@ export const useBoxCollider = (
     body.setPosition(pos.current[0], pos.current[1]);
   }, [pos]);
 
-  useCollider(id, tags, box, update);
+  useCollider(id, active, tags, box, update);
 };

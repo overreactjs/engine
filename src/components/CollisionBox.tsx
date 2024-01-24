@@ -15,6 +15,7 @@ type CollisionBoxProps = {
   pos?: Prop<Position>;
   size: Prop<Size>;
   tags?: Prop<CollisionTag[]>;
+  active?: Prop<boolean>;
 }
 
 /**
@@ -30,8 +31,9 @@ export const CollisionBox: React.FC<CollisionBoxProps> = ({ id, ...props }) => {
   const pos = usePosition(props.pos);
   const size = useProperty(props.size);
   const tags = useProperty(props.tags || []);
+  const active = useProperty(props.active !== undefined ? props.active : true);
 
-  useBoxCollider(id, tags, pos, size);
+  useBoxCollider(id, active, tags, pos, size);
 
   useRender(() => {
     element.setBaseStyles({ pos, size });
