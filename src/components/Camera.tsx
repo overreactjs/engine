@@ -1,10 +1,21 @@
+import { CSSProperties } from "react";
 import { useDebug, useElement, usePosition, useRender, useUpdate, useViewport } from "../hooks";
 import { CameraAxis, Position } from "../types";
 import { lerp } from "../utils";
 
 const SMOOTH_FACTOR = 0.0048;
 
-const CLASS_NAME = "absolute w-2 h-2 -m-1 border-2 border-pink-600";
+const DEBUG: CSSProperties = {
+  display: 'none',
+  position: 'absolute',
+  boxSizing: 'border-box',
+  background: '#f0f3',
+  border: '1px solid #f0f',
+  width: '10px',
+  height: '10px',
+  marginLeft: '-5px',
+  marginTop: '-5px',
+};
 
 type CameraProps = {
   axis?: CameraAxis;
@@ -51,5 +62,5 @@ export const Camera: React.FC<CameraProps> = ({ axis = 'xy', offset = [0, 0], sm
     }
   });
 
-  return <div ref={element.ref} className={CLASS_NAME} />;
+  return <div ref={element.ref} style={DEBUG} />;
 }
