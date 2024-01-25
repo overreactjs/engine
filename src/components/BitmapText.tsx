@@ -39,8 +39,8 @@ export const BitmapText: React.FC<BitmapTextProps> = ({ font, ...props }) => {
           const offset = glyphs.indexOf(char) * glyphSize[0];
 
           return (
-            <>
-              <mask key={key} id={mask}>
+            <g key={key}>
+              <mask id={mask}>
                 <rect
                   x={x}
                   y={y}
@@ -58,7 +58,6 @@ export const BitmapText: React.FC<BitmapTextProps> = ({ font, ...props }) => {
                 />
               </mask>
               <rect
-                key={key}
                 x={x}
                 y={y}
                 width={width}
@@ -66,7 +65,7 @@ export const BitmapText: React.FC<BitmapTextProps> = ({ font, ...props }) => {
                 mask={`url(#${mask})`}
                 style={{ fill: 'var(--color)' }}
               />
-            </>
+            </g>
           );
         })}
       </svg>

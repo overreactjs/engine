@@ -106,8 +106,11 @@ export const World: React.FC<WorldProps> = ({ children }) => {
         collisions.set(collision.a, []);
       }
 
+      const active = bodyActive.current.get(collision.a)?.current 
+        && bodyActive.current.get(collision.b)?.current;
+
       // Only action the collision if the collision box is currently active.
-      if (bodyActive.current.get(collision.a)?.current) {
+      if (active) {
         const tags = bodyTags.current.get(collision.b) || [];
         const firstTime = !overlaps.current.has(collision.a, collision.b);
 

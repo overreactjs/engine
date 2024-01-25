@@ -1,15 +1,17 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { Prop, Property } from "../types";
 import { VariableProperty } from "../utils";
 
 export function useProperty<T>(value: Prop<T>): Property<T> {
+  const ref = useRef(value);
+
   return useMemo(() => {
-    if (value instanceof VariableProperty) {
-      return value;
-    } else if (typeof value === 'object' && value !== null && 'current' in value && 'invalidated' in value) {
-      return value;
+    if (ref.current instanceof VariableProperty) {
+      return ref.current;
+    } else if (typeof ref.current === 'object' && ref.current !== null && 'current' in ref.current && 'invalidated' in ref.current) {
+      return ref.current;
     } else {
-      return new VariableProperty(value);
+      return new VariableProperty(ref.current);
     }
-  }, [value]);
+  }, [ref]);
 }
