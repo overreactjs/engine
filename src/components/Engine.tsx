@@ -6,6 +6,7 @@ import { Keyboard } from "./Keyboard";
 import { Motion } from "./Motion";
 import { Orientation } from "./Orientation";
 import { Pointer } from "./Pointer";
+import { VirtualInput } from "./VirtualInput";
 
 type EngineProps = {
   children: React.ReactNode;
@@ -67,15 +68,17 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
   return (
     <EngineContext.Provider value={engineContext}>
       <NodeContext.Provider value={node}>
-        <Keyboard>
-          <Pointer>
-            <Motion>
-              <Orientation>
-                {children}
-              </Orientation>
-            </Motion>
-          </Pointer>
-        </Keyboard>
+        <VirtualInput>
+          <Keyboard>
+            <Pointer>
+              <Motion>
+                <Orientation>
+                  {children}
+                </Orientation>
+              </Motion>
+            </Pointer>
+          </Keyboard>
+        </VirtualInput>
       </NodeContext.Provider>
     </EngineContext.Provider>
   );

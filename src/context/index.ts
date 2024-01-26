@@ -6,4 +6,5 @@ export { NodeContext } from './NodeContext';
 export { OrientationContext } from './OrientationContext';
 export { PhysicsContext } from './PhysicsContext';
 export { PointerContext } from './PointerContext';
+export { VirtualInputContext } from './VirtualInputContext';
 export { WorldContext } from './WorldContext';

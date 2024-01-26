@@ -3,10 +3,10 @@ import { BBox } from "detect-collisions";
 import { intersects, lerp, permutator } from "../utils";
 import { CollisionEventFunctionProps, Position, Property, Velocity } from "../types";
 import { useEventListeners } from "./useEventListeners";
-import { useKeyboard } from "./useKeyboard";
 import { useOverlap } from "./useOverlap";
 import { useProperty } from "./useProperty";
 import { useUpdate } from "./useUpdate";
+import { useVirtualInput } from "./useVirtualInput";
 
 const DEFAULT_OPTIONS = {
   gravity: [0, 0.002],
@@ -14,20 +14,11 @@ const DEFAULT_OPTIONS = {
   jumpStrength: 0.7,
   acceleration: 0.2,
   maxJumpCount: 1,
-  jumpKey: 'KeyW',
-  leftKey: 'KeyA',
-  rightKey: 'KeyD',
 } as const;
 
 type PlatformMovementEventType = 'jump';
 
-type UsePlatformMovementControls = {
-  jumpKey?: string;
-  leftKey?: string;
-  rightKey?: string;
-}
-
-type UsePlatformMovementOptions = UsePlatformMovementControls & {
+type UsePlatformMovementOptions = {
   gravity?: Velocity;
   speed?: number;
   jumpStrength?: number;
@@ -41,14 +32,13 @@ type UsePlatformMovementResult = {
   isFalling: Property<boolean>;
   jumpCount: Property<number>;
   direction: Property<'left' | 'right'>;
-  updater: string;
   addEventListener: (type: PlatformMovementEventType, fn: () => void) => void;
   removeEventListener: (type: PlatformMovementEventType, fn: () => void) => void;
 }
 
 export const usePlatformMovement = (collider: string, pos: Property<Position>, velocity: Property<Velocity>, options?: UsePlatformMovementOptions): UsePlatformMovementResult => {
-  const { gravity, speed, jumpStrength, acceleration, maxJumpCount, jumpKey, leftKey, rightKey } = { ...DEFAULT_OPTIONS, ...options };
-  const { isKeyDown, hasKeyAxis } = useKeyboard();
+  const { gravity, speed, jumpStrength, acceleration, maxJumpCount } = { ...DEFAULT_OPTIONS, ...options };
+  const { isActive, hasAxis } = useVirtualInput();
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<PlatformMovementEventType>();
 
   const change = useProperty([0, 0]);
@@ -58,16 +48,19 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
   const jumpCount = useProperty(0);
   const direction = useProperty<'left' | 'right'>('right');
 
-  const updater = useUpdate((delta) => {
+  /**
+   * Update the players velocity, position, and state flags, based on current inputs.
+   */
+  useUpdate((delta) => {
     // Apply keyboard input to the player's velocity.
-    const keyboardHorizontal = hasKeyAxis(leftKey, rightKey);
+    const horizontalInput = hasAxis('left', 'right');
     const accelerationFactor = isOnFloor.current ? 1.0 : 0.2;
-    velocity.current[0] = lerp(velocity.current[0], keyboardHorizontal * speed, acceleration * accelerationFactor);
+    velocity.current[0] = lerp(velocity.current[0], horizontalInput * speed, acceleration * accelerationFactor);
 
     // Jump, if one of the following conditions are met:
     // 1. The entity is stood on the ground.
     // 2. The entity is falling, and has not yet jumped the maximum number of times.
-    if (isKeyDown(jumpKey) && (isOnFloor.current || (isFalling.current && jumpCount.current > 0 && jumpCount.current < maxJumpCount))) {
+    if (isActive('jump') && (isOnFloor.current || (isFalling.current && jumpCount.current > 0 && jumpCount.current < maxJumpCount))) {
       velocity.current[1] = -jumpStrength;
       isOnFloor.current = false;
       isJumping.current = true;
@@ -95,15 +88,17 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
 
     // Update the player's direction.
     if (isOnFloor.current) {
-      if (keyboardHorizontal < 0) {
+      if (horizontalInput < 0) {
         direction.current = 'left';
-      } else if (keyboardHorizontal > 0) {
+      } else if (horizontalInput > 0) {
         direction.current = 'right';
       }
     }
   });
 
-  // Handle collisions, ensuring that the entity cannot pass through solid objects.
+  /**
+   * Handle collisions, ensuring that the entity cannot pass through solid objects.
+   */
   useOverlap(collider, (collisions, delta) => {
     const change: Position = [0, 0];
     const solids = optimize(collisions.filter((event) => event.tags.includes('solid')));
@@ -154,8 +149,8 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
   });
 
   return useMemo(() =>
-    ({ isOnFloor, isJumping, isFalling, jumpCount, direction, updater, addEventListener, removeEventListener }),
-    [addEventListener, removeEventListener, direction, isFalling, isJumping, isOnFloor, jumpCount, updater],
+    ({ isOnFloor, isJumping, isFalling, jumpCount, direction, addEventListener, removeEventListener }),
+    [addEventListener, removeEventListener, direction, isFalling, isJumping, isOnFloor, jumpCount],
   );
 };
 

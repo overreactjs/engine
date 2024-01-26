@@ -82,7 +82,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
       pressed.current.add(code);
       _pressed.current.delete(code);
     }
-  })
+  });
 
   /**
    * Attach key event handlers to the window, to capture all events.
