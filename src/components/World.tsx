@@ -19,11 +19,12 @@ type WorldProps = {
 export const World: React.FC<WorldProps> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
   const system = useRef<System>(new System());
+  const ids = useRef<Map<Body, string>>(new Map());
   const bodies = useRef<Map<string, Body>>(new Map());
   const bodyTags = useRef<Map<Body, string[]>>(new Map());
   const bodyActive = useRef<Map<Body, Property<boolean>>>(new Map());
   const updaters = useRef<Map<Body, CollisionUpdateFunction>>(new Map());
-  const handlers = useRef<Map<Body, Set<CollisionEventFunction>>>(new Map());;
+  const handlers = useRef<Map<string, Set<CollisionEventFunction>>>(new Map());;
   const overlaps = useRef<MapSet<Body, Body>>(new MapSet());
   const postHandlers = useRef<Set<() => void>>(new Set());
 
@@ -34,6 +35,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
       bodyTags.current.set(body, tags);
       bodyActive.current.set(body, active);
       updaters.current.set(body, fn);
+      ids.current.set(body, id);
     }
 
     return () => {
@@ -42,10 +44,12 @@ export const World: React.FC<WorldProps> = ({ children }) => {
         if (body) {
           system.current.remove(body)
           updaters.current.delete(body);
-          handlers.current.delete(body);
-          bodies.current.delete(id);
+          ids.current.delete(body);
         }
       }
+
+      handlers.current.delete(id);
+      bodies.current.delete(id);
     }
   }, []);
 
@@ -53,18 +57,14 @@ export const World: React.FC<WorldProps> = ({ children }) => {
    * 
    */
   const registerHandler = useCallback((id: string, fn: CollisionEventFunction) => {
-    const body = bodies.current.get(id);
-    if (body) {
-      if (!handlers.current.has(body)) {
-        handlers.current.set(body, new Set());
-      }
-      handlers.current.get(body)?.add(fn);
+    if (!handlers.current.has(id)) {
+      handlers.current.set(id, new Set());
     }
 
+    handlers.current.get(id)?.add(fn);
+
     return () => {
-      if (body) {
-        handlers.current.get(body)?.delete(fn);
-      }
+      handlers.current.get(id)?.delete(fn);
     };
   }, []);
 
@@ -129,8 +129,12 @@ export const World: React.FC<WorldProps> = ({ children }) => {
 
     // Call all of the registered handlers for each collision body.
     for (const [body, events] of collisions) {
-      for (const handler of handlers.current.get(body) || []) {
-        handler(events, delta);
+      const id = ids.current.get(body);
+
+      if (id) {
+        for (const handler of handlers.current.get(id) || []) {
+          handler(events, delta);
+        }
       }
     }
 

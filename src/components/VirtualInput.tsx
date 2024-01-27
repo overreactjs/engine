@@ -28,7 +28,6 @@ export const VirtualInput: React.FC<VirtualInputProps> = ({ children }) => {
   }, [isActive]);
 
   useTicker(() => {
-    console.log(down.current);
     for (const what of down.current) {
       down.current.delete(what);
     }

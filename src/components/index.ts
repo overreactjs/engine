@@ -19,4 +19,5 @@ export { SpriteSet, SpriteSetContext } from './SpriteSet';
 export { Tilemap } from './Tilemap';
 export { VectorSprite } from './VectorSprite';
 export { Viewport, ViewportContext } from './Viewport';
+export { VirtualInput } from './VirtualInput';
 export { World } from './World';
