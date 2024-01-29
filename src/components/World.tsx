@@ -26,7 +26,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   const updaters = useRef<Map<Body, CollisionUpdateFunction>>(new Map());
   const handlers = useRef<Map<string, Set<CollisionEventFunction>>>(new Map());;
   const overlaps = useRef<MapSet<Body, Body>>(new MapSet());
-  const postHandlers = useRef<Set<() => void>>(new Set());
+  const postHandlers = useRef<Set<(delta: number) => void>>(new Set());
 
   const registerCollider = useCallback((id: string, active: Property<boolean>, tags: string[], body: Body, fn: CollisionUpdateFunction) => {
     if (!bodies.current.has(id)) {
@@ -71,7 +71,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   /**
    * 
    */
-  const registerPostHandler = useCallback((fn: () => void) => {
+  const registerPostHandler = useCallback((fn: (delta: number) => void) => {
     postHandlers.current.add(fn);
     return () => postHandlers.current.delete(fn);
   }, []);
@@ -142,7 +142,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
 
     // Run all post-collisions updater functions.
     for (const handler of postHandlers.current) {
-      handler();
+      handler(delta);
     }
   });
 

@@ -16,9 +16,9 @@ const DEFAULT_OPTIONS = {
   maxJumpCount: 1,
 } as const;
 
-type PlatformMovementEventType = 'jump';
+export type PlatformMovementEventType = 'jump';
 
-type UsePlatformMovementOptions = {
+export type UsePlatformMovementOptions = {
   gravity?: Velocity;
   speed?: number;
   jumpStrength?: number;
@@ -26,7 +26,7 @@ type UsePlatformMovementOptions = {
   maxJumpCount?: number;
 };
 
-type UsePlatformMovementResult = {
+export type UsePlatformMovementResult = {
   isOnFloor: Property<boolean>;
   isJumping: Property<boolean>;
   isFalling: Property<boolean>;
