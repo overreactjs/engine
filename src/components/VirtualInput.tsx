@@ -16,7 +16,7 @@ export const VirtualInput: React.FC<VirtualInputProps> = ({ children }) => {
   const down = useRef<Map<string, number>>(new Map());
   
   const simulate = useCallback((action: string): void => {
-    down.current.set(action, 100);
+    down.current.set(action, 50);
   }, []);
 
   const isActive = useCallback((action: string): boolean => {
@@ -27,7 +27,7 @@ export const VirtualInput: React.FC<VirtualInputProps> = ({ children }) => {
     return +isActive(positive) - +isActive(negative);
   }, [isActive]);
 
-  // Clear any inputs that have not been activated in the last 100ms.
+  // Clear any inputs that have not been activated in the last 50ms.
   useTicker((delta) => {
     for (const [action, remaining] of down.current) {
       if (remaining > delta) {
