@@ -13,23 +13,28 @@ type VirtualInputProps = {
  * ...
  */
 export const VirtualInput: React.FC<VirtualInputProps> = ({ children }) => {
-  const down = useRef<Set<string>>(new Set());
+  const down = useRef<Map<string, number>>(new Map());
   
-  const simulate = useCallback((what: string): void => {
-    down.current.add(what);
+  const simulate = useCallback((action: string): void => {
+    down.current.set(action, 100);
   }, []);
 
-  const isActive = useCallback((what: string): boolean => {
-    return down.current.has(what);
+  const isActive = useCallback((action: string): boolean => {
+    return down.current.has(action);
   }, []);
 
   const hasAxis = useCallback((negative: string, positive: string): number => {
     return +isActive(positive) - +isActive(negative);
   }, [isActive]);
 
-  useTicker(() => {
-    for (const what of down.current) {
-      down.current.delete(what);
+  // Clear any inputs that have not been activated in the last 100ms.
+  useTicker((delta) => {
+    for (const [action, remaining] of down.current) {
+      if (remaining > delta) {
+        down.current.set(action, remaining - delta);
+      } else {
+        down.current.delete(action);
+      }
     }
   });
 

@@ -1,8 +1,8 @@
 import React from "react";
 
 type VirtualInputContextProps = {
-  simulate: (what: string) => void;
-  isActive: (what: string) => boolean;
+  simulate: (action: string) => void;
+  isActive: (action: string) => boolean;
   hasAxis: (negative: string, positive: string) => number;
 };
 
