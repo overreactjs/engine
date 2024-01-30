@@ -2,6 +2,13 @@ import { BBox } from "detect-collisions";
 import { Position } from "../types";
 
 /**
+ * Calculate the chance of something occurring.
+ */
+export const chance = (threshold: number): boolean => {
+  return Math.random() < (threshold / 2000);
+}
+
+/**
  * Linear interpolation between two numbers, "a" and "b".
  */
 export const lerp = (a: number, b: number, t: number): number => {
