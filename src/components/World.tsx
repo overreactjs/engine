@@ -21,14 +21,20 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   const system = useRef<System>(new System());
   const ids = useRef<Map<Body, string>>(new Map());
   const bodies = useRef<Map<string, Body>>(new Map());
-  const bodyTags = useRef<Map<Body, string[]>>(new Map());
+  const bodyTags = useRef<Map<Body, Property<string[]>>>(new Map());
   const bodyActive = useRef<Map<Body, Property<boolean>>>(new Map());
   const updaters = useRef<Map<Body, CollisionUpdateFunction>>(new Map());
   const handlers = useRef<Map<string, Set<CollisionEventFunction>>>(new Map());;
   const overlaps = useRef<MapSet<Body, Body>>(new MapSet());
   const postHandlers = useRef<Set<(delta: number) => void>>(new Set());
 
-  const registerCollider = useCallback((id: string, active: Property<boolean>, tags: string[], body: Body, fn: CollisionUpdateFunction) => {
+  const registerCollider = useCallback((
+    id: string,
+    active: Property<boolean>,
+    tags: Property<string[]>,
+    body: Body,
+    fn: CollisionUpdateFunction,
+  ) => {
     if (!bodies.current.has(id)) {
       system.current.insert(body);
       bodies.current.set(id, body);
@@ -111,7 +117,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
 
       // Only action the collision if the collision box is currently active.
       if (active) {
-        const tags = bodyTags.current.get(collision.b) || [];
+        const tags = bodyTags.current.get(collision.b)?.current || [];
         const firstTime = !overlaps.current.has(collision.a, collision.b);
 
         const record = {

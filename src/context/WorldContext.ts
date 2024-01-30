@@ -4,7 +4,7 @@ import { CollisionUpdateFunction, CollisionEventFunction, Property, Position } f
 import { VariableProperty } from "../utils";
 
 type WorldContextProps = {
-  registerCollider: (id: string, active: Property<boolean>, tags: string[], body: Body, fn: CollisionUpdateFunction) => () => void;
+  registerCollider: (id: string, active: Property<boolean>, tags: Property<string[]>, body: Body, fn: CollisionUpdateFunction) => () => void;
   registerHandler: (id: string, fn: CollisionEventFunction) => () => void;
   registerPostHandler: (fn: (delta: number) => void) => () => void;
   isInside: (id: string, pos?: Property<Position>) => boolean;

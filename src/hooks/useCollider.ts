@@ -18,7 +18,7 @@ export const useCollider = (
   const resolvedId = id || generatedId;
 
   useEffect(
-    () => registerCollider(resolvedId, active, tags.current, body.current, update),
+    () => registerCollider(resolvedId, active, tags, body.current, update),
     [resolvedId, active, tags, update, registerCollider, body],
   );
 };
