@@ -7,6 +7,7 @@ export type SetBaseStyles = {
   angle?: Property<number>;
   flip?: Property<boolean>;
   opacity?: Property<number>;
+  scale?: Property<number>;
   force?: boolean;
 }
 
@@ -77,7 +78,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
    * Set the commonly used base styles: position, size, angle, and flip.
    */
   const setBaseStyles = useCallback((options: SetBaseStyles) => {
-    const { pos, size, angle, flip, opacity, force = false } = options;
+    const { pos, size, angle, flip, opacity, scale, force = false } = options;
 
     let transformsChanges = false;
 
@@ -94,10 +95,18 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       angle.invalidated = false;
     }
 
-    if (flip?.invalidated || (force && flip)) {
-      transforms.current.set('flip', new CSSScale(flip.current ? -1 : 1, 1));
+    if (flip?.invalidated || scale?.invalidated) {
+      const tx = flip?.current ? -1 : 1;
+      const s = scale?.current || 1;
+      transforms.current.set('flip', new CSSScale(s * tx, s));
       transformsChanges = true;
-      flip.invalidated = false;
+
+      if (flip) {
+        flip.invalidated = false;
+      }
+      if (scale) {
+        scale.invalidated = false;
+      }
     }
 
     if (transformsChanges) {
