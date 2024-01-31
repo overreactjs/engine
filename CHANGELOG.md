@@ -1,6 +1,6 @@
 # Change log
 
-## [Unreleased]
+## [0.9.0]
 
 - Added `BitmapText` component.
 - Added virtual input management, with simple keyboard mapping hook.
