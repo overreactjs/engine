@@ -14,6 +14,7 @@ const DEFAULT_OPTIONS = {
   jumpStrength: 0.7,
   acceleration: 0.2,
   maxJumpCount: 1,
+  canTurnMidair: false,
 } as const;
 
 export type PlatformMovementEventType = 'jump';
@@ -24,6 +25,7 @@ export type UsePlatformMovementOptions = {
   jumpStrength?: number;
   acceleration?: number;
   maxJumpCount?: number;
+  canTurnMidair?: boolean;
 };
 
 export type UsePlatformMovementResult = {
@@ -37,7 +39,7 @@ export type UsePlatformMovementResult = {
 }
 
 export const usePlatformMovement = (collider: string, pos: Property<Position>, velocity: Property<Velocity>, options?: UsePlatformMovementOptions): UsePlatformMovementResult => {
-  const { gravity, speed, jumpStrength, acceleration, maxJumpCount } = { ...DEFAULT_OPTIONS, ...options };
+  const { gravity, speed, jumpStrength, acceleration, maxJumpCount, canTurnMidair } = { ...DEFAULT_OPTIONS, ...options };
   const { isActive, hasAxis } = useVirtualInput();
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<PlatformMovementEventType>();
 
@@ -87,7 +89,7 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
     pos.current[1] += change.current[1];
 
     // Update the player's direction.
-    if (isOnFloor.current) {
+    if (canTurnMidair || isOnFloor.current) {
       if (horizontalInput < 0) {
         direction.current = 'left';
       } else if (horizontalInput > 0) {
