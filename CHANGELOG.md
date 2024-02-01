@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added `useIntegerPosition` hook, for rounding positions.
+- Added `useStateMachine` hook, for building state machines, handy for NPC behaviors.
 
 ## [0.9.0]
 
