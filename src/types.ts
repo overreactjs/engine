@@ -1,5 +1,6 @@
 import { Body, Vector } from "detect-collisions";
 import { Engine } from "matter-js";
+import { StateMachine } from "./utils";
 
 export type ElementType = InnerHTML & ElementCSSInlineStyle & Element;
 
@@ -75,3 +76,7 @@ export type PhysicsEvent = Matter.IEventCollision<Engine>;
 export type CameraAxis = 'x' | 'y' | 'xy';
 
 export type DeviceMode = 'mobile' | 'mobile-landscape' | 'tablet' | 'desktop';
+
+export type StateFunction<S extends string, T> = (fsm: StateMachine<S, T>, delta: number) => void;
+
+export type StateDefinitions<S extends string, T> = Record<string, StateFunction<S, T>>;
