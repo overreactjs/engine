@@ -7,6 +7,7 @@ export { useDevice } from './useDevice';
 export { useDynamicProperty } from './useDynamicProperty';
 export { useElement } from './useElement';
 export { useEventListeners } from './useEventListeners';
+export { useIntegerPosition } from './useIntegerPosition';
 export { useKeyboard, useKeyAxis, useKeyPressed } from './useKeyboard';
 export { useKeyboardMap } from './useKeyboardMap';
 export { useLogMount } from './useLogMount';

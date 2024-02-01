@@ -1,8 +1,13 @@
 # Change log
 
+## Unreleased
+
+- Added `useIntegerPosition` hook, for rounding positions.
+
 ## [0.9.0]
 
 - Added `BitmapText` component.
+- Added collision detection to `Tilemap` component.
 - Added virtual input management, with simple keyboard mapping hook.
 - Added support for landscape mobile orientations.
 - Added `active` prop to `ColliderBox` component.
