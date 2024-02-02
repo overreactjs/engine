@@ -18,7 +18,7 @@ export class DynamicProperty<IN, OUT> {
     return this.value.invalidated;
   }
 
-  set invalidated(_: boolean) {
-    // Do nothing!
+  set invalidated(value: boolean) {
+    this.value.invalidated = value;
   }
 }
