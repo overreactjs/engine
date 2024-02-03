@@ -10,6 +10,7 @@ type TilemapProps = {
   tiles: number[];
   collisions?: (string | false)[];
   scale?: Prop<number>;
+  active?: Prop<boolean>;
 }
 
 /**
@@ -24,6 +25,7 @@ export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ..
   const pos = usePosition(props.pos);
   const size = useProperty<Size>([gridSize[0] * cellSize[0], gridSize[1] * cellSize[1]]);
   const scale = useProperty(props.scale || 1);
+  const active = useProperty(props.active !== undefined ? props.active : true);
 
   const tilesetCols = Math.floor((image.size[0] * scale.current) / cellSize[0]);
   
@@ -44,9 +46,9 @@ export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ..
       {collisions?.map((tag, index) => {
         if (tag) {
           const key = `${index}_${tag}`;
-          const x = (index % gridSize[0]) * cellSize[0];
-          const y = Math.floor(index / gridSize[0]) * cellSize[1];
-          return <CollisionBox key={key} pos={[x, y]} size={cellSize} tags={[tag]} />;
+          const x = pos.current[0] + (index % gridSize[0]) * cellSize[0];
+          const y = pos.current[1] + Math.floor(index / gridSize[0]) * cellSize[1];
+          return <CollisionBox key={key} pos={[x, y]} size={cellSize} tags={[tag]} active={active} />;
         } else {
           return null;
         }

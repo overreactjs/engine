@@ -6,7 +6,9 @@
 - Added `useStateMachine` hook, for building state machines, handy for NPC behaviors.
 - Added support for invalidation of dynamic properties.
 - Added `maxFallSpeed` option to `usePlatformMovement` hook.
+- Added support for disabling tilemap collisions, using an `active` prop.
 - Improved performance of the `BitmapText` component.
+- Fixed a bug in `Tilemap` where collision boxes didn't align with the tiles.
 
 ## [0.9.0]
 
