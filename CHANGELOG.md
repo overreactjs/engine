@@ -4,6 +4,9 @@
 
 - Added `useIntegerPosition` hook, for rounding positions.
 - Added `useStateMachine` hook, for building state machines, handy for NPC behaviors.
+- Added support for invalidation of dynamic properties.
+- Added `maxFallSpeed` option to `usePlatformMovement` hook.
+- Improved performance of the `BitmapText` component.
 
 ## [0.9.0]
 
