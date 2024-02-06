@@ -8,7 +8,7 @@ type TilemapProps = {
   pos?: Prop<Position>;
   tileset: Tileset;
   tiles: number[];
-  collisions?: (string | false)[];
+  collisions?: (string[] | false)[];
   scale?: Prop<number>;
   active?: Prop<boolean>;
 }
@@ -43,12 +43,12 @@ export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ..
           return null;
         }
       })}
-      {collisions?.map((tag, index) => {
-        if (tag) {
-          const key = `${index}_${tag}`;
+      {collisions?.map((tags, index) => {
+        if (tags) {
+          const key = `${index}_${tags.join('_')}`;
           const x = pos.current[0] + (index % gridSize[0]) * cellSize[0];
           const y = pos.current[1] + Math.floor(index / gridSize[0]) * cellSize[1];
-          return <CollisionBox key={key} pos={[x, y]} size={cellSize} tags={[tag]} active={active} />;
+          return <CollisionBox key={key} pos={[x, y]} size={cellSize} tags={tags} active={active} />;
         } else {
           return null;
         }

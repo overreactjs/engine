@@ -79,4 +79,4 @@ export type DeviceMode = 'mobile' | 'mobile-landscape' | 'tablet' | 'desktop';
 
 export type StateFunction<S extends string, T> = (fsm: StateMachine<S, T>, delta: number) => void;
 
-export type StateDefinitions<S extends string, T> = Record<string, StateFunction<S, T>>;
+export type StateDefinitions<S extends string, T> = Record<S, StateFunction<S, T>>;
