@@ -1,12 +1,16 @@
 # Change log
 
-## Unreleased
+## [0.10.0]
 
 - Added `useIntegerPosition` hook, for rounding positions.
 - Added `useStateMachine` hook, for building state machines, handy for NPC behaviors.
+- Added `useMergeProperty` hook, for combining two properties.
+- Added `useVirtualAction` hook.
 - Added support for invalidation of dynamic properties.
 - Added `maxFallSpeed` option to `usePlatformMovement` hook.
 - Added support for disabling tilemap collisions, using an `active` prop.
+- Added support for multiple tags in tilemap collisions.
+- Added `active` parameter to `useKeyboardMap`.
 - Improved performance of the `BitmapText` component.
 - Fixed a bug in `Tilemap` where collision boxes didn't align with the tiles.
 
