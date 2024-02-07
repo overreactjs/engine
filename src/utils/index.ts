@@ -1,6 +1,7 @@
 export * from "./utils";
 export { DynamicProperty } from "./DynamicProperty";
 export { MapSet } from "./MapSet";
+export { MergeProperty } from "./MergeProperty";
 export { ObjectState } from "./ObjectState";
 export { Particle } from "./Particle";
 export { SlidingWindow } from "./SlidingWindow";

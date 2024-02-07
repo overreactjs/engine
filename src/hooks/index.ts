@@ -11,6 +11,7 @@ export { useIntegerPosition } from './useIntegerPosition';
 export { useKeyboard, useKeyAxis, useKeyPressed } from './useKeyboard';
 export { useKeyboardMap } from './useKeyboardMap';
 export { useLogMount } from './useLogMount';
+export { useMergeProperty } from './useMergeProperty';
 export { useMotion, useDeviceShaken } from './useMotion';
 export { useNode } from './useNode';
 export { useOffsetPosition } from './useOffsetPosition';
