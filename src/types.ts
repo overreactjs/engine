@@ -79,4 +79,6 @@ export type DeviceMode = 'mobile' | 'mobile-landscape' | 'tablet' | 'desktop';
 
 export type StateFunction<S extends string, T> = (fsm: StateMachine<S, T>, delta: number) => void;
 
-export type StateDefinitions<S extends string, T> = Record<S, StateFunction<S, T>>;
+export type StateDefinitions<S extends string, T> = PartialRecord<S, StateFunction<S, T>>;
+
+type PartialRecord<K extends keyof any, T> =  Partial<Record<K, T>>;
