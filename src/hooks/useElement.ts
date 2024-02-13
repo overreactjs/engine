@@ -84,7 +84,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
 
     if (pos?.invalidated || (force && pos)) {
       const [x, y] = pos.current;
-      transforms.current.set('pos', new CSSTranslate(CSS.px(Math.round(x)), CSS.px(Math.round(y))));
+      transforms.current.set('pos', new CSSTranslate(CSS.px(x), CSS.px(y)));
       transformsChanges = true;
       pos.invalidated = false;
     }
