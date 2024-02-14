@@ -4,7 +4,7 @@ import { StateMachine } from "../utils";
 import { usePostCollisions } from "./usePostCollisions";
 import { useProperty } from "./useProperty";
 
-export function useStateMachine<S extends string, T>(entity: T, state: S, states: StateDefinitions<S, T>) {
+export function useStateMachine<T>(entity: T, state: string, states: StateDefinitions<T>) {
   const fsm = useProperty(new StateMachine(entity, state, states));
 
   usePostCollisions((delta) => {

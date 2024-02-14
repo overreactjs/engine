@@ -2,21 +2,21 @@ import { Property, StateDefinitions } from "../types";
 import { DynamicProperty } from "./DynamicProperty";
 import { VariableProperty } from "./VariableProperty";
 
-export class StateMachine<S extends string, T> {
+export class StateMachine<T> {
 
   readonly entity: T;
 
-  readonly states: StateDefinitions<S, T>;
+  readonly states: StateDefinitions<T>;
 
-  readonly stack: Property<S[]>;
+  readonly stack: Property<string[]>;
 
-  readonly state: Property<S>;
+  readonly state: Property<string>;
 
   age: number = 0;
   
   init = false;
 
-  constructor(entity: T, state: S, states: StateDefinitions<S, T>) {
+  constructor(entity: T, state: string, states: StateDefinitions<T>) {
     this.entity = entity;
     this.stack = new VariableProperty([state]);
     this.state = new DynamicProperty(this.stack, (stack) => stack[stack.length - 1]);
@@ -34,7 +34,7 @@ export class StateMachine<S extends string, T> {
     (this.states[stack[stack.length - 1]])?.(this, delta);
   }
 
-  push(state: S) {
+  push(state: string) {
     this.stack.current.push(state);
     this.age = 0;
     this.init = true;
@@ -46,7 +46,7 @@ export class StateMachine<S extends string, T> {
     this.init = true;
   }
 
-  replace(state: S) {
+  replace(state: string) {
     const index = this.stack.current.length - 1;
     
     if (this.stack.current[index] !== state) {
