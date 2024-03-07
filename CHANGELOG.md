@@ -1,5 +1,12 @@
 # Change log
 
+## Unreleased
+
+- Added support for arbitrary bitmap scaling, via the `factor` prop on `BitmapImage`.
+- Removed automatic rounded of positions to whole pixels in `useElement`.
+- Fixed development mode motion key binding.
+- Simplified various typings in state machine.
+
 ## [0.10.0]
 
 - Added `useIntegerPosition` hook, for rounding positions.

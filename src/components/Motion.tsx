@@ -47,7 +47,7 @@ export const Motion: React.FC<MotionProps> = ({ children }) => {
    * In development, when the app is running in a browser, simulate shaking the device using the
    * S key.
    */
-  useKeyPressed('KeyS', () => {
+  useKeyPressed('Digit3', () => {
     acceleration.current = [50, 0, 0];
     setTimeout(() => acceleration.current = [0, 0, 0], 300);
   });

@@ -29,7 +29,9 @@ export function useShaker<E extends ElementType = HTMLDivElement>(props?: UseSha
   ]));
 
   useUpdate((delta) => {
-    amount.current = Math.max(0, amount.current - delta);
+    if (amount.current > 0) {
+      amount.current = Math.max(0, amount.current - delta);
+    }
   });
 
   useRender(() => {
