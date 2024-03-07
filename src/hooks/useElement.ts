@@ -80,18 +80,18 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
   const setBaseStyles = useCallback((options: SetBaseStyles) => {
     const { pos, size, angle, flip, opacity, scale, force = false } = options;
 
-    let transformsChanges = false;
+    let transformsChanged = false;
 
     if (pos?.invalidated || (force && pos)) {
       const [x, y] = pos.current;
       transforms.current.set('pos', new CSSTranslate(CSS.px(x), CSS.px(y)));
-      transformsChanges = true;
+      transformsChanged = true;
       pos.invalidated = false;
     }
     
     if (angle?.invalidated || (force && angle)) {
       transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
-      transformsChanges = true;
+      transformsChanged = true;
       angle.invalidated = false;
     }
 
@@ -99,7 +99,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       const tx = flip?.current ? -1 : 1;
       const s = scale?.current || 1;
       transforms.current.set('flip', new CSSScale(s * tx, s));
-      transformsChanges = true;
+      transformsChanged = true;
 
       if (flip) {
         flip.invalidated = false;
@@ -109,7 +109,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       }
     }
 
-    if (transformsChanges) {
+    if (transformsChanged) {
       ref.current?.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
     }
 

@@ -12,6 +12,7 @@ type BitmapImageProps = {
   flip?: Prop<boolean>;
   scale?: Prop<number>;
   angle?: Prop<number>;
+  factor?: Prop<Size>;
 }
 
 /**
@@ -31,6 +32,7 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
   const offset = useProperty(props.offset);
   const scale = useProperty(props.scale || 1);
   const angle = useProperty(props.angle || 0);
+  const factor = useProperty(props.factor || [1, 1]);
 
   useRender(() => {
     element.setBaseStyles({ pos, size, angle, flip, scale });
@@ -40,16 +42,20 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
       image.invalidated = false;
     }
 
-    if (offset.invalidated) {
-      element.setLegacyStyle('backgroundPosition', `${-offset.current[0]}px ${-offset.current[1]}px`);
+    if (offset.invalidated || factor.invalidated) {
+      const x = -offset.current[0] * factor.current[0];
+      const y = -offset.current[1] * factor.current[1];
+      element.setLegacyStyle('backgroundPosition', `${x}px ${y}px`);
       offset.invalidated = false;
+      factor.invalidated = false;
     }
 
-    if (image.invalidated) {
-      const width = image.current.size[0];
-      const height = image.current.size[1];
+    if (image.invalidated || factor.invalidated) {
+      const width = image.current.size[0] * factor.current[0];
+      const height = image.current.size[1] * factor.current[1];
       element.setLegacyStyle('backgroundSize', `${width}px ${height}px`);
       image.invalidated = false;
+      factor.invalidated = false;
     }
   });
 

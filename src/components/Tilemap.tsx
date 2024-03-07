@@ -20,14 +20,14 @@ type TilemapProps = {
  * ...
  */
 export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ...props }) => {
-  const { image, cellSize, gridSize } = tileset;
+  const { image, cellSize, tileSize, gridSize } = tileset;
 
   const pos = usePosition(props.pos);
-  const size = useProperty<Size>([gridSize[0] * cellSize[0], gridSize[1] * cellSize[1]]);
-  const scale = useProperty(props.scale || 1);
+  const size = useProperty<Size>([gridSize[0] * cellSize[0], gridSize[1] * cellSize[0]]);
   const active = useProperty(props.active !== undefined ? props.active : true);
+  const factor = useProperty<Size>([cellSize[0] / tileSize[0], cellSize[1] / tileSize[1]]);
 
-  const tilesetCols = Math.floor((image.size[0] * scale.current) / cellSize[0]);
+  const tilesetCols = Math.floor(image.size[0] / tileSize[0]);
   
   return (
     <Box pos={pos} size={size}>
@@ -36,9 +36,9 @@ export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ..
           const key = `${index}_${tile}`;
           const x = (index % gridSize[0]) * cellSize[0];
           const y = Math.floor(index / gridSize[0]) * cellSize[1];
-          const ox = (tile % tilesetCols) * cellSize[0];
-          const oy = Math.floor(tile / tilesetCols) * cellSize[1];
-          return <BitmapImage key={key} pos={[x, y]} offset={[ox, oy]} image={image} size={cellSize} scale={scale} />;
+          const ox = (tile % tilesetCols) * tileSize[0];
+          const oy = Math.floor(tile / tilesetCols) * tileSize[1];
+          return <BitmapImage key={key} pos={[x, y]} offset={[ox, oy]} image={image} size={cellSize} factor={factor} />;
         } else {
           return null;
         }
@@ -47,7 +47,7 @@ export const Tilemap: React.FC<TilemapProps> = ({ tileset, tiles, collisions, ..
         if (tags) {
           const key = `${index}_${tags.join('_')}`;
           const x = pos.current[0] + (index % gridSize[0]) * cellSize[0];
-          const y = pos.current[1] + Math.floor(index / gridSize[0]) * cellSize[1];
+          const y = pos.current[1] + Math.floor(index / gridSize[0]) * cellSize[0];
           return <CollisionBox key={key} pos={[x, y]} size={cellSize} tags={tags} active={active} />;
         } else {
           return null;

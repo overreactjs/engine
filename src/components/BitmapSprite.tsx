@@ -33,6 +33,7 @@ export const BitmapSprite: React.FC<BitmapSpriteProps> = ({ sprite, ...props }) 
   const frameIndex = useProperty<number>(0);
   const frameTime = useProperty<number>(0);
   const offset = useProperty<Position>([0, 0]);
+  const factor = useProperty<Size>([size.current[0] / frameWidth.current, size.current[1] / sprite.size[1]]);
 
   useSpriteSet(props.name, element.ref, () => {
     frameIndex.current = 0;
@@ -56,5 +57,5 @@ export const BitmapSprite: React.FC<BitmapSpriteProps> = ({ sprite, ...props }) 
     offset.current[0] = frameIndex.current * frameWidth.current;
   });
 
-  return <BitmapImage element={element} image={sprite} pos={pos} size={size} scale={scale} offset={offset} flip={flip} angle={angle} />;
+  return <BitmapImage element={element} image={sprite} pos={pos} size={size} factor={factor} scale={scale} offset={offset} flip={flip} angle={angle} />;
 };

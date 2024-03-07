@@ -30,6 +30,7 @@ export type BitmapSpriteAsset = BitmapAsset & {
 export type Tileset = {
   image: BitmapAsset;
   cellSize: Size;
+  tileSize: Size;
   gridSize: Size;
 }
 
