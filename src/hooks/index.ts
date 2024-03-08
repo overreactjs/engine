@@ -4,7 +4,7 @@ export { useCollision, useTaggedCollision } from './useCollision';
 export { useCollider, useBoxCollider } from './useCollider';
 export { useDebug } from './useDebug';
 export { useDevice } from './useDevice';
-export { useDynamicProperty } from './useDynamicProperty';
+export { useDynamicProperty, useCachedDynamicProperty } from './useDynamicProperty';
 export { useElement } from './useElement';
 export { useEventListeners } from './useEventListeners';
 export { useIntegerPosition } from './useIntegerPosition';

@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-- Limited tick delta to a maximum of one 1/15 of a second, to avoid huge deltas on startup.
 - Added support for arbitrary bitmap scaling, via the `factor` prop on `BitmapImage`.
+- Added `useCachedDynamicProperty` as a performance optimization.
+- Limited tick delta to a maximum of one 1/15 of a second, to avoid huge deltas on startup.
 - Removed automatic rounded of positions to whole pixels in `useElement`.
 - Fixed development mode motion key binding.
 - Simplified various typings in state machine.
