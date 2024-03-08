@@ -8,6 +8,7 @@
 - Removed automatic rounded of positions to whole pixels in `useElement`.
 - Fixed development mode motion key binding.
 - Simplified various typings in state machine.
+- Refactored `StateMachine` to avoid performance overhead of the dynamic property.
 
 ## [0.10.0]
 

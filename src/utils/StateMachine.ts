@@ -1,5 +1,4 @@
 import { Property, StateDefinitions } from "../types";
-import { DynamicProperty } from "./DynamicProperty";
 import { VariableProperty } from "./VariableProperty";
 
 export class StateMachine<T> {
@@ -19,7 +18,7 @@ export class StateMachine<T> {
   constructor(entity: T, state: string, states: StateDefinitions<T>) {
     this.entity = entity;
     this.stack = new VariableProperty([state]);
-    this.state = new DynamicProperty(this.stack, (stack) => stack[stack.length - 1]);
+    this.state = new VariableProperty(state);
     this.states = states;
   }
 
@@ -36,12 +35,14 @@ export class StateMachine<T> {
 
   push(state: string) {
     this.stack.current.push(state);
+    this.state.current = state;
     this.age = 0;
     this.init = true;
   }
 
   pop() {
     this.stack.current.pop();
+    this.state.current = this.stack.current[this.stack.current.length - 1];
     this.age = 0;
     this.init = true;
   }
@@ -51,6 +52,7 @@ export class StateMachine<T> {
     
     if (this.stack.current[index] !== state) {
       this.stack.current[index] = state;
+      this.state.current = state;
       this.age = 0;
       this.init = true;
     }
