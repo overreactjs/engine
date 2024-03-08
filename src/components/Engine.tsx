@@ -8,6 +8,8 @@ import { Orientation } from "./Orientation";
 import { Pointer } from "./Pointer";
 import { VirtualInput } from "./VirtualInput";
 
+const MAX_DELTA = 1000 / 15;
+
 type EngineProps = {
   children: React.ReactNode;
 }
@@ -38,7 +40,8 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
   const tick = useCallback((t: number) => {
     requestAnimationFrame(tick);
 
-    const delta = t - time.current;
+    // Limit the time delta, to avoid strange happenings!
+    const delta = Math.min(t - time.current, MAX_DELTA);
     time.current = t;
 
     // The ticker phase runs even when the engine is paused.
