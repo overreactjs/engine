@@ -82,47 +82,49 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
 
     let transformsChanged = false;
 
-    if (pos?.invalidated || (force && pos)) {
-      const [x, y] = pos.current;
-      transforms.current.set('pos', new CSSTranslate(CSS.px(x), CSS.px(y)));
-      transformsChanged = true;
-      pos.invalidated = false;
-    }
-    
-    if (angle?.invalidated || (force && angle)) {
-      transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
-      transformsChanged = true;
-      angle.invalidated = false;
-    }
-
-    if (flip?.invalidated || scale?.invalidated) {
-      const tx = flip?.current ? -1 : 1;
-      const s = scale?.current || 1;
-      transforms.current.set('flip', new CSSScale(s * tx, s));
-      transformsChanged = true;
-
-      if (flip) {
-        flip.invalidated = false;
+    if (ref.current) {
+      if (pos?.invalidated || (force && pos)) {
+        const [x, y] = pos.current;
+        transforms.current.set('pos', new CSSTranslate(CSS.px(x), CSS.px(y)));
+        transformsChanged = true;
+        pos.invalidated = false;
       }
-      if (scale) {
-        scale.invalidated = false;
+      
+      if (angle?.invalidated || (force && angle)) {
+        transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
+        transformsChanged = true;
+        angle.invalidated = false;
       }
-    }
 
-    if (transformsChanged) {
-      ref.current?.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
-    }
+      if (flip?.invalidated || scale?.invalidated) {
+        const tx = flip?.current ? -1 : 1;
+        const s = scale?.current || 1;
+        transforms.current.set('flip', new CSSScale(s * tx, s));
+        transformsChanged = true;
 
-    if (size?.invalidated || (force && size)) {
-      const [width, height] = size.current;
-      ref.current?.attributeStyleMap.set('width', CSS.px(width));
-      ref.current?.attributeStyleMap.set('height', CSS.px(height));
-      size.invalidated = false;
-    }
+        if (flip) {
+          flip.invalidated = false;
+        }
+        if (scale) {
+          scale.invalidated = false;
+        }
+      }
 
-    if (opacity?.invalidated || (force && opacity)) {
-      ref.current?.attributeStyleMap.set('opacity', CSS.number(opacity.current));
-      opacity.invalidated = false;
+      if (transformsChanged) {
+        ref.current?.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
+      }
+
+      if (size?.invalidated || (force && size)) {
+        const [width, height] = size.current;
+        ref.current?.attributeStyleMap.set('width', CSS.px(width));
+        ref.current?.attributeStyleMap.set('height', CSS.px(height));
+        size.invalidated = false;
+      }
+
+      if (opacity?.invalidated || (force && opacity)) {
+        ref.current?.attributeStyleMap.set('opacity', CSS.number(opacity.current));
+        opacity.invalidated = false;
+      }
     }
   }, [setStyle]);
 
