@@ -1,6 +1,6 @@
-import { Body, Vector } from "detect-collisions";
+import { Vector } from "detect-collisions";
 import { Engine } from "matter-js";
-import { StateMachine } from "./utils";
+import { Body, StateMachine } from "./utils";
 
 export type ElementType = InnerHTML & ElementCSSInlineStyle & Element;
 
@@ -56,15 +56,15 @@ export type RenderFunction = () => void;
 
 export type CollisionUpdateFunction = (body: Body) => void;
 
-export type CollisionEventFunctionProps = {
-  a: Body;
-  b: Body;
+export type CollisionEventFunctionProps<T = unknown> = {
+  a: Body<T>;
+  b: Body<T>;
   overlap: Vector;
   tags: string[];
   firstTime: boolean;
 };
 
-export type CollisionEventFunction = (collisions: CollisionEventFunctionProps[], delta: number) => void;
+export type CollisionEventFunction<T = unknown> = (collisions: CollisionEventFunctionProps<T>[], delta: number) => void;
 
 export type CollisionTag = 'solid' | 'platform' | string;
 

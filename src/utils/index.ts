@@ -1,4 +1,6 @@
 export * from "./utils";
+export type { Body } from "./BoxBody";
+export { BoxBody } from "./BoxBody";
 export { DynamicProperty } from "./DynamicProperty";
 export { MapSet } from "./MapSet";
 export { MergeProperty } from "./MergeProperty";

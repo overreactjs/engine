@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useRef } from "react";
-import { System, Body, Point } from "detect-collisions";
+import { System, Point } from "detect-collisions";
 import { Node } from "./Node";
 import { CollisionEventFunction, CollisionUpdateFunction, Property, Position, CollisionEventFunctionProps } from "../types";
 import { useDynamicProperty, usePointer, useUpdate } from "../hooks";
 import { WorldContext } from "../context";
-import { MapSet } from "../utils";
+import { Body, MapSet } from "../utils";
 
 type WorldProps = {
   children: React.ReactNode;

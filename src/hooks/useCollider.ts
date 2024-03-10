@@ -1,7 +1,7 @@
 import { useId, useEffect, useCallback, useRef, MutableRefObject } from "react";
-import { Body, Box } from "detect-collisions";
 import { CollisionUpdateFunction, Position, Property, Size } from "../types";
 import { useWorld } from "./useWorld";
+import { Body, BoxBody } from "../utils";
 
 /**
  * Register a new collider instance.
@@ -32,11 +32,12 @@ export const useBoxCollider = (
   tags: Property<string[]>,
   pos: Property<Position>,
   size: Property<Size>,
+  entity?: unknown,
 ) => {
   const [x, y] = pos.current;
   const [w, h] = size.current;
 
-  const box = useRef(new Box({ x, y }, w, h));
+  const box = useRef(new BoxBody({ x, y }, w, h, entity));
 
   const update = useCallback((body: Body) => {
     body.setPosition(pos.current[0], pos.current[1]);

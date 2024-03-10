@@ -15,6 +15,7 @@ type CollisionBoxProps = {
   size: Prop<Size>;
   tags?: Prop<CollisionTag[]>;
   active?: Prop<boolean>;
+  entity?: unknown;
 }
 
 /**
@@ -23,7 +24,7 @@ type CollisionBoxProps = {
  * 
  * Register a box-shaped collider that will report collisions and overlaps with other colliders
  */
-export const CollisionBox: React.FC<CollisionBoxProps> = ({ id, ...props }) => {
+export const CollisionBox: React.FC<CollisionBoxProps> = ({ id, entity, ...props }) => {
   // const element = useElement<HTMLDivElement>();
   // const debug = useDebug();
 
@@ -32,7 +33,7 @@ export const CollisionBox: React.FC<CollisionBoxProps> = ({ id, ...props }) => {
   const tags = useProperty(props.tags || []);
   const active = useProperty(props.active !== undefined ? props.active : true);
 
-  useBoxCollider(id, active, tags, pos, size);
+  useBoxCollider(id, active, tags, pos, size, entity);
 
   // useRender(() => {
   //   element.setBaseStyles({ pos, size });

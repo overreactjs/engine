@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { CollisionEventFunction } from "../types";
 import { useOverlap } from "./useOverlap";
 
-export const useCollision = (id: string, handler: CollisionEventFunction) => {
-  const wrappedHandler: CollisionEventFunction = useCallback((collisions, delta) => {
+export function useCollision<T = unknown>(id: string, handler: CollisionEventFunction<T>) {
+  const wrappedHandler: CollisionEventFunction<T> = useCallback((collisions, delta) => {
     const filtered = collisions.filter(({ firstTime }) => firstTime);
 
     if (filtered.length > 0) {
@@ -14,9 +14,19 @@ export const useCollision = (id: string, handler: CollisionEventFunction) => {
   return useOverlap(id, wrappedHandler);
 };
 
-export const useTaggedCollision = (collider: string, tag: string, handler: CollisionEventFunction) => {
-  useCollision(collider, (collisions, delta) => {
-    const filtered = collisions.filter((props) => props.tags.includes(tag));
+export function useTaggedCollision<T = unknown>(collider: string, tag: string | string[], handler: CollisionEventFunction<T>) {
+  const tags = typeof tag === 'string' ? [tag] : tag;
+
+  useCollision<T>(collider, (collisions, delta) => {
+    const filtered = collisions.filter((props) => {
+      for (tag of props.tags) {
+        if (tags.includes(tag)) {
+          return true;
+        }
+      }
+
+      return false;
+    });
 
     if (filtered.length > 0) {
       handler(filtered, delta);

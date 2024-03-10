@@ -1,11 +1,10 @@
 import React from "react";
-import { Body } from "detect-collisions";
 import { CollisionUpdateFunction, CollisionEventFunction, Property, Position } from "../types";
-import { VariableProperty } from "../utils";
+import { Body, VariableProperty } from "../utils";
 
 type WorldContextProps = {
   registerCollider: (id: string, active: Property<boolean>, tags: Property<string[]>, body: Body, fn: CollisionUpdateFunction) => () => void;
-  registerHandler: (id: string, fn: CollisionEventFunction) => () => void;
+  registerHandler: (id: string, fn: CollisionEventFunction<any>) => () => void;
   registerPostHandler: (fn: (delta: number) => void) => () => void;
   isInside: (id: string, pos?: Property<Position>) => boolean;
   pointer: Property<Position>;
