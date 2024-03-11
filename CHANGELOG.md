@@ -1,16 +1,19 @@
 # Change log
 
-## Unreleased
+## [0.12.0]
 
 - Added `offset` and `rounded` props to `Node`, for easier layout of component parts.
-- Added support for arbitrary bitmap scaling, via the `factor` prop on `BitmapImage`.
 - Added `entity` prop to `CollisionBox`, for passing entities to collision handlers.
 - Added `useCachedDynamicProperty` as a performance optimization.
-- Limited tick delta to a maximum of one 1/15 of a second, to avoid huge deltas on startup.
-- Removed automatic rounded of positions to whole pixels in `useElement`.
-- Fixed development mode motion key binding.
-- Simplified various typings in state machine.
 - Refactored `StateMachine` to avoid performance overhead of the dynamic property.
+- Limited tick delta to a maximum of one 1/15 of a second, to avoid huge deltas on startup.
+
+## [0.11.0]
+
+- Added support for arbitrary bitmap scaling, via the `factor` prop on `BitmapImage`.
+- Simplified various typings in state machine.
+- Fixed development mode motion key binding.
+- Removed automatic rounded of positions to whole pixels in `useElement`.
 
 ## [0.10.0]
 
