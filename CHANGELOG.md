@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added `offset` and `rounded` props to `Node`, for easier layout of component parts.
 - Added support for arbitrary bitmap scaling, via the `factor` prop on `BitmapImage`.
 - Added `entity` prop to `CollisionBox`, for passing entities to collision handlers.
 - Added `useCachedDynamicProperty` as a performance optimization.
