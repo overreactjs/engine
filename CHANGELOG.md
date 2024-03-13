@@ -1,6 +1,6 @@
 # Change log
 
-## Unreleased
+## [0.13.0]
 
 - Refactored `StateMachine` to make age a property.
 
