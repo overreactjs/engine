@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased
+
+- Refactored `StateMachine` to make age a property.
+
 ## [0.12.0]
 
 - Added `offset` and `rounded` props to `Node`, for easier layout of component parts.

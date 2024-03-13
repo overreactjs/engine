@@ -11,12 +11,13 @@ export class StateMachine<T> {
 
   readonly state: Property<string>;
 
-  age: number = 0;
+  readonly age: Property<number>;
   
   init = false;
 
   constructor(entity: T, state: string, states: StateDefinitions<T>) {
     this.entity = entity;
+    this.age = new VariableProperty(0);
     this.stack = new VariableProperty([state]);
     this.state = new VariableProperty(state);
     this.states = states;
@@ -24,7 +25,7 @@ export class StateMachine<T> {
 
   update(delta: number) {
     if (!this.init) {
-      this.age += delta;
+      this.age.current += delta;
     }
     
     this.init = false;
@@ -36,14 +37,14 @@ export class StateMachine<T> {
   push(state: string) {
     this.stack.current.push(state);
     this.state.current = state;
-    this.age = 0;
+    this.age.current = 0;
     this.init = true;
   }
 
   pop() {
     this.stack.current.pop();
     this.state.current = this.stack.current[this.stack.current.length - 1];
-    this.age = 0;
+    this.age.current = 0;
     this.init = true;
   }
 
@@ -53,7 +54,7 @@ export class StateMachine<T> {
     if (this.stack.current[index] !== state) {
       this.stack.current[index] = state;
       this.state.current = state;
-      this.age = 0;
+      this.age.current = 0;
       this.init = true;
     }
   }
