@@ -2,6 +2,7 @@
 
 ## [0.13.0]
 
+- Reversed the map used by `useKeyboardMap`.
 - Refactored `StateMachine` to make age a property.
 
 ## [0.12.0]
