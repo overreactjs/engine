@@ -4,6 +4,7 @@
 
 - Added initial support for gamepads, with support for 'standard' gamepad layouts.
 - Added `useGamepadMap` hook for easily hooking up gamepads to virtual inputs.
+- Added `active` prop to `ParticleGenerator` component.
 
 ## 0.13.0
 
