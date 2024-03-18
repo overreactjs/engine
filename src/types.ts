@@ -83,3 +83,20 @@ export type StateFunction<T> = (fsm: StateMachine<T>, delta: number) => void;
 export type StateDefinitions<T> = PartialRecord<string, StateFunction<T>>;
 
 type PartialRecord<K extends keyof any, T> =  Partial<Record<K, T>>;
+
+export type GamepadButtonName =
+  | 'Up'
+  | 'Down'
+  | 'Left'
+  | 'Right'
+  | 'A'
+  | 'B'
+  | 'X'
+  | 'Y'
+  | 'Shoulder_L1'
+  | 'Shoulder_L2'
+  | 'Shoulder_R1'
+  | 'Shoulder_R2'
+  | 'Start'
+  | 'Select'
+  ;

@@ -2,6 +2,7 @@ import { useMemo, useRef, useCallback, useEffect, useLayoutEffect, MutableRefObj
 import { EngineContext, NodeContext } from "../context";
 import { useNode, useProperty } from "../hooks";
 import { Validator } from "../utils";
+import { Gamepad } from "./Gamepad";
 import { Keyboard } from "./Keyboard";
 import { Motion } from "./Motion";
 import { Orientation } from "./Orientation";
@@ -72,15 +73,17 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
     <EngineContext.Provider value={engineContext}>
       <NodeContext.Provider value={node}>
         <VirtualInput>
-          <Keyboard>
-            <Pointer>
-              <Motion>
-                <Orientation>
-                  {children}
-                </Orientation>
-              </Motion>
-            </Pointer>
-          </Keyboard>
+          <Gamepad>
+            <Keyboard>
+              <Pointer>
+                <Motion>
+                  <Orientation>
+                    {children}
+                  </Orientation>
+                </Motion>
+              </Pointer>
+            </Keyboard>
+          </Gamepad>
         </VirtualInput>
       </NodeContext.Provider>
     </EngineContext.Provider>

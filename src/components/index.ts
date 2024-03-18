@@ -7,6 +7,7 @@ export { Circle } from './Circle';
 export { CollisionBox } from './CollisionBox';
 export { Device } from './Device';
 export { Engine } from './Engine';
+export { Gamepad } from './Gamepad';
 export { Keyboard } from './Keyboard';
 export { Motion } from './Motion';
 export { Node } from './Node';

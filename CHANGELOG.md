@@ -1,11 +1,16 @@
 # Change log
 
-## [0.13.0]
+## 0.14.0 (Unreleased)
+
+- Added initial support for gamepads, with support for 'standard' gamepad layouts.
+- Added `useGamepadMap` hook for easily hooking up gamepads to virtual inputs.
+
+## 0.13.0
 
 - Reversed the map used by `useKeyboardMap`.
 - Refactored `StateMachine` to make age a property.
 
-## [0.12.0]
+## 0.12.0
 
 - Added `offset` and `rounded` props to `Node`, for easier layout of component parts.
 - Added `entity` prop to `CollisionBox`, for passing entities to collision handlers.
@@ -13,14 +18,14 @@
 - Refactored `StateMachine` to avoid performance overhead of the dynamic property.
 - Limited tick delta to a maximum of one 1/15 of a second, to avoid huge deltas on startup.
 
-## [0.11.0]
+## 0.11.0
 
 - Added support for arbitrary bitmap scaling, via the `factor` prop on `BitmapImage`.
 - Simplified various typings in state machine.
 - Fixed development mode motion key binding.
 - Removed automatic rounded of positions to whole pixels in `useElement`.
 
-## [0.10.0]
+## 0.10.0
 
 - Added `useIntegerPosition` hook, for rounding positions.
 - Added `useStateMachine` hook, for building state machines, handy for NPC behaviors.
@@ -34,7 +39,7 @@
 - Improved performance of the `BitmapText` component.
 - Fixed a bug in `Tilemap` where collision boxes didn't align with the tiles.
 
-## [0.9.0]
+## 0.9.0
 
 - Added `BitmapText` component.
 - Added collision detection to `Tilemap` component.
@@ -52,12 +57,12 @@
 - Fixed re-render issue with properties.
 - Fixed issue with collision handlers are registered before collision bodies.
 
-## [0.8.0]
+## 0.8.0
 
 - Added `delta` parameter to `useKeyAxis` callback.
 - Added support for static circular physics bodies.
 
-## [0.7.0]
+## 0.7.0
 
 - Added `clamp` utility function.
 - Added `useSwipe` hook.
@@ -65,29 +70,29 @@
 - Removed legacy mouse and touch handlers.
 - Fixed camera smoothing to be frame rate agnostic.
 
-## [0.6.0]
+## 0.6.0
 
 - Added support for pointer events.
 - Added support for speech synthesis API.
 
-## [0.5.0]
+## 0.5.0
 
 - Added particle generator
 
-## [0.4.0]
+## 0.4.0
 
 - Implemented automatic property invalidation mechanism, using proxies.
 
-## [0.3.0]
+## 0.3.0
 
 - Added `setVelocity` function to physics context.
 - Use CSS typed object model for setting styles.
 
-## [0.2.0]
+## 0.2.0
 
 - Added different device modes.
 - Device styles for mobile simulation.
 
-## [0.1.2]
+## 0.1.2
 
 - Initial prototype.
