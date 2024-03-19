@@ -1,7 +1,7 @@
 import React from "react";
 import { Property } from "..";
 
-type EngineContextProps = {
+export type EngineContextProps = {
   debug: Property<boolean>;
   onDebug: () => void;
   onPause: () => void;

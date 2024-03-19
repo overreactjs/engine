@@ -9,3 +9,5 @@ export { PhysicsContext } from './PhysicsContext';
 export { PointerContext } from './PointerContext';
 export { VirtualInputContext } from './VirtualInputContext';
 export { WorldContext } from './WorldContext';
+
+export type { EngineContextProps } from './EngineContext';
