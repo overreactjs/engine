@@ -1,5 +1,5 @@
 export class SlidingWindow {
-  values: number[] = [];
+  _values: number[] = [];
   size: number;
   index: number = 0;
   
@@ -7,12 +7,16 @@ export class SlidingWindow {
     this.size = size;
   }
 
+  get values() {
+    return [...this._values];
+  }
+
   push(value: number) {
-    this.values[this.index] = value;
+    this._values[this.index] = value;
     this.index = (this.index + 1) % this.size;
   }
 
   mean(): number {
-    return this.values.reduce((result, current) => result + current, 0) / this.size;
+    return this._values.reduce((result, current) => result + current, 0) / this.size;
   }
 }
