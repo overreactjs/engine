@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { nextFrame, renderHook } from '../test/render';
+import { nextFrame, renderHook } from '../test';
 import { VariableProperty } from '../utils';
 import { useMergeProperty } from "./useMergeProperty";
 

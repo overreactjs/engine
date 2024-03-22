@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { nextFrame, renderHookWithEngine } from '../test/render';
+import { nextFrame, renderHookWithEngine } from '../test';
 import { useUpdate } from "./useUpdate";
 
 describe('useUpdate', () => {

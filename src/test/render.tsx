@@ -1,5 +1,5 @@
 import { Queries, RenderHookOptions, RenderHookResult, queries, render as _render, renderHook as _renderHook, RenderOptions, RenderResult } from "@testing-library/react";
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { vi } from 'vitest';
 import { Engine } from "../components";
 import { EngineContext, EngineContextProps } from "../context";
@@ -10,7 +10,7 @@ export function render<
   BaseElement extends Element | DocumentFragment = Container,
 >(
   ui: React.ReactNode,
-  options: RenderOptions<Q, Container, BaseElement>,
+  options?: RenderOptions<Q, Container, BaseElement>,
 ): RenderResult<Q, Container, BaseElement> {
   const result = _render(ui, { wrapper: Engine, ...options });
 

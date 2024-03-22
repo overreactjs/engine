@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { nextFrame, renderHook } from '../test/render';
+import { nextFrame, renderHook } from '../test';
 import { useKeyboard } from "./useKeyboard";
 
 describe('useKeyboard', () => {

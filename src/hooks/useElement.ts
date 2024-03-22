@@ -24,7 +24,8 @@ export type UseElementResult<E extends ElementType> = {
 export function useElement<E extends ElementType = HTMLDivElement>(element?: UseElementResult<E>): UseElementResult<E> {
   const generatedRef = useRef<E>(null);
   const ref = element?.ref || generatedRef;
-  const transforms = useRef<Map<string, CSSTransformComponent>>(new Map());
+  // const transforms = useRef<Map<string, CSSTransformComponent>>(new Map());
+  const transforms = useRef<Map<string, string>>(new Map());
 
   /**
    * Set the inner text of the element.
@@ -58,10 +59,11 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
   /**
    * Set a style property on the element.
    */
-  const setStyle = useCallback((key: string, value: CSSStyleValue | string | number) => {
-    if (ref.current && value !== undefined) {
-      ref.current.attributeStyleMap.set(key, value);
-    }
+  const setStyle = useCallback((key: string, value: string | number) => {
+    setLegacyStyle(key, value);
+    // if (ref.current && value !== undefined) {
+    //   ref.current.attributeStyleMap.set(key, value);
+    // }
   }, [ref]);
 
   /**
@@ -85,13 +87,15 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
     if (ref.current) {
       if (pos?.invalidated || (force && pos)) {
         const [x, y] = pos.current;
-        transforms.current.set('pos', new CSSTranslate(CSS.px(x), CSS.px(y)));
+        // transforms.current.set('pos', new CSSTranslate(CSS.px(x), CSS.px(y)));
+        transforms.current.set('pos', `translate(${x}px, ${y}px)`);
         transformsChanged = true;
         pos.invalidated = false;
       }
       
       if (angle?.invalidated || (force && angle)) {
-        transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
+        // transforms.current.set('angle', new CSSRotate(CSS.deg(angle.current)));
+        transforms.current.set('angle', `rotate(${angle.current}deg)`);
         transformsChanged = true;
         angle.invalidated = false;
       }
@@ -99,7 +103,8 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       if (flip?.invalidated || scale?.invalidated) {
         const tx = flip?.current ? -1 : 1;
         const s = scale?.current || 1;
-        transforms.current.set('flip', new CSSScale(s * tx, s));
+        // transforms.current.set('flip', new CSSScale(s * tx, s));
+        transforms.current.set('flip', `scale(${s * tx}, ${s})`);
         transformsChanged = true;
 
         if (flip) {
@@ -111,18 +116,22 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
       }
 
       if (transformsChanged) {
-        ref.current?.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
+        // ref.current.attributeStyleMap.set('transform', new CSSTransformValue([...transforms.current.values()]));
+        ref.current.style.transform = [...transforms.current.values()].join(' ');
       }
 
       if (size?.invalidated || (force && size)) {
         const [width, height] = size.current;
-        ref.current?.attributeStyleMap.set('width', CSS.px(width));
-        ref.current?.attributeStyleMap.set('height', CSS.px(height));
+        // ref.current?.attributeStyleMap.set('width', CSS.px(width));
+        // ref.current?.attributeStyleMap.set('height', CSS.px(height));
+        ref.current.style.width = `${width}px`;
+        ref.current.style.height = `${height}px`;
         size.invalidated = false;
       }
 
       if (opacity?.invalidated || (force && opacity)) {
-        ref.current?.attributeStyleMap.set('opacity', CSS.number(opacity.current));
+        // ref.current?.attributeStyleMap.set('opacity', CSS.number(opacity.current));
+        ref.current.style.opacity = `${opacity.current}`;
         opacity.invalidated = false;
       }
     }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { nextFrame, renderHook } from '../test/render';
+import { nextFrame, renderHook } from '../test';
 import { VariableProperty } from '../utils';
-import { useProperty } from '.';
+import { useProperty } from './useProperty';
 
 describe('useProperty', () => {
   describe('when passed a variable property', () => {
