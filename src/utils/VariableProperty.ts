@@ -3,8 +3,8 @@ import { Validator } from "./Validator";
 
 export class VariableProperty<T> extends ObjectState {
 
-  _current: T;
-  _invalidated: boolean = false;
+  private _current: T;
+  private _invalidated: boolean = false;
 
   constructor(initial: T) {
     super();

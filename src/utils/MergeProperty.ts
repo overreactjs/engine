@@ -2,9 +2,9 @@ import { Property } from "../types";
 
 export class MergeProperty<A, B, OUT> {
 
-  a: Property<A>;
-  b: Property<B>;
-  fn: (a: A, b: B) => OUT;
+  private a: Property<A>;
+  private b: Property<B>;
+  private fn: (a: A, b: B) => OUT;
 
   constructor(a: Property<A>, b: Property<B>, fn: (a: A, b: B) => OUT) {
     this.a = a;

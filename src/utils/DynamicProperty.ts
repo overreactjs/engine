@@ -2,8 +2,8 @@ import { Property } from "../types";
 
 export class DynamicProperty<IN, OUT> {
 
-  value: Property<IN>;
-  fn: (value: IN) => OUT;
+  private value: Property<IN>;
+  private fn: (value: IN) => OUT;
 
   constructor(value: Property<IN>, fn: (value: IN) => OUT) {
     this.value = value;
