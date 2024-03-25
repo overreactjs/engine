@@ -49,6 +49,7 @@
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.4.0",
     "jsdom": "^24.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
