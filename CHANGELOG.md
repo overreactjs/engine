@@ -7,6 +7,8 @@
 - Added `useSequence` hook to iteratively check a set of conditions are met in order.
 - Added `active` prop to `ParticleGenerator` component.
 - Added integration testing framework.
+- Fixed bug in update function processing, where 'after' update functions were sometimes not invoked.
+- Improved update function processing to avoid unresolvable cycles.
 
 ## 0.13.0
 

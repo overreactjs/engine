@@ -23,21 +23,36 @@ export const useNode = (options?: UseNodeOptions) => {
   }, []);
 
   const update = useCallback((delta: number, time: number) => {
-    const waiting: Map<string, UpdateFunction> = new Map();
+    const waiting: Map<string, UpdateConfig> = new Map();
     const completed: Set<string> = new Set();
+    
 
     for (const [id, config] of updates.current) {
       const { fn, after } = config;
       if (after && !completed.has(after)) {
-        waiting.set(after, fn);
+        waiting.set(id, config);
       } else {
         fn(delta * timeScale.current, time);
         completed.add(id);
       }
+    }
 
-      if (waiting.has(id)) {
-        waiting.get(id)?.(delta * timeScale.current, time);
+    let previousCycleSize = waiting.size;
+    while (waiting.size > 0) {
+      for (const [id, config] of waiting) {
+        const { fn, after } = config;
+        if (after && completed.has(after)) {
+          fn(delta * timeScale.current, time);
+          completed.add(id);
+          waiting.delete(id);
+        }
       }
+
+      if (waiting.size === previousCycleSize) {
+        break;
+      }
+
+      previousCycleSize = waiting.size;
     }
   }, []);
 
