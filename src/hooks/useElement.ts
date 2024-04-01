@@ -16,7 +16,7 @@ export type UseElementResult<E extends ElementType> = {
   setText: (text: string) => void;
   setAttribute: (key: string, value: unknown) => void;
   setData: (key: string, value: unknown) => void;
-  setStyle: (key: string, value: CSSStyleValue | string | number) => void;
+  setStyle: (key: string, value: string | number) => void;
   setLegacyStyle: (key: string, value: string | number) => void;
   setBaseStyles: (options: SetBaseStyles) => void;
 }
@@ -41,7 +41,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
    */
   const setAttribute = useCallback((key: string, value: unknown) => {
     if (ref.current) {
-      if (value !== undefined) {
+      if (value !== undefined && value !== null) {
         ref.current.setAttribute(key, String(value));
       } else {
         ref.current.removeAttribute(key);
@@ -71,7 +71,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
    * API which doesn't seem to work for some things in Chrome!
    */
   const setLegacyStyle = useCallback((key: string, value: string | number) => {
-    if (ref.current && value !== undefined) {
+    if (ref.current) {
       ((ref.current as any).style as any)[key] = value;
     }
   }, [ref]);

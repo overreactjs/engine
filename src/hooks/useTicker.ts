@@ -3,7 +3,7 @@ import { TickerFunction } from "../types";
 import { NodeContext } from "../context";
 
 export const useTicker = (fn: TickerFunction, name?: string) => {
-  const { registerTicker } = useContext(NodeContext) || {};
+  const { registerTicker } = useContext(NodeContext);
   const id = useId();
 
   useEffect(() => registerTicker?.(id, fn), [fn, id, name, registerTicker]);

@@ -9,6 +9,7 @@ export type ParticleGeneratorProps = {
   lifespan: number;
   onInit: (particle: Particle) => void;
   onUpdate: (particle: Particle, delta: number) => void;
+  'data-testid'?: string;
 }
 
 export const ParticleGenerator: React.FC<ParticleGeneratorProps> = ({ onInit, onUpdate, ...props }) => {
@@ -28,6 +29,8 @@ export const ParticleGenerator: React.FC<ParticleGeneratorProps> = ({ onInit, on
         inactive.current.delete(particle);
         active.current.add(particle);
         particle.node.style.display = 'block';
+        particle.init.current = true;
+        particle.age.current = 0;
         onInit(particle);
 
       } else {
@@ -36,6 +39,8 @@ export const ParticleGenerator: React.FC<ParticleGeneratorProps> = ({ onInit, on
         const particle = new Particle(node);
         active.current.add(particle);
         particle.node.style.display = 'block';
+        particle.init.current = true;
+        particle.age.current = 0;
         onInit(particle);
       }
     }
@@ -44,16 +49,21 @@ export const ParticleGenerator: React.FC<ParticleGeneratorProps> = ({ onInit, on
   useUpdate((delta) => {
     if (ref.current) {
       for (const particle of active.current) {
-        onUpdate(particle, delta);
+        if (particle.init.current) {
+          particle.init.current = false;
+        } else {
+          particle.age.current += delta;
+          onUpdate(particle, delta);
 
-        if (particle.age.current >= lifespan.current) {
-          active.current.delete(particle);
-          inactive.current.add(particle);
-          particle.node.style.display = 'none';
+          if (particle.age.current >= lifespan.current) {
+            active.current.delete(particle);
+            inactive.current.add(particle);
+            particle.node.style.display = 'none';
+          }
         }
       }
     }
   });
 
-  return <div ref={ref} />;
+  return <div ref={ref} data-testid={props['data-testid']} />;
 };

@@ -24,14 +24,12 @@ export class StateMachine<T> {
   }
 
   update(delta: number) {
-    if (!this.init) {
-      this.age.current += delta;
-    }
+    this.age.current += delta;
     
-    this.init = false;
-  
     const stack = this.stack.current;
     (this.states[stack[stack.length - 1]])?.(this, delta);
+
+    this.init = false;
   }
 
   push(state: string) {

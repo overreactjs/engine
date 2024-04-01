@@ -38,3 +38,27 @@ afterEach(() => {
   vi.clearAllTimers();
   currentTime = 0;
 });
+
+/**
+ * 
+ */
+type DeviceMotionEventAcceleration = {
+  x: number;
+  y: number;
+  z: number;
+};
+
+type DeviceMotionEventOptions = {
+  acceleration: DeviceMotionEventAcceleration;
+};
+
+class DeviceMotionEvent extends Event {
+  readonly acceleration: any;
+
+  constructor(type: string, options: DeviceMotionEventOptions) {
+    super(type);
+    this.acceleration = options.acceleration;
+  }
+}
+
+window.DeviceMotionEvent = DeviceMotionEvent as any;

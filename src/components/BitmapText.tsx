@@ -5,7 +5,7 @@ import { BitmapImage } from "./BitmapImage";
 
 type BitmapTextProps = {
   font: BitmapFontFace;
-  pos: Prop<Position>;
+  pos?: Prop<Position>;
   text: Prop<string>;
 }
 

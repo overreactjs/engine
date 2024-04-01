@@ -3,7 +3,7 @@ import { RenderFunction } from "../types";
 import { NodeContext } from "../context";
 
 export const useRender = (fn: RenderFunction): string => {
-  const { registerRender } = useContext(NodeContext) || {};
+  const { registerRender } = useContext(NodeContext);
   const id = useId();
 
   useEffect(() => registerRender?.(id, fn), [fn, id, registerRender]);

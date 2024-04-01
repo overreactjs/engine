@@ -5,7 +5,8 @@ import { Node } from "./Node";
 type CircleProps = {
   pos?: Prop<Position>;
   size: Prop<Size>;
-  color: Prop<string>;
+  color?: Prop<string>;
+  children?: React.ReactNode;
   className?: string;
 };
 
@@ -21,20 +22,22 @@ export const Circle: React.FC<CircleProps> = ({ className, ...props }) => {
 
   const pos = usePosition(props.pos);
   const size = useProperty<Size>(props.size);
-  const color = useProperty<string>(props.color);
+  const color = useProperty<string>(props.color || 'transparent');
 
   useRender(() => {
     element.setBaseStyles({ pos, size });
 
     if (color.invalidated) {
-      element.setStyle('background', color.current);
+      element.setStyle('background-color', color.current);
       color.invalidated = false;
     }
   });
 
   return (
     <Node pos={pos}>
-      <div ref={element.ref} className={`absolute rounded-[100%] ${className}`} style={{ contain: 'content' }} />
+      <div ref={element.ref} className={`absolute rounded-[100%] ${className}`} style={{ contain: 'content' }}>
+        {props.children}
+      </div>
     </Node>
   );
 }

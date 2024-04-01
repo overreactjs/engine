@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { GamepadContext } from "../context";
 import { GamepadButtonName } from "../types";
 
@@ -40,33 +40,33 @@ export const Gamepad: React.FC<GamepadProps> = ({ children }) => {
     return navigator.getGamepads()[0]?.axes[axis] || 0;
   }, []);
 
-  const handleGamepadConnected = useCallback((event: GamepadEvent) => {
-    console.log(
-        'Gamepad connected at index %d: %s. %d buttons, %d axes.',
-        event.gamepad.index,
-        event.gamepad.id,
-        event.gamepad.buttons.length,
-        event.gamepad.axes.length,
-    );
-  }, []);
+  // const handleGamepadConnected = useCallback((event: GamepadEvent) => {
+  //   console.log(
+  //       'Gamepad connected at index %d: %s. %d buttons, %d axes.',
+  //       event.gamepad.index,
+  //       event.gamepad.id,
+  //       event.gamepad.buttons.length,
+  //       event.gamepad.axes.length,
+  //   );
+  // }, []);
 
-  const handleGamepadDisconnected = useCallback((event: GamepadEvent) => {
-    console.log(
-        'Gamepad disconnected from index %d: %s.',
-        event.gamepad.index,
-        event.gamepad.id,
-    );
-  }, []);
+  // const handleGamepadDisconnected = useCallback((event: GamepadEvent) => {
+  //   console.log(
+  //       'Gamepad disconnected from index %d: %s.',
+  //       event.gamepad.index,
+  //       event.gamepad.id,
+  //   );
+  // }, []);
 
-  useEffect(() => {
-    addEventListener('gamepadconnected', handleGamepadConnected);
-    addEventListener('gamepaddisconnected', handleGamepadDisconnected);
+  // useEffect(() => {
+  //   addEventListener('gamepadconnected', handleGamepadConnected);
+  //   addEventListener('gamepaddisconnected', handleGamepadDisconnected);
 
-    return () => {
-      removeEventListener('gamepadconnected', handleGamepadConnected);
-      removeEventListener('gamepaddisconnected', handleGamepadDisconnected);  
-    };
-  }, [handleGamepadConnected, handleGamepadDisconnected]);
+  //   return () => {
+  //     removeEventListener('gamepadconnected', handleGamepadConnected);
+  //     removeEventListener('gamepaddisconnected', handleGamepadDisconnected);  
+  //   };
+  // }, [handleGamepadConnected, handleGamepadDisconnected]);
 
   const context = useMemo(
     () => ({ isButtonDown, getButtonAxis, getAnalogAxis }),

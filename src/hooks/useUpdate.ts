@@ -3,12 +3,17 @@ import { Prop, UpdateFunction } from "../types";
 import { NodeContext } from "../context";
 import { useProperty } from "./useProperty";
 
+type UseUpdateOptions = {
+  id?: string;
+}
+
 /**
  * Register an update function that runs every frame.
  */
-export const useUpdate = (fn: UpdateFunction): string => {
-  const { registerUpdate } = useContext(NodeContext) || {};
-  const id = useId();
+export const useUpdate = (fn: UpdateFunction, options?: UseUpdateOptions): string => {
+  const { registerUpdate } = useContext(NodeContext);
+  const generatedId = useId();
+  const id = options?.id || generatedId;
 
   useEffect(() => registerUpdate?.(id, fn), [fn, id, registerUpdate]);
 
@@ -19,9 +24,10 @@ export const useUpdate = (fn: UpdateFunction): string => {
  * Register an update function that runs every frame, and is guaranteed to run after another
  * update function has completed.
  */
-export const useUpdateAfter = (target: string, fn: UpdateFunction): string => {
-  const { registerUpdate } = useContext(NodeContext) || {};
-  const id = useId();
+export const useUpdateAfter = (target: string, fn: UpdateFunction, options?: UseUpdateOptions): string => {
+  const { registerUpdate } = useContext(NodeContext);
+  const generatedId = useId();
+  const id = options?.id || generatedId;
 
   useEffect(() => registerUpdate?.(id, fn, { after: target }), [fn, id, registerUpdate]);
 

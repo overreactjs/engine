@@ -5,7 +5,7 @@ import { Position } from "../types";
  * Calculate the chance of something occurring.
  */
 export const chance = (threshold: number): boolean => {
-  return Math.random() < (threshold / 2000);
+  return Math.random() <= (threshold / 2000);
 }
 
 /**

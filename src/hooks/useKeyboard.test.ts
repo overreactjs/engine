@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { nextFrame, renderHook } from '../test';
-import { useKeyboard } from "./useKeyboard";
+import { useKeyAxis, useKeyPressed, useKeyboard } from "./useKeyboard";
 
 describe('useKeyboard', () => {
   describe('isKeyDown', () => {
@@ -123,5 +123,56 @@ describe('useKeyboard', () => {
         expect(hasKeyAxis('KeyA', 'KeyD')).toBe(0);
       });
     });
+  });
+});
+
+describe('useKeyPressed', () => {
+  describe('when the key is pressed', () => {
+    it('calls the callback', () => {
+      const callback = vi.fn();
+      const { result } = renderHook(() => {
+        useKeyPressed('KeyA', callback);
+        return useKeyboard();
+      });
+      const { simulateKeyDown, simulateKeyUp } = result.current;
+      
+      nextFrame();
+      expect(callback).not.toHaveBeenCalled();
+
+      simulateKeyDown('KeyA');
+      simulateKeyUp('KeyA');
+      nextFrame();
+      expect(callback).toHaveBeenCalledOnce();
+    });
+  });
+});
+
+describe('useKeyAxis', () => {
+  it('calls the callback every frame, with the correct axis value', () => {
+    const callback = vi.fn();
+    const { result } = renderHook(() => {
+      useKeyAxis('KeyA', 'KeyD', callback);
+      return useKeyboard();
+    });
+    const { simulateKeyDown, simulateKeyUp } = result.current;
+    
+    nextFrame();
+    expect(callback).toHaveBeenLastCalledWith(0, expect.any(Number));
+
+    simulateKeyDown('KeyA');
+    nextFrame();
+    expect(callback).toHaveBeenLastCalledWith(-1, expect.any(Number));
+
+    simulateKeyDown('KeyD');
+    nextFrame();
+    expect(callback).toHaveBeenLastCalledWith(0, expect.any(Number));
+
+    simulateKeyUp('KeyA');
+    nextFrame();
+    expect(callback).toHaveBeenLastCalledWith(1, expect.any(Number));
+
+    simulateKeyUp('KeyD');
+    nextFrame();
+    expect(callback).toHaveBeenLastCalledWith(0, expect.any(Number));
   });
 });

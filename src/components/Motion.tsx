@@ -21,7 +21,7 @@ export const Motion: React.FC<MotionProps> = ({ children }) => {
    */
   const isShaking = useCallback(() => {
     const [x, y, z] = acceleration.current;
-    return Math.abs(x) + Math.abs(y) + Math.abs(z) > 25;
+    return Math.abs(x) + Math.abs(y) + Math.abs(z) >= 25;
   }, [acceleration]);
 
   /**
