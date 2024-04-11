@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { StateMachine } from "./StateMachine";
-import { StateDefinitions, StateFunction } from "../types";
+import { StateDefinitions } from "../types";
 
 describe('StateMachine', () => {
   const createSubject = (states?: StateDefinitions<unknown>) => {

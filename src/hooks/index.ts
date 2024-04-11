@@ -36,7 +36,8 @@ export { useSync } from './useSync';
 export { useTicker } from './useTicker';
 export { useUpdate, useUpdateAfter, useFixedUpdate } from './useUpdate';
 export { useViewport } from './useViewport';
-export { useVirtualAction, useVirtualInput } from './useVirtualInput';
+export { useVirtualAction } from './useVirtualAction';
+export { useVirtualInput } from './useVirtualInput';
 export { useWorld } from './useWorld';
 
 export type { PlatformMovementEventType, UsePlatformMovementOptions, UsePlatformMovementResult } from './usePlatformMovement';
