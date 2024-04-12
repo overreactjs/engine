@@ -35,7 +35,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test-ci": "vitest run"
+    "test-ci": "vitest --coverage run"
   },
   "dependencies": {
     "detect-collisions": "^9.2.2",
