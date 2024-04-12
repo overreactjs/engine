@@ -1,13 +1,17 @@
 # Change log
 
-## 0.14.0 (Unreleased)
+## 0.14.1
+
+- Fixed a bug in the state machine, ensuring that the age is always zero on the first call of any new state function.
+
+## 0.14.0
 
 - Added initial support for gamepads, with support for 'standard' gamepad layouts.
 - Added `useGamepadMap` hook for easily hooking up gamepads to virtual inputs.
 - Added `useSequence` hook to iteratively check a set of conditions are met in order.
 - Added `active` prop to `ParticleGenerator` component.
 - Added integration testing framework.
-- Fixed bug in update function processing, where 'after' update functions were sometimes not invoked.
+- Fixed a bug in update function processing, where 'after' update functions were sometimes not invoked.
 - Improved update function processing to avoid unresolvable cycles.
 
 ## 0.13.0

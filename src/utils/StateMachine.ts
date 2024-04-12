@@ -13,37 +13,40 @@ export class StateMachine<T> {
 
   readonly age: Property<number>;
   
-  init = false;
+  readonly init: Property<boolean>;
 
   constructor(entity: T, state: string, states: StateDefinitions<T>) {
     this.entity = entity;
     this.age = new VariableProperty(0);
     this.stack = new VariableProperty([state]);
     this.state = new VariableProperty(state);
+    this.init = new VariableProperty(true);
     this.states = states;
   }
 
   update(delta: number) {
-    this.age.current += delta;
-    
+    if (!this.init.current) {
+      this.age.current += delta;
+    }
+
+    this.init.current = false;
+
     const stack = this.stack.current;
     (this.states[stack[stack.length - 1]])?.(this, delta);
-
-    this.init = false;
   }
 
   push(state: string) {
     this.stack.current.push(state);
     this.state.current = state;
     this.age.current = 0;
-    this.init = true;
+    this.init.current = true;
   }
 
   pop() {
     this.stack.current.pop();
     this.state.current = this.stack.current[this.stack.current.length - 1];
     this.age.current = 0;
-    this.init = true;
+    this.init.current = true;
   }
 
   replace(state: string) {
@@ -53,7 +56,7 @@ export class StateMachine<T> {
       this.stack.current[index] = state;
       this.state.current = state;
       this.age.current = 0;
-      this.init = true;
+      this.init.current = true;
     }
   }
 }

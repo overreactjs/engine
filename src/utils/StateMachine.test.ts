@@ -28,16 +28,20 @@ describe('StateMachine', () => {
 
       const fsm = createSubject({ idle });
 
-      fsm.update(10);
+      fsm.update(10); // age = 0
       expect(fsm.states.idle).toHaveBeenCalledTimes(1);
       expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-      fsm.update(10); // this causes the replace
+      fsm.update(10); // age = 10
       expect(fsm.states.idle).toHaveBeenCalledTimes(2);
       expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-      fsm.update(10);
-      expect(fsm.states.idle).toHaveBeenCalledTimes(2);
+      fsm.update(10); // age = 20, this causes the replace
+      expect(fsm.states.idle).toHaveBeenCalledTimes(3);
+      expect(fsm.states.walk).toHaveBeenCalledTimes(0);
+
+      fsm.update(10); // age = 0
+      expect(fsm.states.idle).toHaveBeenCalledTimes(3);
       expect(fsm.states.walk).toHaveBeenCalledTimes(1);
     });
   });
@@ -54,16 +58,20 @@ describe('StateMachine', () => {
 
       const fsm = createSubject({ idle });
 
-      fsm.update(10);
+      fsm.update(10); // age = 0
       expect(fsm.states.idle).toHaveBeenCalledTimes(1);
       expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-      fsm.update(10); // this causes the replace
+      fsm.update(10); // age = 10
       expect(fsm.states.idle).toHaveBeenCalledTimes(2);
       expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-      fsm.update(10);
-      expect(fsm.states.idle).toHaveBeenCalledTimes(2);
+      fsm.update(10); // age = 20, this causes the replace
+      expect(fsm.states.idle).toHaveBeenCalledTimes(3);
+      expect(fsm.states.walk).toHaveBeenCalledTimes(0);
+
+      fsm.update(10); // age = 0
+      expect(fsm.states.idle).toHaveBeenCalledTimes(3);
       expect(fsm.states.walk).toHaveBeenCalledTimes(1);
     });
   });
@@ -78,16 +86,20 @@ describe('StateMachine', () => {
 
       const fsm = createSubject({ idle });
 
-      fsm.update(10);
+      fsm.update(10); // age = 0
       expect(fsm.states.idle).toHaveBeenCalledTimes(1);
       expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-      fsm.update(10); // this causes the push
+      fsm.update(10); // age = 10
       expect(fsm.states.idle).toHaveBeenCalledTimes(2);
       expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-      fsm.update(10);
-      expect(fsm.states.idle).toHaveBeenCalledTimes(2);
+      fsm.update(10); // age = 20, this causes the push
+      expect(fsm.states.idle).toHaveBeenCalledTimes(3);
+      expect(fsm.states.walk).toHaveBeenCalledTimes(0);
+
+      fsm.update(10); // age = 0
+      expect(fsm.states.idle).toHaveBeenCalledTimes(3);
       expect(fsm.states.walk).toHaveBeenCalledTimes(1);
     });
 
@@ -107,25 +119,33 @@ describe('StateMachine', () => {
   
         const fsm = createSubject({ idle, walk });
   
-        fsm.update(10);
+        fsm.update(10); // age = 0
         expect(fsm.states.idle).toHaveBeenCalledTimes(1);
         expect(fsm.states.walk).toHaveBeenCalledTimes(0);
 
-        fsm.update(10); // this causes the push
+        fsm.update(10); // age = 10
         expect(fsm.states.idle).toHaveBeenCalledTimes(2);
         expect(fsm.states.walk).toHaveBeenCalledTimes(0);
+
+        fsm.update(10); // age = 20, this causes the push
+        expect(fsm.states.idle).toHaveBeenCalledTimes(3);
+        expect(fsm.states.walk).toHaveBeenCalledTimes(0);
   
-        fsm.update(10);
-        expect(fsm.states.idle).toHaveBeenCalledTimes(2);
+        fsm.update(10); // age = 0
+        expect(fsm.states.idle).toHaveBeenCalledTimes(3);
         expect(fsm.states.walk).toHaveBeenCalledTimes(1);
   
-        fsm.update(10); // this causes the pop
-        expect(fsm.states.idle).toHaveBeenCalledTimes(2);
-        expect(fsm.states.walk).toHaveBeenCalledTimes(2);
-  
-        fsm.update(10);
+        fsm.update(10); // age = 10
         expect(fsm.states.idle).toHaveBeenCalledTimes(3);
         expect(fsm.states.walk).toHaveBeenCalledTimes(2);
+  
+        fsm.update(10); // age = 20, this causes the pop
+        expect(fsm.states.idle).toHaveBeenCalledTimes(3);
+        expect(fsm.states.walk).toHaveBeenCalledTimes(3);
+
+        fsm.update(10); // age = 0
+        expect(fsm.states.idle).toHaveBeenCalledTimes(4);
+        expect(fsm.states.walk).toHaveBeenCalledTimes(3);
       });
     });
   });
