@@ -39,5 +39,5 @@ export const PhysicsCircle: React.FC<PhysicsCircleProps> = (props) => {
     }
   });
 
-  return <div ref={element.ref} className={CLASS_NAME} style={{ contain: 'content' }} />;
+  return <div ref={element.ref} className={CLASS_NAME} style={{ display: 'none', contain: 'content' }} />;
 }
