@@ -19,12 +19,15 @@ export const useSwipe = () => {
     }
 
     if (pointer.isDown()) {
-      started.current = started.current || [...pointer.pos.current];
-      distance.current = [
-        pointer.pos.current[0] - started.current[0],
-        pointer.pos.current[1] - started.current[1],
-      ];
+      const [x, y] = pointer.pos.current;
 
+      if (!Number.isNaN(x) && !Number.isNaN(y)) {
+        if (!started.current) {
+          started.current = [x, y];  
+        } else {
+          distance.current = [x - started.current[0], y - started.current[1]];
+        }
+      }
     } else if (started.current !== null) {
       swiped.current = true;
       started.current = null;
