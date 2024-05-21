@@ -1,6 +1,6 @@
 # Change log
 
-## Unreleased
+## 0.15.0
 
 - Added support for multi touch pointer events.
 - Improved performance by only updating the `BitmapSprite` offset when it's visible on screen.
