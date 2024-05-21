@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added support for multi touch pointer events.
 - Improved performance by only updating the `BitmapSprite` offset when it's visible on screen.
 - Fixed a bug in the handling of nodes, ensuring a name is always provided.
 - Hide debug elements for physics bodies by default.
