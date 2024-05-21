@@ -1,4 +1,4 @@
-import { useRef, useCallback, useMemo } from "react";
+import { useRef, useCallback, useMemo, useId } from "react";
 import { UpdateFunction, RenderFunction, TickerFunction, UpdateConfig, UpdateOptions, Prop } from "../types";
 import { useRender } from "./useRender";
 import { useUpdate } from "./useUpdate";
@@ -7,6 +7,7 @@ import { useProperty } from ".";
 
 type UseNodeOptions = {
   timeScale?: Prop<number>;
+  name?: string;
 }
 
 export const useNode = (options?: UseNodeOptions) => {
@@ -77,8 +78,11 @@ export const useNode = (options?: UseNodeOptions) => {
     return () => renders.current.delete(id);
   }, []);
 
+  const generatedId = useId();
+  const id = options?.name ? 'useNode.' + options?.name : generatedId;
+
   useTicker(ticker);
-  useUpdate(update);
+  useUpdate(update, { id });
   useRender(render);
 
   return useMemo(

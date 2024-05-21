@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Improved performance by only updating the `BitmapSprite` offset when it's visible on screen.
+- Fixed a bug in the handling of nodes, ensuring a name is always provided.
 
 
 ## 0.14.1
