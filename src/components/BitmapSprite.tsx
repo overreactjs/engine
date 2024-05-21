@@ -54,7 +54,9 @@ export const BitmapSprite: React.FC<BitmapSpriteProps> = ({ sprite, ...props }) 
     frameIndex.current = Math.min(sprite.count - 1, frameIndex.current);
     frameTime.current -= frameIncrement * frameMillis;
 
-    offset.current[0] = frameIndex.current * frameWidth.current;
+    if (element.ref.current?.style.display !== 'none') {
+      offset.current[0] = frameIndex.current * frameWidth.current;
+    }
   });
 
   return <BitmapImage element={element} image={sprite} pos={pos} size={size} factor={factor} scale={scale} offset={offset} flip={flip} angle={angle} />;

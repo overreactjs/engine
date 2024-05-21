@@ -1,5 +1,10 @@
 # Change log
 
+## Unreleased
+
+- Improved performance by only updating the `BitmapSprite` offset when it's visible on screen.
+
+
 ## 0.14.1
 
 - Fixed a bug in the state machine, ensuring that the age is always zero on the first call of any new state function.
