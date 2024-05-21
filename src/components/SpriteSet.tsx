@@ -23,9 +23,9 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
   const animation = useProperty(props.animation);
   const animations = useRef<Map<string, AnimationConfig>>(new Map());
   
-  const register = useCallback((animation: string, element: MutableRefObject<HTMLOrSVGElement | null>, reset: () => void) => {
-    animations.current.set(animation, { element, reset });
-    return () => animations.current.delete(animation);
+  const register = useCallback((name: string, element: MutableRefObject<HTMLOrSVGElement | null>, reset: () => void) => {
+    animations.current.set(name, { element, reset });
+    return () => animations.current.delete(name);
   }, []);
 
   const context = useMemo(() => ({ register }), [register]);
@@ -35,11 +35,11 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
       for (const [id, { element, reset }] of animations.current) {
         const elem = element.current as HTMLElement;
 
-        if (elem.style.visibility === 'hidden' && id === animation.current) {
+        if (elem.style.display === 'none' && id === animation.current) {
           reset();
         }
 
-        elem.style.visibility = id === animation.current ? 'visible' : 'hidden';
+        elem.style.display = id === animation.current ? 'block' : 'none';
       }
 
       animation.invalidated = false;
