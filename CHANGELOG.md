@@ -1,6 +1,6 @@
 # Change log
 
-## Unreleased
+## 0.16.0
 
 - Added support for setting `visible` flags in the node hierarchy, along with a `useVisible` hook.
 - Added visibility support to `BitmapImage` and `BitmapSprite` components.
