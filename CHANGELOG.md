@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added support for setting `visible` flags in the node hierarchy.
+- Added visibility support to `BitmapImage` and `BitmapSprite` components.
 
 ## 0.15.0
 

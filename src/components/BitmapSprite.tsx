@@ -1,16 +1,11 @@
-import { useElement, usePosition, useProperty, useSpriteSet, useUpdate } from "../hooks";
-import { BitmapSpriteAsset, Position, Prop, Size } from "../types";
+import { useElement, usePosition, useProperty, useSpriteSet, useUpdate, useVisible } from "../hooks";
+import { BitmapSpriteAsset, BaseStyleProps, Position, Size } from "../types";
 import { BitmapImage } from "./BitmapImage";
 
-type BitmapSpriteProps = {
+export type BitmapSpriteProps = BaseStyleProps & {
   name?: string;
   sprite: BitmapSpriteAsset;
-  pos?: Prop<Position>;
-  size: Prop<Size>;
-  flip?: Prop<boolean>;
   repeat?: boolean;
-  angle?: Prop<number>;
-  scale?: Prop<number>;
 };
 
 /**
@@ -28,6 +23,8 @@ export const BitmapSprite: React.FC<BitmapSpriteProps> = ({ sprite, ...props }) 
   const flip = useProperty(props.flip || false);
   const angle = useProperty(props.angle || 0);
   const scale = useProperty(props.scale || 1);
+  const visible = useVisible(props.visible);
+
   const repeat = useProperty(props.repeat === undefined ? true : props.repeat);
   const frameWidth = useProperty<number>(sprite.size[0] / sprite.count);
   const frameIndex = useProperty<number>(0);
@@ -59,5 +56,18 @@ export const BitmapSprite: React.FC<BitmapSpriteProps> = ({ sprite, ...props }) 
     }
   });
 
-  return <BitmapImage element={element} image={sprite} pos={pos} size={size} factor={factor} scale={scale} offset={offset} flip={flip} angle={angle} />;
+  return (
+    <BitmapImage
+      element={element}
+      image={sprite}
+      pos={pos}
+      size={size}
+      factor={factor}
+      scale={scale}
+      offset={offset}
+      flip={flip}
+      angle={angle}
+      visible={visible}
+    />
+  );
 };

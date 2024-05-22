@@ -1,17 +1,12 @@
 import { Node } from '../components';
-import { usePosition, useProperty, useRender } from "../hooks";
+import { usePosition, useProperty, useRender, useVisible } from "../hooks";
 import { UseElementResult, useElement } from "../hooks/useElement";
-import { BitmapAsset, Position, Prop, Size } from "../types";
+import { BitmapAsset, BaseStyleProps, Position, Prop, Size } from "../types";
 
-type BitmapImageProps = {
+export type BitmapImageProps = BaseStyleProps & {
   element?: UseElementResult<HTMLDivElement>;
   image: Prop<BitmapAsset>;
-  pos?: Prop<Position>;
-  size: Prop<Size>;
   offset: Prop<Position>;
-  flip?: Prop<boolean>;
-  scale?: Prop<number>;
-  angle?: Prop<number>;
   factor?: Prop<Size>;
 }
 
@@ -29,13 +24,15 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
   const pos = usePosition(props.pos);
   const size = useProperty(props.size);
   const flip = useProperty(props.flip || false);
-  const offset = useProperty(props.offset);
   const scale = useProperty(props.scale || 1);
   const angle = useProperty(props.angle || 0);
+  const visible = useVisible(props.visible);
+
+  const offset = useProperty(props.offset);
   const factor = useProperty(props.factor || [1, 1]);
 
   useRender(() => {
-    element.setBaseStyles({ pos, size, angle, flip, scale });
+    element.setBaseStyles({ pos, size, angle, flip, scale, visible });
 
     if (image.invalidated) {
       element.setLegacyStyle('backgroundImage', `url(${image.current.url})`);
