@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-- Added support for setting `visible` flags in the node hierarchy.
+- Added support for setting `visible` flags in the node hierarchy, along with a `useVisible` hook.
 - Added visibility support to `BitmapImage` and `BitmapSprite` components.
+- Added `useFlash` hook for easily flashing elements.
 
 ## 0.15.0
 

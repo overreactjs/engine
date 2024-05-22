@@ -7,6 +7,7 @@ export { useDevice } from './useDevice';
 export { useDynamicProperty, useCachedDynamicProperty } from './useDynamicProperty';
 export { useElement } from './useElement';
 export { useEventListeners } from './useEventListeners';
+export { useFlash } from './useFlash';
 export { useGamepad } from './useGamepad';
 export { useGamepadMap } from './useGamepadMap';
 export { useIntegerPosition } from './useIntegerPosition';
