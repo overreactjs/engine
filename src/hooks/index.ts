@@ -38,6 +38,7 @@ export { useUpdate, useUpdateAfter, useFixedUpdate } from './useUpdate';
 export { useViewport } from './useViewport';
 export { useVirtualAction } from './useVirtualAction';
 export { useVirtualInput } from './useVirtualInput';
+export { useVisible } from './useVisible';
 export { useWorld } from './useWorld';
 
 export type { PlatformMovementEventType, UsePlatformMovementOptions, UsePlatformMovementResult } from './usePlatformMovement';

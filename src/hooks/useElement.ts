@@ -8,6 +8,7 @@ export type SetBaseStyles = {
   flip?: Property<boolean>;
   opacity?: Property<number>;
   scale?: Property<number>;
+  visible?: Property<boolean>;
   force?: boolean;
 }
 
@@ -80,7 +81,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
    * Set the commonly used base styles: position, size, angle, and flip.
    */
   const setBaseStyles = useCallback((options: SetBaseStyles) => {
-    const { pos, size, angle, flip, opacity, scale, force = false } = options;
+    const { pos, size, angle, flip, opacity, scale, visible, force = false } = options;
 
     let transformsChanged = false;
 
@@ -133,6 +134,12 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
         // ref.current?.attributeStyleMap.set('opacity', CSS.number(opacity.current));
         ref.current.style.opacity = `${opacity.current}`;
         opacity.invalidated = false;
+      }
+
+      if (visible?.invalidated || (force && visible)) {
+        // ref.current?.attributeStyleMap.set('visibility', visible.current ? 'visible' : 'hidden');
+        ref.current.style.visibility = visible.current ? 'visible' : 'hidden';
+        visible.invalidated = false;
       }
     }
   }, [setStyle]);

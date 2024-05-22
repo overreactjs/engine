@@ -17,6 +17,15 @@ export type Velocity = [number, number];
 
 export type Size = [number, number];
 
+export type BaseStyleProps = {
+  pos?: Prop<Position>;
+  size: Prop<Size>;
+  flip?: Prop<boolean>;
+  angle?: Prop<number>;
+  scale?: Prop<number>;
+  visible?: Prop<boolean>;
+};
+
 export type BitmapAsset = {
   url: string;
   size: Position;

@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased
+
+- Added support for setting `visible` flags in the node hierarchy.
+
 ## 0.15.0
 
 - Added support for multi touch pointer events.
