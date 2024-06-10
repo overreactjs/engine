@@ -1,6 +1,6 @@
 # Change log
 
-## Unreleased
+## 0.17.0
 
 - Added `useBaseStyleProperties` for cleaner handling of base styles.
 - Added full base styles support to the `Box` component.
