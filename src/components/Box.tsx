@@ -1,13 +1,10 @@
-import { useElement, usePosition, useProperty, useRender } from "../hooks";
+import { useBaseStyleProperties, useElement, useProperty, useRender } from "../hooks";
 import { UseElementResult } from "../hooks/useElement";
-import { Position, Prop, Size } from "../types";
+import { BaseStyleProps, Prop } from "../types";
 import { Node } from "./Node";
 
-type BoxProps = {
+type BoxProps = BaseStyleProps & {
   element?: UseElementResult<HTMLDivElement>;
-  pos?: Prop<Position>;
-  size: Prop<Size>;
-  angle?: Prop<number>;
   color?: Prop<string>;
   children?: React.ReactNode;
   className?: string;
@@ -23,13 +20,11 @@ type BoxProps = {
 export const Box: React.FC<BoxProps> = ({ className, ...props }) => {
   const element = useElement(props.element);
 
-  const pos = usePosition(props.pos);
-  const size = useProperty(props.size);
-  const angle = useProperty(props.angle || 0);
+  const base = useBaseStyleProperties(props);
   const color = useProperty(props.color || 'transparent');
 
   useRender(() => {
-    element.setBaseStyles({ pos, size, angle });
+    element.setBaseStyles(base);
 
     if (color.invalidated) {
       element.setStyle('background-color', color.current);
@@ -38,7 +33,7 @@ export const Box: React.FC<BoxProps> = ({ className, ...props }) => {
   });
 
   return (
-    <Node pos={pos}>
+    <Node pos={base.pos}>
       <div ref={element.ref} className={`absolute ${className || ''}`} style={{ contain: 'content' }}>
         {props.children}
       </div>
