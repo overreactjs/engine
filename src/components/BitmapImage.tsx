@@ -1,5 +1,5 @@
 import { Node } from '../components';
-import { usePosition, useProperty, useRender, useVisible } from "../hooks";
+import { useBaseStyleProperties, useProperty, useRender } from "../hooks";
 import { UseElementResult, useElement } from "../hooks/useElement";
 import { BitmapAsset, BaseStyleProps, Position, Prop, Size } from "../types";
 
@@ -20,19 +20,13 @@ export type BitmapImageProps = BaseStyleProps & {
 export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
   const element = useElement<HTMLDivElement>(props.element);
 
+  const base = useBaseStyleProperties(props);
   const image = useProperty(props.image);
-  const pos = usePosition(props.pos);
-  const size = useProperty(props.size);
-  const flip = useProperty(props.flip || false);
-  const scale = useProperty(props.scale || 1);
-  const angle = useProperty(props.angle || 0);
-  const visible = useVisible(props.visible);
-
   const offset = useProperty(props.offset);
   const factor = useProperty(props.factor || [1, 1]);
 
   useRender(() => {
-    element.setBaseStyles({ pos, size, angle, flip, scale, visible });
+    element.setBaseStyles(base);
 
     if (image.invalidated) {
       element.setLegacyStyle('backgroundImage', `url(${image.current.url})`);
@@ -57,7 +51,7 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
   });
 
   return (
-    <Node pos={pos}>
+    <Node pos={base.pos}>
       <div ref={element.ref} className="absolute bg-no-repeat" style={{ imageRendering: 'pixelated' }} />
     </Node>
   )

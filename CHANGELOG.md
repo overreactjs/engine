@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased
+
+- Added `useBaseStyleProperties` for cleaner handling of base styles.
+
 ## 0.16.0
 
 - Added support for setting `visible` flags in the node hierarchy, along with a `useVisible` hook.

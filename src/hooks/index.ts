@@ -1,5 +1,6 @@
 export { use8DirectionMovement } from './use8DirectionMovement';
 export { useAudio } from './useAudio';
+export { useBaseStyleProperties } from './useBaseStyleProperties';
 export { useCollision, useTaggedCollision } from './useCollision';
 export { useCollider, useBoxCollider } from './useCollider';
 export { useDebug } from './useDebug';
