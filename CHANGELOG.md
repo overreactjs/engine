@@ -1,5 +1,9 @@
 # Change log
 
+## 0.18.0
+
+- Refactored `useProperty` to sync value changes for scalars to the underlying property.
+
 ## 0.17.0
 
 - Added `useBaseStyleProperties` for cleaner handling of base styles.
