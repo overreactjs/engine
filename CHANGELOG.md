@@ -2,8 +2,9 @@
 
 ## 0.19.0
 
-- Refactored `DynamicProperty` to ensure it is initially considered invalidated, even if the underlying property is not.
+- Added multi-channel audio engine, with support for controlling channels independently.
 - Added new `ParticleEngine`, replacing existing particle generator.
+- Refactored `DynamicProperty` to ensure it is initially considered invalidated, even if the underlying property is not.
 
 ## 0.18.0
 

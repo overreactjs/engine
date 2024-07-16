@@ -1,3 +1,4 @@
+export { AudioEngine, AudioEngineContext } from './AudioEngine';
 export { BitmapImage } from './BitmapImage';
 export { BitmapSprite } from './BitmapSprite';
 export { BitmapText } from './BitmapText';
