@@ -21,6 +21,7 @@ export { useNode } from './useNode';
 export { useOffsetPosition } from './useOffsetPosition';
 export { useOrientation } from './useOrientation';
 export { useOverlap } from './useOverlap';
+export { useParticles } from './useParticles';
 export { usePhysicsBody, useBoxPhysics, useCirclePhysics } from './usePhysics';
 export { usePhysicsEngine, usePhysicsCollision } from './usePhysicsEngine';
 export { usePlatformMovement } from './usePlatformMovement';

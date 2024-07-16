@@ -3,6 +3,7 @@
 ## 0.19.0
 
 - Refactored `DynamicProperty` to ensure it is initially considered invalidated, even if the underlying property is not.
+- Added new `ParticleEngine`, replacing existing particle generator.
 
 ## 0.18.0
 

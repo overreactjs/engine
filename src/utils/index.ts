@@ -1,4 +1,5 @@
 export * from "./utils";
+export { BaseParticle } from "./BaseParticle";
 export type { Body } from "./BoxBody";
 export { BoxBody } from "./BoxBody";
 export { DynamicProperty } from "./DynamicProperty";
