@@ -2,6 +2,7 @@ import { Property } from "../types";
 
 export class DynamicProperty<IN, OUT> {
 
+  private _invalidated: boolean = true;
   private value: Property<IN>;
   private fn: (value: IN) => OUT;
 
@@ -15,10 +16,11 @@ export class DynamicProperty<IN, OUT> {
   }
 
   get invalidated(): boolean {
-    return this.value.invalidated;
+    return this._invalidated || this.value.invalidated;
   }
 
   set invalidated(value: boolean) {
+    this._invalidated = false;
     this.value.invalidated = value;
   }
 }

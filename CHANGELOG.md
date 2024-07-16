@@ -1,5 +1,9 @@
 # Change log
 
+## 0.19.0
+
+- Refactored `DynamicProperty` to ensure it is initially considered invalidated, even if the underlying property is not.
+
 ## 0.18.0
 
 - Refactored `useProperty` to sync value changes for scalars to the underlying property.

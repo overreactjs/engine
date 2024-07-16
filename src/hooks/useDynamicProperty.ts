@@ -2,14 +2,23 @@ import { useMemo, useRef } from "react";
 import { Property } from "../types";
 import { DynamicProperty } from "../utils";
 
+/**
+ * Create a new dynamic property, with a value derived from another property.
+ */
 export function useDynamicProperty<IN, OUT>(
   value: Property<IN>,
   fn: (value: IN) => OUT,
 ) {
   const ref = useRef(fn);
+
   return useMemo(() => new DynamicProperty(value, ref.current), [ref, value]);
 }
 
+/**
+ * Create a new dynamic property, with a value derived from another property, with the output
+ * values cached against the input values, so the function will only be called when an unseen input
+ * values is encountered.
+ */
 export function useCachedDynamicProperty<IN, OUT>(
   value: Property<IN>,
   fn: (value: IN) => OUT,
@@ -26,5 +35,6 @@ export function useCachedDynamicProperty<IN, OUT>(
     cache.current.set(value, output);
     return output
   });
+
   return useMemo(() => new DynamicProperty(value, ref.current), [ref, value]);
 }
