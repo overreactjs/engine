@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MockGamepad, nextFrame, renderHook } from '../test';
-import { useGamepadMap } from './useGamepadMap';
+import { useGamepadButtonMap } from './useGamepadButtonMap';
 import { useVirtualInput } from './useVirtualInput';
 
-describe('useGamepadMap', () => {
+describe('useGamepadButtonMap', () => {
   const renderSubject = (active?: boolean) => {
     return renderHook(() => {
-      useGamepadMap(0, { Shoulder_R1: 'jump' }, active);
+      useGamepadButtonMap(0, { Shoulder_R1: 'jump' }, active);
       const input = useVirtualInput();
       return { input };
     });

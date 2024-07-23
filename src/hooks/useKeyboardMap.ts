@@ -1,10 +1,8 @@
 import { useProperty } from ".";
-import { Prop } from "../types";
+import { KeyboardKeyName, KeyboardMap, Prop } from "../types";
 import { useKeyboard } from "./useKeyboard";
 import { useUpdate } from "./useUpdate";
 import { useVirtualInput } from "./useVirtualInput";
-
-type KeyboardMap = Record<string, string>;
 
 export const useKeyboardMap = (map: KeyboardMap, active?: Prop<boolean>) => {
   const { simulate } = useVirtualInput();
@@ -15,9 +13,9 @@ export const useKeyboardMap = (map: KeyboardMap, active?: Prop<boolean>) => {
   useUpdate(() => {
     if (isActive.current) {
       for (const key in map) {
-        const action = map[key];
+        const action = map[key as KeyboardKeyName];
         
-        if (key !== null && isKeyDown(key)) {
+        if (action && key !== null && isKeyDown(key)) {
           simulate(action);
         }
       }

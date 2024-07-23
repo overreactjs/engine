@@ -1,5 +1,12 @@
 # Change log
 
+## 0.20.0
+
+- Refactored the gamepad input handler to support axes input.
+- Added `useGamepadAxisMap` hook, to map from gamepad axes inputs to virtual inputs.
+- Renamed `useGamepadMap` to `useGamepadButtonMap`, to make it explicitly for buttons.
+- Improved the `useKeyboardMap` types.
+
 ## 0.19.0
 
 - Added multi-channel audio engine, with support for controlling channels independently.

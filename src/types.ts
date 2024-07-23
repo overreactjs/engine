@@ -93,6 +93,55 @@ export type StateDefinitions<T> = PartialRecord<string, StateFunction<T>>;
 
 type PartialRecord<K extends keyof any, T> =  Partial<Record<K, T>>;
 
+export type KeyboardMap = Partial<Record<KeyboardKeyName, string>>;
+
+export type KeyboardKeyName =
+  | 'KeyA'
+  | 'KeyB'
+  | 'KeyC'
+  | 'KeyD'
+  | 'KeyE'
+  | 'KeyF'
+  | 'KeyG'
+  | 'KeyH'
+  | 'KeyI'
+  | 'KeyJ'
+  | 'KeyK'
+  | 'KeyL'
+  | 'KeyM'
+  | 'KeyN'
+  | 'KeyO'
+  | 'KeyP'
+  | 'KeyQ'
+  | 'KeyR'
+  | 'KeyS'
+  | 'KeyT'
+  | 'KeyU'
+  | 'KeyV'
+  | 'KeyW'
+  | 'KeyX'
+  | 'KeyY'
+  | 'KeyZ'
+  | 'Digit0'
+  | 'Digit1'
+  | 'Digit2'
+  | 'Digit3'
+  | 'Digit4'
+  | 'Digit5'
+  | 'Digit6'
+  | 'Digit7'
+  | 'Digit8'
+  | 'Digit9'
+  | 'ArrowUp'
+  | 'ArrowDown'
+  | 'ArrowLeft'
+  | 'ArrowRight'
+  | 'Space'
+  | 'Enter'
+  ;
+
+export type GamepadButtonMap = Partial<Record<GamepadButtonName, string>>;
+
 export type GamepadButtonName =
   | 'Up'
   | 'Down'
@@ -108,4 +157,13 @@ export type GamepadButtonName =
   | 'Shoulder_R2'
   | 'Start'
   | 'Select'
+  ;
+
+export type GamepadAxisMap = Partial<Record<GamepadAxisName, [(string | null), (string | null)]>>;
+
+export type GamepadAxisName =
+  | 'Left_Horizontal'
+  | 'Left_Vertical'
+  | 'Right_Horizontal'
+  | 'Right_Vertical'
   ;
