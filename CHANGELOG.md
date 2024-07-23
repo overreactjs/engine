@@ -5,6 +5,7 @@
 - Refactored the gamepad input handler to support axes input.
 - Added `useGamepadAxisMap` hook, to map from gamepad axes inputs to virtual inputs.
 - Renamed `useGamepadMap` to `useGamepadButtonMap`, to make it explicitly for buttons.
+- Refactored the gamepad hooks to take gamepad index as a prop.
 - Improved the `useKeyboardMap` types.
 
 ## 0.19.0

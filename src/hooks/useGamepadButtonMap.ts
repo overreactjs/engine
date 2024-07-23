@@ -4,7 +4,7 @@ import { useProperty } from "./useProperty";
 import { useUpdate } from "./useUpdate";
 import { useVirtualInput } from "./useVirtualInput";
 
-export const useGamepadButtonMap = (index: Prop<number>, map: GamepadButtonMap, active?: Prop<boolean>) => {
+export const useGamepadButtonMap = (index: Prop<number | null>, map: GamepadButtonMap, active?: Prop<boolean>) => {
   const { simulate } = useVirtualInput();
   const { isButtonDown } = useGamepad();
 
@@ -12,7 +12,7 @@ export const useGamepadButtonMap = (index: Prop<number>, map: GamepadButtonMap, 
   const isActive = useProperty(active === undefined ? true : active);
 
   useUpdate(() => {
-    if (isActive.current) {
+    if (isActive.current && gamepadIndex.current !== null) {
       for (const button in map) {
         const action = map[button as GamepadButtonName];
         

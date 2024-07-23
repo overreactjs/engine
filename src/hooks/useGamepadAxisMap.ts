@@ -6,7 +6,7 @@ import { useVirtualInput } from "./useVirtualInput";
 
 const THRESHOLD = 0.5;
 
-export const useGamepadAxisMap = (index: Prop<number>, map: GamepadAxisMap, active?: Prop<boolean>) => {
+export const useGamepadAxisMap = (index: Prop<number | null>, map: GamepadAxisMap, active?: Prop<boolean>) => {
   const { simulate } = useVirtualInput();
   const { getAnalogAxis } = useGamepad();
 
@@ -14,7 +14,7 @@ export const useGamepadAxisMap = (index: Prop<number>, map: GamepadAxisMap, acti
   const isActive = useProperty(active === undefined ? true : active);
 
   useUpdate(() => {
-    if (isActive.current) {
+    if (isActive.current && gamepadIndex.current !== null) {
       for (const axis in map) {
         const [negative, positive] = map[axis as GamepadAxisName] || [];
         
