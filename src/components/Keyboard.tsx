@@ -1,6 +1,7 @@
 import React, { useRef, useCallback, useEffect, useMemo, useContext } from "react";
 import { EngineContext, KeyboardContext } from "../context";
 import { useTicker } from "../hooks";
+import { KeyboardKeyName } from "../types";
 
 type KeyboardProps = {
   children: React.ReactNode;
@@ -21,14 +22,14 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
   /**
    * Return true if the given key is being held down.
    */
-  const isKeyDown = useCallback((code: string) => {
+  const isKeyDown = useCallback((code: KeyboardKeyName) => {
     return down.current.has(code);
   }, []);
 
   /**
    * Return true if the given key was pressed (down and up).
    */
-  const isKeyPressed = useCallback((code: string) => {
+  const isKeyPressed = useCallback((code: KeyboardKeyName) => {
     return pressed.current.has(code);
   }, []);
 
@@ -36,21 +37,21 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
    * Returns a value between -1 and +1, based on whether the negative and position keys are
    * currently being pressed.
    */
-  const hasKeyAxis = useCallback((negative: string, positive: string) => {
+  const hasKeyAxis = useCallback((negative: KeyboardKeyName, positive: KeyboardKeyName) => {
     return +isKeyDown(positive) - +isKeyDown(negative);
   }, [isKeyDown]);
 
   /**
    * Simulate the press of a key.
    */
-  const simulateKeyDown = useCallback((code: string) => {
+  const simulateKeyDown = useCallback((code: KeyboardKeyName) => {
     dispatchEvent(new KeyboardEvent('keydown', { code }));
   }, []);
 
   /**
    * Simulate the release of a key.
    */
-  const simulateKeyUp = useCallback((code: string) => {
+  const simulateKeyUp = useCallback((code: KeyboardKeyName) => {
     dispatchEvent(new KeyboardEvent('keyup', { code }));
   }, []);
 

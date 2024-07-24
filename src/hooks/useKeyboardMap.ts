@@ -15,7 +15,7 @@ export const useKeyboardMap = (map: KeyboardMap, active?: Prop<boolean>) => {
       for (const key in map) {
         const action = map[key as KeyboardKeyName];
         
-        if (action && key !== null && isKeyDown(key)) {
+        if (action && key !== null && isKeyDown(key as KeyboardKeyName)) {
           simulate(action);
         }
       }

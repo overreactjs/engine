@@ -1,11 +1,12 @@
 import React from "react";
+import { KeyboardKeyName } from "../types";
 
 type KeyboardContextProps = {
-  isKeyDown: (code: string) => boolean;
-  isKeyPressed: (code: string) => boolean;
-  hasKeyAxis: (negative: string, positive: string) => number;
-  simulateKeyDown: (code: string) => void;
-  simulateKeyUp: (code: string) => void;
+  isKeyDown: (code: KeyboardKeyName) => boolean;
+  isKeyPressed: (code: KeyboardKeyName) => boolean;
+  hasKeyAxis: (negative: KeyboardKeyName, positive: KeyboardKeyName) => number;
+  simulateKeyDown: (code: KeyboardKeyName) => void;
+  simulateKeyUp: (code: KeyboardKeyName) => void;
 }
 
 export const KeyboardContext = React.createContext<KeyboardContextProps>({

@@ -138,6 +138,7 @@ export type KeyboardKeyName =
   | 'ArrowRight'
   | 'Space'
   | 'Enter'
+  | 'Escape'
   ;
 
 export type GamepadButtonMap = Partial<Record<GamepadButtonName, string>>;
