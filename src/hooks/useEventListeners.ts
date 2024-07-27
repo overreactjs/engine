@@ -1,12 +1,5 @@
 import { useRef, useCallback, useMemo } from "react";
-
-type EventHandler<T> = (event: T) => void;
-
-type UseEventListenersResult<E, T> = {
-  addEventListener: (type: E, fn: EventHandler<T>) => void;
-  removeEventListener: (type: E, fn: EventHandler<T>) => void;
-  fireEvent: (type: E, payload: T) => void;
-}
+import { EventHandler, UseEventListenersResult } from "../types";
 
 export function useEventListeners<E, T = undefined>(): UseEventListenersResult<E, T> {
   const listeners = useRef<Map<E, Set<EventHandler<T>>>>(new Map());

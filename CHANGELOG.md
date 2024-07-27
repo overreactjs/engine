@@ -2,6 +2,7 @@
 
 ## 0.21.0
 
+- Added `useEventHandler` hook, and fixed types in `useEventListeners`.
 - Fixed the types in `useKeyPressed` and `useKeyAxis` hooks.
 
 ## 0.20.0

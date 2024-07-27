@@ -8,6 +8,7 @@ export { useDebug } from './useDebug';
 export { useDevice } from './useDevice';
 export { useDynamicProperty, useCachedDynamicProperty } from './useDynamicProperty';
 export { useElement } from './useElement';
+export { useEventHandler } from './useEventHandler';
 export { useEventListeners } from './useEventListeners';
 export { useFlash } from './useFlash';
 export { useGamepad } from './useGamepad';
