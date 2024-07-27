@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import { KeyboardContext } from "../context";
 import { useUpdate } from "./useUpdate";
+import { KeyboardKeyName } from "../types";
 
 export const useKeyboard = () => {
   return useContext(KeyboardContext);
 };
 
-export const useKeyPressed = (key: string, fn: () => void) => {
+export const useKeyPressed = (key: KeyboardKeyName, fn: () => void) => {
   const { isKeyPressed } = useKeyboard();
 
   useUpdate(() => {
@@ -18,7 +19,7 @@ export const useKeyPressed = (key: string, fn: () => void) => {
 
 type UseKeyAxisHandler = (value: number, delta: number) => void
 
-export const useKeyAxis = (negative: string, positive: string, fn: UseKeyAxisHandler) => {
+export const useKeyAxis = (negative: KeyboardKeyName, positive: KeyboardKeyName, fn: UseKeyAxisHandler) => {
   const { hasKeyAxis } = useKeyboard();
 
   useUpdate((delta) => {

@@ -1,5 +1,5 @@
-import React, { useRef, useCallback, useEffect, useMemo, useContext } from "react";
-import { EngineContext, KeyboardContext } from "../context";
+import React, { useRef, useCallback, useEffect, useMemo } from "react";
+import { KeyboardContext } from "../context";
 import { useTicker } from "../hooks";
 import { KeyboardKeyName } from "../types";
 
@@ -14,7 +14,6 @@ type KeyboardProps = {
  * 
  */
 export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
-  const { onPause, onDebug } = useContext(EngineContext);
   const down = useRef<Set<string>>(new Set());
   const pressed = useRef<Set<string>>(new Set());
   const _pressed = useRef<Set<string>>(new Set());
@@ -97,18 +96,6 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
       removeEventListener('keyup', handleKeyUp);
     };
   }, [handleKeyDown, handleKeyUp]);
-
-  /**
-   * Toggle pause, and toggle debug mode.
-   */
-  useTicker(() => {
-    if (isKeyPressed('Digit2')) {
-      onPause();
-    }
-    if (isKeyPressed('Digit1')) {
-      onDebug();
-    }
-  });
 
   const context = useMemo(
     () => ({ isKeyDown, isKeyPressed, hasKeyAxis, simulateKeyDown, simulateKeyUp }),

@@ -1,5 +1,9 @@
 # Change log
 
+## 0.21.0
+
+- Fixed the types in `useKeyPressed` and `useKeyAxis` hooks.
+
 ## 0.20.0
 
 - Refactored the gamepad input handler to support axes input.
