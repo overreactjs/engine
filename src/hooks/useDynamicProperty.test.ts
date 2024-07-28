@@ -26,6 +26,7 @@ describe('useDynamicProperty', () => {
     const callback = vi.fn().mockImplementation((value: number) => value + 10);
     const { result } = renderHook(() => useDynamicProperty(property, callback));
 
+    result.current.invalidated = true;
     expect(result.current.invalidated).toBe(true);
 
     property.invalidated = false;

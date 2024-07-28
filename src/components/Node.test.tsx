@@ -17,7 +17,7 @@ describe('Node', () => {
     );
 
     const box = screen.getByText('test');
-    expect(box).toHaveStyle({ transform: 'translate(100px, 50px) rotate(0deg)' });
+    expect(box).toHaveStyle({ transform: 'translate(100px, 50px) rotate(0deg) scale(1, 1)' });
   });
 
   describe('when a position offset is given', () => {
@@ -29,7 +29,7 @@ describe('Node', () => {
       );
 
       const box = screen.getByText('test');
-      expect(box).toHaveStyle({ transform: 'translate(110px, 70px) rotate(0deg)' });
+      expect(box).toHaveStyle({ transform: 'translate(110px, 70px) rotate(0deg) scale(1, 1)' });
     });
   });
 
@@ -42,7 +42,7 @@ describe('Node', () => {
       );
 
       const box = screen.getByText('test');
-      expect(box).toHaveStyle({ transform: 'translate(101px, 52px) rotate(0deg)' });
+      expect(box).toHaveStyle({ transform: 'translate(101px, 52px) rotate(0deg) scale(1, 1)' });
     });
   });
 

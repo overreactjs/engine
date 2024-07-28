@@ -9,7 +9,7 @@ describe('Box', () => {
 
     const box = screen.getByText('test');
     expect(box).toHaveStyle({
-      transform: 'translate(0px, 0px) rotate(0deg)',
+      transform: 'translate(0px, 0px) rotate(0deg) scale(1, 1)',
       width: '20px',
       height: '10px',
     });
@@ -20,7 +20,7 @@ describe('Box', () => {
 
     const box = screen.getByText('test');
     expect(box).toHaveStyle({
-      transform: 'translate(0px, 0px) rotate(42deg)',
+      transform: 'translate(0px, 0px) rotate(42deg) scale(1, 1)',
       width: '20px',
       height: '10px',
     });
@@ -32,7 +32,7 @@ describe('Box', () => {
     const box = screen.getByText('test');
     expect(box).toHaveStyle({
       'background-color': 'rgb(255, 69, 0)',
-      transform: 'translate(0px, 0px) rotate(0deg)',
+      transform: 'translate(0px, 0px) rotate(0deg) scale(1, 1)',
       width: '20px',
       height: '10px',
     });

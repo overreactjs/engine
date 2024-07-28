@@ -62,3 +62,9 @@ class DeviceMotionEvent extends Event {
 }
 
 window.DeviceMotionEvent = DeviceMotionEvent as any;
+
+class AudioContext {
+
+}
+
+window.AudioContext = AudioContext as any;
