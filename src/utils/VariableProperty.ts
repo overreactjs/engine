@@ -1,15 +1,24 @@
+import { Property } from "../types";
 import { ObjectState } from "./ObjectState";
 import { Validator } from "./Validator";
+
+type Listener<T> = (value: Property<T>) => void;
 
 export class VariableProperty<T> extends ObjectState {
 
   private _current: T;
   private _invalidated: boolean = false;
+  
+  private listeners: Set<Listener<T>> = new Set();
 
   constructor(initial: T) {
     super();
     this._current = this.proxy(initial);
     this._invalidated = true;
+  }
+
+  listen(listener: (value: Property<T>) => void) {
+    this.listeners.add(listener);
   }
 
   /**
@@ -36,6 +45,10 @@ export class VariableProperty<T> extends ObjectState {
   set current(value: T) {
     this._current = this.proxy(value);
     this._invalidated = true;
+
+    this.listeners.forEach((listener) => {
+      listener(this);
+    });
   }
 
   get invalidated() {

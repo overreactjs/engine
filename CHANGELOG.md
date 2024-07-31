@@ -1,5 +1,9 @@
 # Change log
 
+## 0.22.0
+
+- Added `listen()` function to variable properties.
+
 ## 0.21.0
 
 - Added `useEventHandler` hook, and fixed types in `useEventListeners`.
