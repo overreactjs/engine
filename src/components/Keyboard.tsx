@@ -26,10 +26,24 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
   }, []);
 
   /**
+   * Return true if any key is being held down.
+   */
+  const isAnyKeyDown = useCallback(() => {
+    return down.current.size > 0;
+  }, []);
+
+  /**
    * Return true if the given key was pressed (down and up).
    */
   const isKeyPressed = useCallback((code: KeyboardKeyName) => {
     return pressed.current.has(code);
+  }, []);
+
+  /**
+   * Return true if any key was pressed.
+   */
+  const isAnyKeyPressed = useCallback(() => {
+    return pressed.current.size > 0;
   }, []);
 
   /**
@@ -98,8 +112,16 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
   }, [handleKeyDown, handleKeyUp]);
 
   const context = useMemo(
-    () => ({ isKeyDown, isKeyPressed, hasKeyAxis, simulateKeyDown, simulateKeyUp }),
-    [isKeyDown, isKeyPressed, hasKeyAxis, simulateKeyDown, simulateKeyUp]
+    () => ({
+      isKeyDown,
+      isAnyKeyDown,
+      isKeyPressed,
+      isAnyKeyPressed,
+      hasKeyAxis,
+      simulateKeyDown,
+      simulateKeyUp,
+    }),
+    [isKeyDown, isAnyKeyDown, isKeyPressed, isAnyKeyPressed, hasKeyAxis, simulateKeyDown, simulateKeyUp]
   );
 
   return (

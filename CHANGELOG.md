@@ -1,5 +1,9 @@
 # Change log
 
+## 0.23.0
+
+- Added `isAnyKeyDown` and `isAnyKeyPressed` functions to the `Keyboard` handler.
+
 ## 0.22.0
 
 - Added `listen()` function to variable properties.
