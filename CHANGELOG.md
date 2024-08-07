@@ -3,6 +3,7 @@
 ## 0.23.0
 
 - Added `isAnyKeyDown` and `isAnyKeyPressed` functions to the `Keyboard` handler.
+- Added `useKeySequence` hook for reading a sequence of keypresses in a specified order.
 
 ## 0.22.0
 

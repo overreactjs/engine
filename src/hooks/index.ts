@@ -17,6 +17,7 @@ export { useGamepadButtonMap } from './useGamepadButtonMap';
 export { useIntegerPosition } from './useIntegerPosition';
 export { useKeyboard, useKeyAxis, useKeyPressed } from './useKeyboard';
 export { useKeyboardMap } from './useKeyboardMap';
+export { useKeySequence } from './useKeySequence';
 export { useLogMount } from './useLogMount';
 export { useMergeProperty } from './useMergeProperty';
 export { useMotion, useDeviceShaken } from './useMotion';
