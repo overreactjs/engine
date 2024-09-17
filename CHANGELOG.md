@@ -1,5 +1,9 @@
 # Change log
 
+## 0.24.0
+
+- Fixed a bug caused by `Viewport` not being absolutely positioned.
+
 ## 0.23.0
 
 - Added `isAnyKeyDown` and `isAnyKeyPressed` functions to the `Keyboard` handler.
