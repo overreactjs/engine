@@ -113,6 +113,8 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
 
   const context = useMemo(
     () => ({
+      down,
+      pressed,
       isKeyDown,
       isAnyKeyDown,
       isKeyPressed,
@@ -121,7 +123,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ children }) => {
       simulateKeyDown,
       simulateKeyUp,
     }),
-    [isKeyDown, isAnyKeyDown, isKeyPressed, isAnyKeyPressed, hasKeyAxis, simulateKeyDown, simulateKeyUp]
+    [down, pressed, isKeyDown, isAnyKeyDown, isKeyPressed, isAnyKeyPressed, hasKeyAxis, simulateKeyDown, simulateKeyUp]
   );
 
   return (

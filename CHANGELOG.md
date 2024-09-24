@@ -1,5 +1,9 @@
 # Change log
 
+## 0.25.0
+
+- Exposed down/pressed key sets in the `KeyboardContext`.
+
 ## 0.24.0
 
 - Fixed a bug caused by `Viewport` not being absolutely positioned.
