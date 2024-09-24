@@ -24,7 +24,7 @@ export const useUpdate = (fn: UpdateFunction, options?: UseUpdateOptions): strin
  * Register an update function that runs every frame, and is guaranteed to run after another
  * update function has completed.
  */
-export const useUpdateAfter = (target: string, fn: UpdateFunction, options?: UseUpdateOptions): string => {
+export const useUpdateAfter = (target: string | undefined, fn: UpdateFunction, options?: UseUpdateOptions): string => {
   const { registerUpdate } = useContext(NodeContext);
   const generatedId = useId();
   const id = options?.id || generatedId;

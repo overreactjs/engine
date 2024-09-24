@@ -4,6 +4,7 @@
 
 - Exposed down/pressed key sets in the `KeyboardContext`.
 - Updated `useKeyboardMap` to support properties, rather than fixed maps.
+- Update the `target` parameter type for `useUpdateAfter` to accept undefined.
 
 ## 0.24.0
 
