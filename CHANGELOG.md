@@ -3,6 +3,7 @@
 ## 0.25.0
 
 - Exposed down/pressed key sets in the `KeyboardContext`.
+- Updated `useKeyboardMap` to support properties, rather than fixed maps.
 
 ## 0.24.0
 
