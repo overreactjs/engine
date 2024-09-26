@@ -33,6 +33,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
     "test-ci": "vitest --coverage run"
@@ -48,8 +49,13 @@
     "@types/matter-js": "^0.19.5",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.4.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "jsdom": "^24.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
