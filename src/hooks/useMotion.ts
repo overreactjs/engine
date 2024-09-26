@@ -18,13 +18,13 @@ export const useMotion = (): UseMotionResult => {
     }
 
     return false;
-  }, []);
+  }, [context]);
 
   useUpdate((delta) => {
     remaining.current = Math.max(0, remaining.current - delta);
   });
 
-  return useMemo(() => ({ ...context, isShaking }), [context]);
+  return useMemo(() => ({ ...context, isShaking }), [context, isShaking]);
 };
 
 export const useDeviceShaken = (cooldown: number, fn: () => void) => {

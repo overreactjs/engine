@@ -29,7 +29,7 @@ export const useUpdateAfter = (target: string | undefined, fn: UpdateFunction, o
   const generatedId = useId();
   const id = options?.id || generatedId;
 
-  useEffect(() => registerUpdate?.(id, fn, { after: target }), [fn, id, registerUpdate]);
+  useEffect(() => registerUpdate?.(id, fn, { after: target }), [fn, id, registerUpdate, target]);
 
   return id;
 };

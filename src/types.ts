@@ -91,6 +91,7 @@ export type StateFunction<T> = (fsm: StateMachine<T>, delta: number) => void;
 
 export type StateDefinitions<T> = PartialRecord<string, StateFunction<T>>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PartialRecord<K extends keyof any, T> =  Partial<Record<K, T>>;
 
 export type KeyboardMap = Partial<Record<KeyboardKeyName, string>>;

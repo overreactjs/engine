@@ -69,5 +69,5 @@ const useSyncPositions = (pos: Property<Position>) => {
     } else if (body.position.x !== pos.current[0] || body.position.y !== pos.current[1]) {
       pos.current = [body.position.x, body.position.y];
     }
-  }, [pos]);
+  }, [last, pos]);
 };

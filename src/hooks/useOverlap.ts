@@ -8,4 +8,4 @@ export function useOverlap<T = unknown>(id: string, handler: CollisionEventFunct
   useEffect(() => {
     return registerHandler?.(id, handler);
   }, [id, handler, registerHandler]);
-};
+}

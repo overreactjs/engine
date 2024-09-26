@@ -12,5 +12,5 @@ export const useBaseStyleProperties = (props: BaseStyleProps) => {
   const angle = useProperty(props.angle || 0);
   const visible = useVisible(props.visible);
 
-  return useMemo(() => ({ pos, size, flip, scale, angle, visible}), []);
+  return useMemo(() => ({ pos, size, flip, scale, angle, visible}), [angle, flip, pos, scale, size, visible]);
 };

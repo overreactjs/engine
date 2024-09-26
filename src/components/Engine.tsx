@@ -33,7 +33,7 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
   const onDebug = useCallback(() => {
     debug.current = !debug.current;
     document.body.classList[debug.current ? 'add' : 'remove']('debug');
-  }, []);
+  }, [debug]);
 
   // Automatically pause and unpause the engine as the page lose and gains visibility.
   usePauseOnPageHidden(paused);
@@ -66,7 +66,7 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
       setTimeout(onPause, 100);
       tick(0);
     }
-  }, [tick]);
+  }, [onPause, tick]);
 
   const engineContext = useMemo(() => ({ debug, onDebug, onPause }), [debug, onDebug, onPause]);
 
@@ -103,10 +103,10 @@ const usePauseOnPageHidden = (paused: MutableRefObject<boolean>) => {
     } else {
       setTimeout(() => paused.current = false, 500);
     }
-  }, []);
+  }, [paused]);
 
   useLayoutEffect(() => {
     document.addEventListener('visibilitychange', onVisibilityChange);
     return () => document.removeEventListener('visibilitychange', onVisibilityChange);
-  }, []);
+  }, [onVisibilityChange]);
 };

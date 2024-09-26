@@ -12,5 +12,5 @@ export const usePhysicsCollision = (fn: (event: PhysicsEvent) => void) => {
   useEffect(() => {
     addEventListener('collision', fn);
     return () => removeEventListener('collision', fn);
-  }, [addEventListener, removeEventListener]);
+  }, [addEventListener, fn, removeEventListener]);
 };

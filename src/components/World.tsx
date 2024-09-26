@@ -24,7 +24,7 @@ export const World: React.FC<WorldProps> = ({ children }) => {
   const bodyTags = useRef<Map<Body, Property<string[]>>>(new Map());
   const bodyActive = useRef<Map<Body, Property<boolean>>>(new Map());
   const updaters = useRef<Map<Body, CollisionUpdateFunction>>(new Map());
-  const handlers = useRef<Map<string, Set<CollisionEventFunction>>>(new Map());;
+  const handlers = useRef<Map<string, Set<CollisionEventFunction>>>(new Map());
   const overlaps = useRef<MapSet<Body, Body>>(new MapSet());
   const postHandlers = useRef<Set<(delta: number) => void>>(new Set());
 

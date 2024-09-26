@@ -22,7 +22,7 @@ export const Pointer: React.FC<PointerProps> = ({ children }) => {
   const pos = useProperty<Position>([0, 0]);
 
   useUpdate(() => {
-    let total: Position = [0, 0];
+    const total: Position = [0, 0];
     for (const position of positions.current) {
       total[0] += position[1][0];
       total[1] += position[1][1];

@@ -4,6 +4,7 @@ import { Body, VariableProperty } from "../utils";
 
 type WorldContextProps = {
   registerCollider: (id: string, active: Property<boolean>, tags: Property<string[]>, body: Body, fn: CollisionUpdateFunction) => () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerHandler: (id: string, fn: CollisionEventFunction<any>) => () => void;
   registerPostHandler: (fn: (delta: number) => void) => () => void;
   isInside: (id: string, pos?: Property<Position>) => boolean;

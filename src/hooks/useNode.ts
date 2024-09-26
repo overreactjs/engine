@@ -55,7 +55,7 @@ export const useNode = (options?: UseNodeOptions) => {
 
       previousCycleSize = waiting.size;
     }
-  }, []);
+  }, [timeScale]);
 
   const render = useCallback(() => {
     for (const entry of renders.current) {

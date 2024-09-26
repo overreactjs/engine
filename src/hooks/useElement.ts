@@ -58,6 +58,17 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
   }, [setAttribute]);
 
   /**
+   * Set a style property on the element, using "style" instead of the newer "attributeStyleMap"
+   * API which doesn't seem to work for some things in Chrome!
+   */
+  const setLegacyStyle = useCallback((key: string, value: string | number) => {
+    if (ref.current) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ((ref.current as any).style as any)[key] = value;
+    }
+  }, [ref]);
+
+  /**
    * Set a style property on the element.
    */
   const setStyle = useCallback((key: string, value: string | number) => {
@@ -65,17 +76,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
     // if (ref.current && value !== undefined) {
     //   ref.current.attributeStyleMap.set(key, value);
     // }
-  }, [ref]);
-
-  /**
-   * Set a style property on the element, using "style" instead of the newer "attributeStyleMap"
-   * API which doesn't seem to work for some things in Chrome!
-   */
-  const setLegacyStyle = useCallback((key: string, value: string | number) => {
-    if (ref.current) {
-      ((ref.current as any).style as any)[key] = value;
-    }
-  }, [ref]);
+  }, [setLegacyStyle]);
 
   /**
    * Set the commonly used base styles: position, size, angle, and flip.
@@ -142,7 +143,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
         visible.invalidated = false;
       }
     }
-  }, [setStyle]);
+  }, [ref]);
 
   return useMemo(() => {
     if (element) {
@@ -150,5 +151,5 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
     } else {
       return { ref, setText, setAttribute, setData, setStyle, setLegacyStyle, setBaseStyles };
     }
-  }, [element, ref, setAttribute, setBaseStyles, setData, setStyle, setText]);
+  }, [element, ref, setAttribute, setBaseStyles, setData, setLegacyStyle, setStyle, setText]);
 }

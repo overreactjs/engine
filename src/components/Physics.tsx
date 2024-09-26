@@ -32,7 +32,7 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
       Composite.remove(engine.current.world, body)
       updaters.current.delete(body);
     };
-  }, []);
+  }, [engine]);
 
   /**
    * Set the angle of gravity.
@@ -40,7 +40,7 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   const setGravity = useCallback((x: number, y: number) => {
     engine.current.gravity.x = x;
     engine.current.gravity.y = y;
-  }, []);
+  }, [engine]);
 
   /**
    * Set the velocity of a physics body.
@@ -55,15 +55,16 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<PhysicsEventType, PhysicsEvent>();
   const handleCollision = useCallback((event: Matter.IEventCollision<Engine>) => {
     fireEvent('collision', event);
-  }, []);
+  }, [fireEvent]);
 
   /**
    * 
    */
   useEffect(() => {
-    Events.on(engine.current, 'collisionStart', handleCollision);
-    return () => Events.off(engine.current, 'collisionStart', handleCollision);
-  }, []);
+    const e = engine.current;
+    Events.on(e, 'collisionStart', handleCollision);
+    return () => Events.off(e, 'collisionStart', handleCollision);
+  }, [engine, handleCollision]);
 
   /**
    * Each frame, play the physics system forwards, then call all of the update functions.

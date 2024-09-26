@@ -35,7 +35,7 @@ export const Node: React.FC<NodeProps> = ({ name, children, timeScale, rounded, 
     pos: rounded ? roundedPos : offsetPos,
     visible,
     name,
-  }), [node, parent.debug, pos]);
+  }), [name, node, offsetPos, parent.debug, rounded, roundedPos, visible]);
 
   return <NodeContext.Provider value={context}>{children}</NodeContext.Provider>;
 };

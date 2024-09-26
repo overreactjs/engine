@@ -12,7 +12,7 @@ export function useCollision<T = unknown>(id: string, handler: CollisionEventFun
   }, [handler]);
 
   return useOverlap(id, wrappedHandler);
-};
+}
 
 export function useTaggedCollision<T = unknown>(collider: string, tag: string | string[], handler: CollisionEventFunction<T>) {
   const tags = typeof tag === 'string' ? [tag] : tag;
@@ -32,4 +32,4 @@ export function useTaggedCollision<T = unknown>(collider: string, tag: string | 
       handler(filtered, delta);
     }
   });
-};
+}
