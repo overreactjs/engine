@@ -54,7 +54,7 @@ export const useAudio = (rootOptions?: UseAudioOptions): UseAudioResult => {
     // Connect the gain node to the destination.
     const gain = new GainNode(engine.context);
     gain.gain.value = volume;
-    gain.connect(engine.getChannel(channel));
+    gain.connect(engine.getChannel(channel).node);
 
     // Connect the source node to the gain node.
     const source = new AudioBufferSourceNode(engine.context);

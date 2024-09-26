@@ -1,5 +1,9 @@
 # Change log
 
+## 0.26.0
+
+- Improved the audio engine to support independent muting and volume controls.
+
 ## 0.25.0
 
 - Exposed down/pressed key sets in the `KeyboardContext`.

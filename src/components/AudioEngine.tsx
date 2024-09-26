@@ -1,11 +1,16 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 
+const DEFAULT = 'primary';
+
+type AudioChannel = { node: GainNode, volume: number, mute: boolean };
+
 type AudioEngineContextProps = {
   context: AudioContext,
-  mute: (channel?: string) => void;
-  unmute: (channel?: string) => void;
-  toggle: (channel?: string) => void;
-  getChannel: (channel?: string) => GainNode,
+  mute: (name?: string) => void;
+  unmute: (name?: string) => void;
+  toggle: (name?: string) => void;
+  setVolume: (name?: string, volume?: number) => void;
+  getChannel: (name?: string) => AudioChannel,
   getBuffer: (url: string) => Promise<AudioBuffer | null>,
 }
 
@@ -14,7 +19,8 @@ export const AudioEngineContext = React.createContext<AudioEngineContextProps>({
   mute: () => {},
   unmute: () => {},
   toggle: () => {},
-  getChannel: () => null as unknown as GainNode,
+  setVolume: () => {},
+  getChannel: () => null as unknown as AudioChannel,
   getBuffer: async () => null as unknown as AudioBuffer,
 });
 
@@ -25,14 +31,14 @@ type AudioEngineProps = {
 export const AudioEngine: React.FC<AudioEngineProps> = ({ children }) => {
   const [context] = useState(new AudioContext({ latencyHint: 'interactive' }));
   
-  const channels = useRef<Map<string, GainNode>>(new Map());
+  const channels = useRef<Map<string, AudioChannel>>(new Map());
   const buffers = useRef<Map<string, AudioBuffer>>(new Map());
 
   /**
    * Get an audio buffer for a given URL, cached locally to avoid repeatedly initialising the same
    * buffers over and buffer, which is costly.
    */
-  const getBuffer = useCallback(async (url: string) => {
+  const getBuffer = useCallback(async (url: string): Promise<AudioBuffer | null> => {
     if (!buffers.current.has(url)) {
       const response = await fetch(url);
       const data = await response.arrayBuffer();
@@ -49,55 +55,59 @@ export const AudioEngine: React.FC<AudioEngineProps> = ({ children }) => {
    * connected to the 'primary' channel. This make it easy to control the primary audio volume,
    * but also control music and sound effects independently.
    */
-  const getChannel = useCallback((channel: string = 'primary') => {
-    const existing = channels.current.get(channel);
+  const getChannel = useCallback((name = DEFAULT): AudioChannel => {
+    const existing = channels.current.get(name);
 
     if (existing) {
       return existing;
     } else {
-      const destination = channel === 'primary' ? context.destination : getChannel('primary');
-      const node = createDestination(context, destination, 1.0);
-      channels.current.set(channel, node);
-      return node;
+      const destination = name === DEFAULT ? context.destination : getChannel(DEFAULT).node;
+      const node = createDestination(context, destination, 0.5);
+      const channel = { node, volume: 0.5, mute: false };
+      channels.current.set(name, channel);
+      return channel;
     }
   }, [context]);
 
   /**
-   * Get the volume of an individual audio channel.
+   * Update some settings for the specified channel, then sync the settings to the audio tree.
    */
-  const getVolume = useCallback((channel: string = 'primary'): number => {
-    const node = getChannel(channel);
-    return node.gain.value;
+  const updateChannel = useCallback((name = DEFAULT, options: Partial<Omit<AudioChannel, 'node'>>) => {
+    const prev = getChannel(name);
+    const next = { ...prev, ...options };
+
+    channels.current.set(name, next);
+
+    next.node.gain.value = next.volume * (next.mute ? 0 : 1);
   }, [getChannel]);
 
   /**
    * Set the volume of an individual audio channel.
    */
-  const setVolume = useCallback((channel: string = 'primary', volume: number) => {
-    const node = getChannel(channel);
-    node.gain.value = volume;
-  }, [getChannel]);
+  const setVolume = useCallback((name = DEFAULT, volume?: number) => {
+    updateChannel(name, { volume });
+  }, [updateChannel]);
 
   /**
    * Mute the given audio channel. Defaults to primary, muting everything.
    */
-  const mute = useCallback((channel: string = 'primary') => {
-    setVolume(channel, 0.0);
-  }, [setVolume]);
+  const mute = useCallback((name = DEFAULT) => {
+    updateChannel(name, { mute: true });
+  }, [updateChannel]);
 
   /**
    * Unmute the given audio channel. Defaults to primary, unmuting everything.
    */
-  const unmute = useCallback((channel: string = 'primary') => {
-    setVolume(channel, 1.0);
-  }, [setVolume]);
+  const unmute = useCallback((name = DEFAULT) => {
+    updateChannel(name, { mute: true });
+  }, [updateChannel]);
 
   /**
    * Toggle the given audio channel. If it was muted, it'll be unmuted, and vice-versa.
    */
-  const toggle = useCallback((channel: string = 'primary') => {
-    setVolume(channel, 1.0 - getVolume(channel));
-  }, [getVolume, setVolume]);
+  const toggle = useCallback((name = DEFAULT) => {
+    updateChannel(name, { mute: !getChannel(name).mute });
+  }, [getChannel, updateChannel]);
 
   /**
    * Setup the react context.
@@ -107,9 +117,10 @@ export const AudioEngine: React.FC<AudioEngineProps> = ({ children }) => {
     mute,
     unmute,
     toggle,
+    setVolume,
     getChannel,
     getBuffer,
-  }), [context, mute, unmute, toggle, getChannel, getBuffer]);
+  }), [context, mute, unmute, toggle, setVolume, getChannel, getBuffer]);
 
   return (
     <AudioEngineContext.Provider value={value}>
