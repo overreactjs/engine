@@ -1,5 +1,9 @@
 # Change log
 
+## 0.26.1
+
+- Fixed a bug in `Gamepad`, where the gamepad doesn't have a mapping for a given button.
+
 ## 0.26.0
 
 - Improved the audio engine to support independent muting and volume controls.

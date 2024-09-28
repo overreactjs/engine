@@ -13,7 +13,9 @@ type GamepadProps = {
  */
 export const Gamepad: React.FC<GamepadProps> = ({ children }) => {
   const isButtonDown = useCallback((index: number, button: GamepadButtonName) => {
-    return navigator.getGamepads()[index]?.buttons[STANDARD_BUTTON_MAPPING[button]].pressed || false;
+    const gamepad = navigator.getGamepads()[index]
+    const mapping = STANDARD_BUTTON_MAPPING[button];
+    return gamepad?.buttons[mapping]?.pressed || false;
   }, []);
 
   const getButtonAxis = useCallback((index: number, negative: GamepadButtonName, positive: GamepadButtonName) => {
@@ -21,7 +23,9 @@ export const Gamepad: React.FC<GamepadProps> = ({ children }) => {
   }, [isButtonDown]);
 
   const getAnalogAxis = useCallback((index: number, axis: GamepadAxisName) => {
-    return navigator.getGamepads()[index]?.axes[STANDARD_AXIS_MAPPING[axis]] || 0;
+    const gamepad = navigator.getGamepads()[index];
+    const mapping = STANDARD_AXIS_MAPPING[axis];
+    return gamepad?.axes[mapping] || 0;
   }, []);
 
   // const handleGamepadConnected = useCallback((event: GamepadEvent) => {
