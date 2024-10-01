@@ -1,5 +1,9 @@
 # Change log
 
+## 0.27.0
+
+- Updated `useGamepadButtonMap` to accept a map as a property, so that the bindings are dynamic.
+
 ## 0.26.1
 
 - Fixed a bug in `Gamepad`, where the gamepad doesn't have a mapping for a given button.
