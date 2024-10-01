@@ -49,7 +49,7 @@ export const Camera: React.FC<CameraProps> = ({ axis = 'xy', offset = [0, 0], sm
 
       origin.current = newOrigin;
     }
-  })
+  });
 
   useRender(() => {
     if (debug.current) {
@@ -63,4 +63,4 @@ export const Camera: React.FC<CameraProps> = ({ axis = 'xy', offset = [0, 0], sm
   });
 
   return <div ref={element.ref} style={DEBUG} />;
-}
+};
