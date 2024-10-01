@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { GamepadContext } from "../context";
 import { GamepadAxisName, GamepadButtonName } from "../types";
-import { STANDARD_AXIS_MAPPING, STANDARD_BUTTON_MAPPING } from "../constants";
+import { STANDARD_AXIS_MAPPING, STANDARD_BUTTON_MAPPING, STANDARD_BUTTON_UNMAPPING } from "../constants";
 
 type GamepadProps = {
   children: React.ReactNode;
@@ -12,53 +12,63 @@ type GamepadProps = {
  * --------
  */
 export const Gamepad: React.FC<GamepadProps> = ({ children }) => {
-  const isButtonDown = useCallback((index: number, button: GamepadButtonName) => {
-    const gamepad = navigator.getGamepads()[index]
-    const mapping = STANDARD_BUTTON_MAPPING[button];
-    return gamepad?.buttons[mapping]?.pressed || false;
+  /**
+   * Dynamic 'property' consisting of a set of all gamepad buttons currently being held down.
+   */
+  const down = useMemo(() => ({
+    get current(): Set<GamepadButtonName> {
+      const buttons = new Set<GamepadButtonName>();
+
+      navigator.getGamepads().forEach((gamepad) => {
+        gamepad?.buttons.forEach((button, index) => {
+          if (button.pressed) {
+            buttons.add(STANDARD_BUTTON_UNMAPPING[index]);
+          }
+        });
+      });
+      
+      return buttons;
+    }
+  }), []);
+
+  /**
+   * Return true if the given button is down for the given gamepad.
+   */
+  const isButtonDown = useCallback((index: number | null, button: GamepadButtonName): boolean => {
+    if (index !== null) {
+      const gamepad = navigator.getGamepads()[index];
+      const mapping = STANDARD_BUTTON_MAPPING[button];
+      return gamepad?.buttons[mapping]?.pressed || false;
+    }
+
+    return false;
   }, []);
 
-  const getButtonAxis = useCallback((index: number, negative: GamepadButtonName, positive: GamepadButtonName) => {
+  /**
+   * Returns a value between -1 and +1, based on whether the negative and position buttons are
+   * currently being pressed.
+   */
+  const getButtonAxis = useCallback((index: number | null, negative: GamepadButtonName, positive: GamepadButtonName): number => {
     return +isButtonDown(index, positive) - +isButtonDown(index, negative);
   }, [isButtonDown]);
 
-  const getAnalogAxis = useCallback((index: number, axis: GamepadAxisName) => {
-    const gamepad = navigator.getGamepads()[index];
-    const mapping = STANDARD_AXIS_MAPPING[axis];
-    return gamepad?.axes[mapping] || 0;
+  /**
+   * Returns a value between -1 and +1, representing the position of an analog stick in either
+   * the horizontal or vertical dimension.
+   */
+  const getAnalogAxis = useCallback((index: number | null, axis: GamepadAxisName) => {
+    if (index !== null) {
+      const gamepad = navigator.getGamepads()[index];
+      const mapping = STANDARD_AXIS_MAPPING[axis];
+      return gamepad?.axes[mapping] || 0;
+    }
+
+    return 0;
   }, []);
 
-  // const handleGamepadConnected = useCallback((event: GamepadEvent) => {
-  //   console.log(
-  //       'Gamepad connected at index %d: %s. %d buttons, %d axes.',
-  //       event.gamepad.index,
-  //       event.gamepad.id,
-  //       event.gamepad.buttons.length,
-  //       event.gamepad.axes.length,
-  //   );
-  // }, []);
-
-  // const handleGamepadDisconnected = useCallback((event: GamepadEvent) => {
-  //   console.log(
-  //       'Gamepad disconnected from index %d: %s.',
-  //       event.gamepad.index,
-  //       event.gamepad.id,
-  //   );
-  // }, []);
-
-  // useEffect(() => {
-  //   addEventListener('gamepadconnected', handleGamepadConnected);
-  //   addEventListener('gamepaddisconnected', handleGamepadDisconnected);
-
-  //   return () => {
-  //     removeEventListener('gamepadconnected', handleGamepadConnected);
-  //     removeEventListener('gamepaddisconnected', handleGamepadDisconnected);  
-  //   };
-  // }, [handleGamepadConnected, handleGamepadDisconnected]);
-
   const context = useMemo(
-    () => ({ isButtonDown, getButtonAxis, getAnalogAxis }),
-    [isButtonDown, getButtonAxis, getAnalogAxis]
+    () => ({ down, isButtonDown, getButtonAxis, getAnalogAxis }),
+    [down, isButtonDown, getButtonAxis, getAnalogAxis]
   );
 
   return (

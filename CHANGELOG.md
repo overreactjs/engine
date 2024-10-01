@@ -3,6 +3,7 @@
 ## 0.27.0
 
 - Updated `useGamepadButtonMap` to accept a map as a property, so that the bindings are dynamic.
+- Exposed set of held down buttons in the `GamepadContext`.
 
 ## 0.26.1
 

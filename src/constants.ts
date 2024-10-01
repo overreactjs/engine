@@ -23,3 +23,20 @@ export const STANDARD_AXIS_MAPPING: Record<GamepadAxisName, number> = {
   Right_Horizontal: 2,
   Right_Vertical: 3,
 };
+
+export const STANDARD_BUTTON_UNMAPPING: Record<number, GamepadButtonName> = {
+  12: 'Up',
+  13: 'Down',
+  14: 'Left',
+  15: 'Right',
+  0: 'A',
+  1: 'B',
+  2: 'X',
+  3: 'Y',
+  4: 'Shoulder_L1',
+  6: 'Shoulder_L2',
+  5: 'Shoulder_R1',
+  7: 'Shoulder_R2',
+  8: 'Start',
+  9: 'Select',
+};

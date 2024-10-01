@@ -2,12 +2,14 @@ import React from "react";
 import { GamepadAxisName, GamepadButtonName } from "../types";
 
 type GamepadContextProps = {
-  isButtonDown: (index: number, button: GamepadButtonName) => boolean;
-  getButtonAxis: (index: number, negative: GamepadButtonName, positive: GamepadButtonName) => number;
-  getAnalogAxis: (index:number, axis: GamepadAxisName) => number;
+  down: React.MutableRefObject<Set<GamepadButtonName>>;
+  isButtonDown: (index: number | null, button: GamepadButtonName) => boolean;
+  getButtonAxis: (index: number | null, negative: GamepadButtonName, positive: GamepadButtonName) => number;
+  getAnalogAxis: (index: number | null, axis: GamepadAxisName) => number;
 }
 
 export const GamepadContext = React.createContext<GamepadContextProps>({
+  down: { current: new Set() },
   isButtonDown: () => false,
   getButtonAxis: () => 0,
   getAnalogAxis: () => 0,
