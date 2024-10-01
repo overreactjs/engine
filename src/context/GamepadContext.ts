@@ -6,6 +6,7 @@ type GamepadContextProps = {
   isButtonDown: (index: number | null, button: GamepadButtonName) => boolean;
   getButtonAxis: (index: number | null, negative: GamepadButtonName, positive: GamepadButtonName) => number;
   getAnalogAxis: (index: number | null, axis: GamepadAxisName) => number;
+  vibrate: (index: number | null, duration: number, magnitude: number) => void;
 }
 
 export const GamepadContext = React.createContext<GamepadContextProps>({
@@ -13,4 +14,5 @@ export const GamepadContext = React.createContext<GamepadContextProps>({
   isButtonDown: () => false,
   getButtonAxis: () => 0,
   getAnalogAxis: () => 0,
+  vibrate: () => {},
 });

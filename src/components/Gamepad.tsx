@@ -66,9 +66,27 @@ export const Gamepad: React.FC<GamepadProps> = ({ children }) => {
     return 0;
   }, []);
 
+  /**
+   * Trigger the gamepad rumble for the given duration and magnitude.
+   */
+  const vibrate = useCallback((index: number | null, duration: number, magnitude = 0.5) => {
+    if (index !== null) {
+      const gamepad = navigator.getGamepads()[index];
+
+      if (gamepad?.vibrationActuator) {
+        gamepad.vibrationActuator.playEffect('dual-rumble', {
+          startDelay: 0,
+          duration,
+          weakMagnitude: magnitude,
+          strongMagnitude: magnitude,
+        });
+      }
+    }
+  }, []);
+
   const context = useMemo(
-    () => ({ down, isButtonDown, getButtonAxis, getAnalogAxis }),
-    [down, isButtonDown, getButtonAxis, getAnalogAxis]
+    () => ({ down, isButtonDown, getButtonAxis, getAnalogAxis, vibrate }),
+    [down, isButtonDown, getButtonAxis, getAnalogAxis, vibrate]
   );
 
   return (

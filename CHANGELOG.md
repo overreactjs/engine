@@ -4,6 +4,7 @@
 
 - Updated `useGamepadButtonMap` to accept a map as a property, so that the bindings are dynamic.
 - Exposed set of held down buttons in the `GamepadContext`.
+- Added `vibrate` function to the `Gamepad` handler.
 
 ## 0.26.1
 
