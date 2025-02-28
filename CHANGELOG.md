@@ -1,5 +1,9 @@
 # Change log
 
+## 1.0.0
+
+- Added `className` and `style` props to `Box` and `BitmapImage` components.
+
 ## 0.27.0
 
 - Updated `useGamepadButtonMap` to accept a map as a property, so that the bindings are dynamic.

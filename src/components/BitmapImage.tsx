@@ -1,9 +1,12 @@
+import { CSSProperties } from 'react';
 import { Node } from '../components';
 import { useBaseStyleProperties, useProperty, useRender } from "../hooks";
 import { UseElementResult, useElement } from "../hooks/useElement";
 import { BitmapAsset, BaseStyleProps, Position, Prop, Size } from "../types";
 
 export type BitmapImageProps = BaseStyleProps & {
+  className?: string;
+  style?: CSSProperties;
   element?: UseElementResult<HTMLDivElement>;
   image: Prop<BitmapAsset>;
   offset: Prop<Position>;
@@ -17,7 +20,7 @@ export type BitmapImageProps = BaseStyleProps & {
  * Render part of a bitmap image. The image is shown an a background image, sized and cropped as
  * required.
  */
-export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
+export const BitmapImage: React.FC<BitmapImageProps> = ({ className, style, ...props }) => {
   const element = useElement<HTMLDivElement>(props.element);
 
   const base = useBaseStyleProperties(props);
@@ -52,7 +55,11 @@ export const BitmapImage: React.FC<BitmapImageProps> = (props) => {
 
   return (
     <Node pos={base.pos}>
-      <div ref={element.ref} className="absolute bg-no-repeat" style={{ imageRendering: 'pixelated' }} />
+      <div
+        ref={element.ref}
+        className={`absolute bg-no-repeat ${className || ''}`}
+        style={{ imageRendering: 'pixelated', ...style }}
+      />
     </Node>
   )
 };
