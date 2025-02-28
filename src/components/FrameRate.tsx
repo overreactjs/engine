@@ -1,6 +1,6 @@
-import React from "react";
-import { useElement, useProperty, useRender, useUpdate } from "../hooks";
-import { SlidingWindow } from "../utils";
+import React, { useContext } from "react";
+import { useElement, useProperty, useRender } from "../hooks";
+import { EngineContext } from "../context";
 
 /**
  * FrameRate
@@ -10,19 +10,24 @@ import { SlidingWindow } from "../utils";
  */
 export const FrameRate: React.FC = () => {
   const fpsElement = useElement();
-  const fps = useProperty(new SlidingWindow(30));
+  const { fps, ups } = useContext(EngineContext);
 
-  useUpdate((delta) => {
-    fps.current.push(1000 / delta);
-  });
+  const next = useProperty(0);
 
   useRender(() => {
-    fpsElement.setText(fps.current.mean().toFixed(0) + ' fps');
+    if (next.current === 0) {
+      const fpsStr = fps.current.mean().toFixed(0) + ' fps';
+      const upsStr = ups.current.mean().toFixed(0) + ' ups';
+      fpsElement.setText([fpsStr, upsStr].join('\n'));
+      next.current = 10;
+    }
+
+    next.current--;
   });
 
   return (
     <div className="absolute top-8 right-8 mix-blend-difference text-white">
-      <div className="tabular-nums" ref={fpsElement.ref} />
+      <div className="tabular-nums whitespace-pre text-right" ref={fpsElement.ref} />
     </div>
   );
 };

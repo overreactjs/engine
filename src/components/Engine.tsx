@@ -1,7 +1,7 @@
 import { useMemo, useRef, useCallback, useEffect, useLayoutEffect, MutableRefObject } from "react";
 import { EngineContext, NodeContext } from "../context";
 import { useNode, useProperty } from "../hooks";
-import { Validator } from "../utils";
+import { SlidingWindow, Validator } from "../utils";
 import { AudioEngine } from "./AudioEngine";
 import { Gamepad } from "./Gamepad";
 import { Keyboard } from "./Keyboard";
@@ -23,6 +23,10 @@ type EngineProps = {
  */
 export const Engine: React.FC<EngineProps> = ({ children, minFrameRate }) => {
   const maxDelta = 1000 / (minFrameRate || 15);
+
+  const fps = useProperty(new SlidingWindow(30));
+  const ups = useProperty(new SlidingWindow(30));
+
   const started = useRef(false);
   const paused = useRef(true);
   const time = useRef<number>(0);
@@ -41,6 +45,7 @@ export const Engine: React.FC<EngineProps> = ({ children, minFrameRate }) => {
   // Handle one tick of the game loop.
   const tick = useCallback((t: number) => {
     requestAnimationFrame(tick);
+    const start = performance.now();
 
     // Limit the time delta, to avoid strange happenings!
     const rawDelta = t - time.current;
@@ -58,7 +63,11 @@ export const Engine: React.FC<EngineProps> = ({ children, minFrameRate }) => {
 
     // Revalidate all properties that were previously invalidated.
     Validator.run();
-  }, [maxDelta, node]);
+
+    // Update the FPS/UPS counts.
+    fps?.current.push(1000 / rawDelta);
+    ups?.current.push(1000 / (performance.now() - start));
+  }, [fps, maxDelta, node, ups]);
 
   // Start the game loop.
   useEffect(() => {
@@ -69,7 +78,7 @@ export const Engine: React.FC<EngineProps> = ({ children, minFrameRate }) => {
     }
   }, [onPause, tick]);
 
-  const engineContext = useMemo(() => ({ debug, onDebug, onPause }), [debug, onDebug, onPause]);
+  const engineContext = useMemo(() => ({ debug, onDebug, onPause, fps, ups }), [debug, fps, onDebug, onPause, ups]);
 
   return (
     <EngineContext.Provider value={engineContext}>

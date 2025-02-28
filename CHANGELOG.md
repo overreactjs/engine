@@ -3,6 +3,7 @@
 ## 1.0.0
 
 - Added `minFrameRate` prop to the `Engine`.
+- Added `fps` and `ups` (updates per second) to the `EngineContext`.
 - Added `className` and `style` props to `Box` and `BitmapImage` components.
 
 ## 0.27.0
