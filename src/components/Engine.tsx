@@ -10,10 +10,9 @@ import { Orientation } from "./Orientation";
 import { Pointer } from "./Pointer";
 import { VirtualInput } from "./VirtualInput";
 
-const MAX_DELTA = 1000 / 15;
-
 type EngineProps = {
   children: React.ReactNode;
+  minFrameRate?: number;
 }
 
 /**
@@ -22,7 +21,8 @@ type EngineProps = {
  * 
  * Provides a game loop, ensuring updates are made at a constant frame rate.
  */
-export const Engine: React.FC<EngineProps> = ({ children }) => {
+export const Engine: React.FC<EngineProps> = ({ children, minFrameRate }) => {
+  const maxDelta = 1000 / (minFrameRate || 15);
   const started = useRef(false);
   const paused = useRef(true);
   const time = useRef<number>(0);
@@ -43,7 +43,8 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
     requestAnimationFrame(tick);
 
     // Limit the time delta, to avoid strange happenings!
-    const delta = Math.min(t - time.current, MAX_DELTA);
+    const rawDelta = t - time.current;
+    const delta = Math.min(rawDelta, maxDelta);
     time.current = t;
 
     // The ticker phase runs even when the engine is paused.
@@ -57,7 +58,7 @@ export const Engine: React.FC<EngineProps> = ({ children }) => {
 
     // Revalidate all properties that were previously invalidated.
     Validator.run();
-  }, [node]);
+  }, [maxDelta, node]);
 
   // Start the game loop.
   useEffect(() => {
