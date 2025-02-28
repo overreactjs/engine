@@ -2,6 +2,7 @@
 
 ## 1.0.0
 
+- Added polygon collision detection: `usePolygonCollider`.
 - Added `minFrameRate` prop to the `Engine`.
 - Added `fps` and `ups` (updates per second) to the `EngineContext`.
 - Added `className` and `style` props to `Box` and `BitmapImage` components.

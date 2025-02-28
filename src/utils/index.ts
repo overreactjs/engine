@@ -1,7 +1,7 @@
 export * from "./utils";
 export { BaseParticle } from "./BaseParticle";
-export type { Body } from "./BoxBody";
-export { BoxBody } from "./BoxBody";
+export type { Body } from "./Body";
+export { BoxBody, PolygonBody } from "./Body";
 export { DynamicProperty } from "./DynamicProperty";
 export { MapSet } from "./MapSet";
 export { MergeProperty } from "./MergeProperty";
