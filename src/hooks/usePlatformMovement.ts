@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { BBox } from "detect-collisions";
 import { intersects, lerp, permutator } from "../utils";
-import { CollisionEventFunctionProps, Position, Property, Velocity } from "../types";
+import { CollisionEventFunctionProps, Position, Prop, Property, Velocity } from "../types";
 import { useEventListeners } from "./useEventListeners";
 import { useOverlap } from "./useOverlap";
 import { useProperty } from "./useProperty";
@@ -9,6 +9,7 @@ import { useUpdate } from "./useUpdate";
 import { useVirtualInput } from "./useVirtualInput";
 
 const DEFAULT_OPTIONS = {
+  enabled: true,
   gravity: [0, 0.002],
   speed: 0.5,
   jumpStrength: 0.7,
@@ -21,6 +22,7 @@ const DEFAULT_OPTIONS = {
 export type PlatformMovementEventType = 'jump';
 
 export type UsePlatformMovementOptions = {
+  enabled?: Prop<boolean>;
   gravity?: Velocity;
   speed?: number;
   jumpStrength?: number;
@@ -41,10 +43,12 @@ export type UsePlatformMovementResult = {
 }
 
 export const usePlatformMovement = (collider: string, pos: Property<Position>, velocity: Property<Velocity>, options?: UsePlatformMovementOptions): UsePlatformMovementResult => {
-  const { gravity, speed, jumpStrength, acceleration, maxFallSpeed, maxJumpCount, canTurnMidair } = { ...DEFAULT_OPTIONS, ...options };
+  const allOptions = { ...DEFAULT_OPTIONS, ...options };
+  const { gravity, speed, jumpStrength, acceleration, maxFallSpeed, maxJumpCount, canTurnMidair } = allOptions;
   const { isActive, hasAxis } = useVirtualInput();
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<PlatformMovementEventType>();
 
+  const enabled = useProperty(allOptions.enabled);
   const change = useProperty([0, 0]);
   const isOnFloor = useProperty(false);
   const isJumping = useProperty(false);
@@ -56,46 +60,48 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
    * Update the players velocity, position, and state flags, based on current inputs.
    */
   useUpdate((delta) => {
-    // Apply keyboard input to the player's velocity.
-    const horizontalInput = hasAxis('left', 'right');
-    const accelerationFactor = isOnFloor.current ? 1.0 : 0.2;
-    velocity.current[0] = lerp(velocity.current[0], horizontalInput * speed, acceleration * accelerationFactor);
+    if (enabled.current) {
+      // Apply keyboard input to the player's velocity.
+      const horizontalInput = hasAxis('left', 'right');
+      const accelerationFactor = isOnFloor.current ? 1.0 : 0.2;
+      velocity.current[0] = lerp(velocity.current[0], horizontalInput * speed, acceleration * accelerationFactor);
 
-    // Jump, if one of the following conditions are met:
-    // 1. The entity is stood on the ground.
-    // 2. The entity is falling, and has not yet jumped the maximum number of times.
-    if (isActive('jump') && (isOnFloor.current || (isFalling.current && jumpCount.current > 0 && jumpCount.current < maxJumpCount))) {
-      velocity.current[1] = -jumpStrength;
-      isOnFloor.current = false;
-      isJumping.current = true;
-      isFalling.current = false;
-      jumpCount.current++;
-      fireEvent('jump', undefined);
-    }
+      // Jump, if one of the following conditions are met:
+      // 1. The entity is stood on the ground.
+      // 2. The entity is falling, and has not yet jumped the maximum number of times.
+      if (isActive('jump') && (isOnFloor.current || (isFalling.current && jumpCount.current > 0 && jumpCount.current < maxJumpCount))) {
+        velocity.current[1] = -jumpStrength;
+        isOnFloor.current = false;
+        isJumping.current = true;
+        isFalling.current = false;
+        jumpCount.current++;
+        fireEvent('jump', undefined);
+      }
 
-    // Update state flags.
-    if (velocity.current[1] > 0) {
-      isOnFloor.current = false;
-      isJumping.current = false;
-      isFalling.current = true;
-    }
+      // Update state flags.
+      if (velocity.current[1] > 0) {
+        isOnFloor.current = false;
+        isJumping.current = false;
+        isFalling.current = true;
+      }
 
-    // Add gravity to the player's velocity.
-    velocity.current[0] = velocity.current[0] + (gravity[0] || 0) * delta;
-    velocity.current[1] = Math.min(maxFallSpeed, velocity.current[1] + (gravity[1] || 0) * delta);
+      // Add gravity to the player's velocity.
+      velocity.current[0] = velocity.current[0] + (gravity[0] || 0) * delta;
+      velocity.current[1] = Math.min(maxFallSpeed, velocity.current[1] + (gravity[1] || 0) * delta);
 
-    // Apply the velocity to the player.
-    change.current[0] = velocity.current[0] * delta;
-    change.current[1] = velocity.current[1] * delta;
-    pos.current[0] += change.current[0];
-    pos.current[1] += change.current[1];
+      // Apply the velocity to the player.
+      change.current[0] = velocity.current[0] * delta;
+      change.current[1] = velocity.current[1] * delta;
+      pos.current[0] += change.current[0];
+      pos.current[1] += change.current[1];
 
-    // Update the player's direction.
-    if (canTurnMidair || isOnFloor.current) {
-      if (horizontalInput < 0) {
-        direction.current = 'left';
-      } else if (horizontalInput > 0) {
-        direction.current = 'right';
+      // Update the player's direction.
+      if (canTurnMidair || isOnFloor.current) {
+        if (horizontalInput < 0) {
+          direction.current = 'left';
+        } else if (horizontalInput > 0) {
+          direction.current = 'right';
+        }
       }
     }
   });
@@ -104,51 +110,56 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
    * Handle collisions, ensuring that the entity cannot pass through solid objects.
    */
   useOverlap(collider, (collisions, delta) => {
-    const change: Position = [0, 0];
-    const solids = optimize(collisions.filter((event) => event.tags.includes('solid')));
-    const platforms = optimize(collisions.filter((event) => event.tags.includes('platform')));
+    if (enabled.current) {
+      console.log('---');
+      const change: Position = [0, 0];
+      const solids = optimize(collisions.filter((event) => event.tags.includes('solid')));
+      const platforms = optimize(collisions.filter((event) => event.tags.includes('platform')));
 
-    for (const { overlap } of solids) {
-      if (overlap.y > 0 && overlap.y > change[1]) {
-        pos.current[1] -= overlap.y;
-        change[1] = overlap.y;
+      for (const { overlap } of solids) {
+        console.log(overlap.x, overlap.y);
+
+        if (overlap.y > 0 && overlap.y > change[1]) {
+          pos.current[1] -= overlap.y;
+          change[1] = overlap.y;
+        }
+
+        if (overlap.y < 0 && overlap.y < change[1]) {
+          pos.current[1] -= overlap.y;
+          change[1] = overlap.y;
+        }
+
+        if (overlap.x > 0 && overlap.x > change[0]) {
+          pos.current[0] -= overlap.x;
+          change[0] = overlap.x;
+        }
+
+        if (overlap.x < 0 && overlap.x < change[0]) {
+          pos.current[0] -= overlap.x;
+          change[0] = overlap.x;
+        }
       }
 
-      if (overlap.y < 0 && overlap.y < change[1]) {
-        pos.current[1] -= overlap.y;
-        change[1] = overlap.y;
+      for (const { overlap } of platforms) {
+        if (overlap.y > 0 && velocity.current[1] * delta * 1.02 >= overlap.y) {
+          pos.current[1] -= overlap.y;
+          change[1] = overlap.y;
+        }
       }
 
-      if (overlap.x > 0 && overlap.x > change[0]) {
-        pos.current[0] -= overlap.x;
-        change[0] = overlap.x;
+      if (change[1] > 0 || change[1] < 0) {
+        velocity.current[1] = 0;
       }
 
-      if (overlap.x < 0 && overlap.x < change[0]) {
-        pos.current[0] -= overlap.x;
-        change[0] = overlap.x;
+      if (change[0] > 0 || change[0] < 0) {
+        velocity.current[0] = 0;
       }
-    }
-
-    for (const { overlap } of platforms) {
-      if (overlap.y > 0 && velocity.current[1] * delta * 1.01 >= overlap.y) {
-        pos.current[1] -= overlap.y;
-        change[1] = overlap.y;
+      
+      if (change[1] > 0) {
+        isOnFloor.current = true;
+        isFalling.current = false;
+        jumpCount.current = 0;
       }
-    }
-
-    if (change[1] > 0 || change[1] < 0) {
-      velocity.current[1] = 0;
-    }
-
-    if (change[0] > 0 || change[0] < 0) {
-      velocity.current[0] = 0;
-    }
-    
-    if (change[1] > 0) {
-      isOnFloor.current = true;
-      isFalling.current = false;
-      jumpCount.current = 0;
     }
   });
 

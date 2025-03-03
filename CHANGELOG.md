@@ -6,6 +6,7 @@
 - Added `minFrameRate` prop to the `Engine`.
 - Added `fps` and `ups` (updates per second) to the `EngineContext`.
 - Added `className` and `style` props to `Box` and `BitmapImage` components.
+- Added `enabled` prop to the `usePlatformMovement` hook.
 - Refactored event handling and emitting utilities.
 
 ## 0.27.0
