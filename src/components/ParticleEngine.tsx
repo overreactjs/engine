@@ -1,11 +1,11 @@
-import { createContext, useCallback, useMemo, useRef } from "react";
+import { createContext, useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { BaseParticle } from "../utils";
 import { useEventListeners, useUpdate } from "../hooks";
 
 export type ParticleContextProps = {
   attach: (particle: BaseParticle) => void;
-  addEventListener: (type: "create", fn: (particle: BaseParticle) => void) => void
-  removeEventListener: (type: "create", fn: (particle: BaseParticle) => void) => void
+  addEventListener: (type: "create", fn: (element: HTMLElement) => void) => void
+  removeEventListener: (type: "create", fn: (element: HTMLElement) => void) => void
 };
 
 export const ParticleContext = createContext<ParticleContextProps>({
@@ -16,13 +16,14 @@ export const ParticleContext = createContext<ParticleContextProps>({
 
 export type ParticleEngineProps = {
   children: React.ReactNode;
+  pool?: number
 };
 
-export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children }) => {
+export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children, pool }) => {
   const active = useRef<Set<BaseParticle>>(new Set());
   const inactive = useRef<Set<HTMLDivElement>>(new Set());
 
-  const { addEventListener, removeEventListener, fireEvent } = useEventListeners<'create', BaseParticle>();
+  const { addEventListener, removeEventListener, fireEvent } = useEventListeners<'create', HTMLElement>();
 
   const attach = useCallback((particle: BaseParticle) => {
     if (inactive.current.size > 0) {
@@ -36,7 +37,7 @@ export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children }) => {
       active.current.add(particle);
       particle.attach(node);
       particle.init();
-      fireEvent('create', particle);
+      fireEvent('create', node);
     }
   }, [fireEvent]);
 
@@ -58,6 +59,16 @@ export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children }) => {
       }
     }
   });
+
+  useLayoutEffect(() => {
+    if (pool) {
+      while (inactive.current.size < pool) {
+        const node = document.createElement('div');
+        inactive.current.add(node);
+        fireEvent('create', node);
+      }
+    }
+  }, [fireEvent, pool]);
 
   const context = useMemo(() => ({ attach, addEventListener, removeEventListener }), [attach, addEventListener, removeEventListener]);
   

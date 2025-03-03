@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useRef } from "react";
-import { BaseParticle } from "../utils";
 import { useParticles } from "../hooks";
 
 export const Particles: React.FC = () => {
   const particles = useParticles();
   const ref = useRef<HTMLDivElement>(null);
 
-  const attach = useCallback((particle: BaseParticle) => {
-    if (ref.current && particle.node) {
-      ref.current.insertBefore(particle.node, ref.current.firstChild);
+  const attach = useCallback((element: HTMLElement) => {
+    if (ref.current && element) {
+      ref.current.insertBefore(element, ref.current.firstChild);
     }
   }, []);
 

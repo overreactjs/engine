@@ -8,6 +8,7 @@
 - Added `className` and `style` props to `Box` and `BitmapImage` components.
 - Added `enabled` prop to the `usePlatformMovement` hook.
 - Refactored event handling and emitting utilities.
+- Refactored particle engine to support eager initialisation of a pool of particle nodes.
 
 ## 0.27.0
 
