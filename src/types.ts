@@ -2,7 +2,7 @@ import { Vector } from "detect-collisions";
 import { Engine } from "matter-js";
 import { Body, StateMachine } from "./utils";
 
-export type ElementType = InnerHTML & ElementCSSInlineStyle & Element;
+export type ElementType = ElementCSSInlineStyle & Element;
 
 export type Property<T> = {
   current: T;

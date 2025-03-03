@@ -1,27 +1,20 @@
 import { useRef, useCallback, useMemo } from "react";
 import { EventHandler, UseEventListenersResult } from "../types";
+import { EventTarget } from "../utils/EventTarget";
 
 export function useEventListeners<E, T = undefined>(): UseEventListenersResult<E, T> {
-  const listeners = useRef<Map<E, Set<EventHandler<T>>>>(new Map());
+  const events = useRef(new EventTarget<E, T>());
 
   const addEventListener = useCallback((type: E, fn: EventHandler<T>) => {
-    if (!listeners.current.has(type)) {
-      listeners.current.set(type, new Set());
-    }
-
-    listeners.current.get(type)?.add(fn);
+    events.current.addEventListener(type, fn);
   }, []);
 
   const removeEventListener = useCallback((type: E, fn: EventHandler<T>) => {
-    if (listeners.current.get(type)?.has(fn)) {
-      listeners.current.get(type)?.delete(fn);
-    }
+    events.current.removeEventListener(type, fn);
   }, []);
 
   const fireEvent = useCallback((type: E, payload: T) => {
-    for (const listener of listeners.current.get(type) || []) {
-      listener(payload);
-    }
+    events.current.fireEvent(type, payload);
   }, []);
 
   return useMemo(() => ({ addEventListener, removeEventListener, fireEvent }), [addEventListener, removeEventListener, fireEvent]);

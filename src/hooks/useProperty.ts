@@ -25,5 +25,5 @@ export function useProperty<T>(value: Prop<T>): Property<T> {
     }
   }, [property, value]);
 
-  return property
+  return property;
 }

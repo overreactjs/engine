@@ -25,3 +25,6 @@ export { VectorSprite } from './VectorSprite';
 export { Viewport, ViewportContext } from './Viewport';
 export { VirtualInput } from './VirtualInput';
 export { World } from './World';
+
+export type { BitmapImageProps } from './BitmapImage';
+export type { BoxProps } from './Box';
