@@ -12,10 +12,12 @@ export default defineConfig({
       fileName: 'engine',
     },
     rollupOptions: {
-      external: ['react'],
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
       output: {
         globals: {
-          react: 'React',
+          'react': 'React',
+          'react-dom': 'ReactDom',
+          'react/jsx-runtime': 'ReactJsxRuntime',
         },
       },
     },
