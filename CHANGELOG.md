@@ -1,5 +1,9 @@
 # Change log
 
+## 1.1.0
+
+- Removed keyboard debug controls from `Device`.
+
 ## 1.0.0
 
 - Added polygon collision detection: `usePolygonCollider`.
