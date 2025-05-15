@@ -6,6 +6,7 @@ export { Box } from './Box';
 export { Camera } from './Camera';
 export { Circle } from './Circle';
 export { CollisionBox } from './CollisionBox';
+export { Coordinates } from './Coordinates';
 export { Device } from './Device';
 export { Engine } from './Engine';
 export { Gamepad } from './Gamepad';
