@@ -2,7 +2,6 @@ import { MutableRefObject, useCallback, useContext, useEffect, useRef } from "re
 import { Bodies, Body } from "matter-js";
 import { PhysicsContext } from "../context";
 import { Property, PhysicsUpdateFunction, Position, Size } from "../types";
-import { useProperty } from "./useProperty";
 
 /**
  * Register a new physics body.
@@ -31,7 +30,7 @@ export const useBoxPhysics = (
   const [w, h] = size.current;
 
   const body = useRef(Bodies.rectangle(x, y, w, h, options));
-  const update = useSyncPositions(pos);
+  const update = useSyncPositions(body, pos);
 
   usePhysicsBody(body, update);
 };
@@ -48,7 +47,7 @@ export const useCirclePhysics = (
   const r = radius.current;
 
   const body = useRef(Bodies.circle(x, y, r, options));
-  const update = useSyncPositions(pos);
+  const update = useSyncPositions(body, pos);
 
   usePhysicsBody(body, update);
 };
@@ -58,16 +57,20 @@ export const useCirclePhysics = (
  * To do this we have to keep track of the last position, so that if it is manually changed, the
  * physics body changes to match, otherwise, the physics body position take priority.
  */
-const useSyncPositions = (pos: Property<Position>) => {
-  const last = useProperty<Position | null>([...pos.current]);
+export const useSyncPositions = (body: MutableRefObject<Body>, pos: Property<Position>) => {
+  // Listen for changes made to the position, then reflect those changes in the physics engine.
+  useEffect(() => {
+    return pos.listen(([x, y]) => {
+      if (x !== body.current.position.x || y !== body.current.position.y) {
+        Body.setPosition(body.current, { x, y });
+      }
+    });
+  }, [body, pos]);
 
-  return useCallback((body: Matter.Body) => {
-    if (!last.current || last.current[0] !== pos.current[0] || last.current[1] !== pos.current[1]) {
-      Body.setPosition(body, { x: pos.current[0], y: pos.current[1] });
-      last.current = [pos.current[0], pos.current[1]];
-
-    } else if (body.position.x !== pos.current[0] || body.position.y !== pos.current[1]) {
-      pos.current = [body.position.x, body.position.y];
+  // Return a callback that is called by the physics engine to synchronise the position property.
+  return useCallback(({ position: { x, y } }: Matter.Body) => {
+    if (x !== pos.current[0] || y !== pos.current[1]) {
+      pos.current = [x, y];
     }
-  }, [last, pos]);
+  }, [pos]);
 };

@@ -3,6 +3,7 @@
 ## 1.2.0
 
 - Added `listen` to public interface for `Property`.
+- Fixed `useSyncPositions` hook for physics bodies.
 
 ## 1.1.0
 
