@@ -10,9 +10,9 @@ export type EngineContextProps = {
 }
 
 export const EngineContext = React.createContext<EngineContextProps>({
-  debug: { current: false, invalidated: true },
+  debug: { current: false, invalidated: true, listen: () => () => {} },
   onDebug: () => {},
   onPause: () => {},
-  fps: { current: new SlidingWindow(30), invalidated: true },
-  ups: { current: new SlidingWindow(30), invalidated: true },
+  fps: { current: new SlidingWindow(30), invalidated: true, listen: () => () => {} },
+  ups: { current: new SlidingWindow(30), invalidated: true, listen: () => () => {} },
 });

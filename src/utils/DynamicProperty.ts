@@ -3,24 +3,28 @@ import { Property } from "../types";
 export class DynamicProperty<IN, OUT> {
 
   private _invalidated: boolean = true;
-  private value: Property<IN>;
-  private fn: (value: IN) => OUT;
+  private source: Property<IN>;
+  private fn: (source: IN) => OUT;
 
-  constructor(value: Property<IN>, fn: (value: IN) => OUT) {
-    this.value = value;
+  constructor(source: Property<IN>, fn: (source: IN) => OUT) {
+    this.source = source;
     this.fn = fn;
+  }
+
+  listen(fn: (value: OUT) => void) {
+    return this.source.listen(() => fn(this.current));
   }
   
   get current(): OUT {
-    return this.fn(this.value.current);
+    return this.fn(this.source.current);
   }
 
   get invalidated(): boolean {
-    return this._invalidated || this.value.invalidated;
+    return this._invalidated || this.source.invalidated;
   }
 
   set invalidated(value: boolean) {
     this._invalidated = false;
-    this.value.invalidated = value;
+    this.source.invalidated = value;
   }
 }

@@ -1,8 +1,7 @@
-import { Property } from "../types";
 import { ObjectState } from "./ObjectState";
 import { Validator } from "./Validator";
 
-type Listener<T> = (value: Property<T>) => void;
+type Listener<T> = (value: T) => void;
 
 export class VariableProperty<T> extends ObjectState {
 
@@ -17,8 +16,15 @@ export class VariableProperty<T> extends ObjectState {
     this._invalidated = true;
   }
 
-  listen(listener: (value: Property<T>) => void) {
+  listen(listener: (value: T) => void) {
     this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+
+  broadcast() {
+    this.listeners.forEach((listener) => {
+      listener(this.current);
+    });
   }
 
   /**
@@ -27,11 +33,13 @@ export class VariableProperty<T> extends ObjectState {
    */
   proxy(value: T) {
     const invalidate = () => this.invalidated = true;
+    const broadcast = () => this.broadcast();
 
     return value instanceof Object
       ? new Proxy(value, {
         set(target, prop, value) {
           invalidate();
+          broadcast();
           return Reflect.set(target, prop, value);
         }
       })
@@ -45,10 +53,7 @@ export class VariableProperty<T> extends ObjectState {
   set current(value: T) {
     this._current = this.proxy(value);
     this._invalidated = true;
-
-    this.listeners.forEach((listener) => {
-      listener(this);
-    });
+    this.broadcast();
   }
 
   get invalidated() {

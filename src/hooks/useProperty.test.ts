@@ -14,7 +14,7 @@ describe('useProperty', () => {
 
   describe('when passed something that looks like a property', () => {
     it('returns the same object', () => {
-      const property = { current: 42, invalidated: false };
+      const property = { current: 42, invalidated: false, listen: () => () => {} };
       const { result } = renderHook(() => useProperty(property));
       expect(result.current).toBe(property);
     });

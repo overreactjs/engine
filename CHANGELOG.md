@@ -1,5 +1,9 @@
 # Change log
 
+## 1.2.0
+
+- Added `listen` to public interface for `Property`.
+
 ## 1.1.0
 
 - Removed keyboard debug controls from `Device`.

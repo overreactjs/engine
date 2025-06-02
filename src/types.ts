@@ -7,7 +7,8 @@ export type ElementType = ElementCSSInlineStyle & Element;
 export type Property<T> = {
   current: T;
   invalidated: boolean;
-}
+  listen: (fn: (value: T) => void) => () => void;
+};
 
 export type Prop<T> = T | Property<T>;
 

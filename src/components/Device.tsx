@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { FrameRate } from "./FrameRate";
 import { useElement, useProperty } from "../hooks";
 import { DeviceMode, Size } from "../types";
@@ -31,7 +31,7 @@ export const Device: React.FC<DeviceProps> = ({
   const screen = useElement<HTMLDivElement>();
   const size = useProperty<Size>([0, 0]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (screen.ref.current) {
       const observer = new ResizeObserver((entries) => {
         size.current[0] = entries[0].contentRect.width;

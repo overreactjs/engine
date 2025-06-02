@@ -16,6 +16,10 @@ export class DynamicPosition {
     this.value = value;
     this.offset = offset;
   }
+
+  listen(fn: (value: Position) => void) {
+    return this.value.listen(() => fn(this.current));
+  }
   
   get current(): [number, number] {
     const x = this.value.current[0] + this.offset.current[0];
