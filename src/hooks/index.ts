@@ -35,6 +35,7 @@ export { usePolygonCollider } from './usePolygonCollider';
 export { usePosition } from './usePosition';
 export { usePostCollisions } from './usePostCollisions';
 export { useProperty } from './useProperty';
+export { usePropertyListen } from './usePropertyListen';
 export { useRender } from './useRender';
 export { useShaker } from './useShaker';
 export { useSpeech } from './useSpeech';

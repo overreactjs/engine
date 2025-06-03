@@ -2,6 +2,7 @@ import { MutableRefObject, useCallback, useContext, useEffect, useRef } from "re
 import { Bodies, Body } from "matter-js";
 import { PhysicsContext } from "../context";
 import { Property, PhysicsUpdateFunction, Position, Size } from "../types";
+import { usePropertyListen } from "./usePropertyListen";
 
 /**
  * Register a new physics body.
@@ -62,14 +63,15 @@ export const useCirclePhysics = (
  * physics body changes to match, otherwise, the physics body position take priority.
  */
 export const useSyncPositions = (body: MutableRefObject<Body>, pos: Property<Position>) => {
+  // Update the position of the physics body in the physics engine.
+  const updateBody = useCallback(([x, y]: Position) => {
+    if (x !== body.current.position.x || y !== body.current.position.y) {
+      Body.setPosition(body.current, { x, y });
+    }
+  }, [body]);
+
   // Listen for changes made to the position, then reflect those changes in the physics engine.
-  useEffect(() => {
-    return pos.listen(([x, y]) => {
-      if (x !== body.current.position.x || y !== body.current.position.y) {
-        Body.setPosition(body.current, { x, y });
-      }
-    });
-  }, [body, pos]);
+  usePropertyListen(pos, updateBody);
 
   // Return a callback that is called by the physics engine to synchronise the position property.
   return useCallback(({ position: { x, y } }: Matter.Body) => {
