@@ -2,6 +2,7 @@
 
 ## 2.0.0
 
+- Removed `ParticleGenerator`. Use `PartcleEngine` instead, it's more flexible and performant.
 - Updated physics engine to use `Position` and `Velocity` types, instead of matter.js types.
 - Added `applyForce` function to physics engine.
 - Added `usePropertyListen` hook, to listen for changes to a property.
