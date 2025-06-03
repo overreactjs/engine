@@ -39,8 +39,9 @@ export class VariableProperty<T> extends ObjectState {
       ? new Proxy(value, {
         set(target, prop, value) {
           invalidate();
+          const result = Reflect.set(target, prop, value);
           broadcast();
-          return Reflect.set(target, prop, value);
+          return result;
         }
       })
       : value;

@@ -6,6 +6,7 @@
 - Added `applyForce` function to physics engine.
 - Added `usePropertyListen` hook, to listen for changes to a property.
 - Return physics 'body' from `useCirclePhysics` and `useBoxPhysics`, so they can be extended.
+- Fixed a bug in `VariableProperty` where the change event was firing before the new value was set.
 
 ## 1.2.0
 
