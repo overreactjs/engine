@@ -3,6 +3,7 @@
 ## 2.0.0
 
 - Updated physics engine to use `Position` and `Velocity` types, instead of matter.js types.
+- Added `applyForce` function to physics engine.
 
 ## 1.2.0
 

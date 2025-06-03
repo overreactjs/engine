@@ -50,6 +50,13 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   }, []);
 
   /**
+   * Apply a force to a physics body.
+   */
+  const applyForce = useCallback((body: Matter.Body, [px, py]: Position, [vx, vy]: Velocity) => {
+    Body.applyForce(body, { x: px, y: py }, { x: vx, y: vy });
+  }, []);
+
+  /**
    * 
    */
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<PhysicsEventType, PhysicsEvent>();
@@ -78,8 +85,8 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   });
 
   const context = useMemo(() => ({
-    engine, register, setGravity, setVelocity, addEventListener, removeEventListener
-  }), [engine, register, setGravity, setVelocity, addEventListener, removeEventListener]);
+    engine, register, setGravity, setVelocity, applyForce, addEventListener, removeEventListener
+  }), [engine, register, setGravity, setVelocity, applyForce, addEventListener, removeEventListener]);
 
   return (
     <PhysicsContext.Provider value={context}>
