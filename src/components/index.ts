@@ -14,7 +14,6 @@ export { Motion } from './Motion';
 export { Node } from './Node';
 export { Orientation } from './Orientation';
 export { ParticleEngine } from './ParticleEngine';
-export { ParticleGenerator } from './ParticleGenerator';
 export { Particles } from './Particles';
 export { Physics } from './Physics';
 export { PhysicsBox } from './PhysicsBox';
