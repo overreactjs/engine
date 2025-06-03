@@ -19,12 +19,20 @@ export type ParticleEngineProps = {
   pool?: number
 };
 
+/**
+ * The particle engine.
+ */
 export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children, pool }) => {
   const active = useRef<Set<BaseParticle>>(new Set());
   const inactive = useRef<Set<HTMLDivElement>>(new Set());
 
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<'create', HTMLElement>();
 
+  /**
+   * Attach a HTML element to a particle object, either reusing an existing, inactive element, or
+   * by creating a new element. Note: This does not attach it to the DOM. That is handled by the
+   * `Particles` component.
+   */
   const attach = useCallback((particle: BaseParticle) => {
     if (inactive.current.size > 0) {
       const node = [...inactive.current][0];
@@ -41,6 +49,9 @@ export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children, pool }
     }
   }, [fireEvent]);
 
+  /**
+   * Update all active particles, destroying them once they have reached the end of their life.
+   */
   useUpdate((delta) => {
     for (const particle of active.current) {
       if (particle.node) {
@@ -60,6 +71,10 @@ export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children, pool }
     }
   });
 
+  /**
+   * Initialise a fixed-size pool of elements, to avoid the overhead of creating elements and
+   * attaching them to the DOM when new particles are spawned.
+   */
   useLayoutEffect(() => {
     if (pool) {
       while (inactive.current.size < pool) {

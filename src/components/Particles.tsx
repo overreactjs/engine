@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useRef } from "react";
+import { forwardRef, useCallback, useEffect, useRef } from "react";
+import { mergeRefs } from "react-merge-refs";
 import { useParticles } from "../hooks";
 
-export const Particles: React.FC = () => {
+export const Particles = forwardRef<HTMLDivElement>((_, ref) => {
   const particles = useParticles();
-  const ref = useRef<HTMLDivElement>(null);
+  const localRef = useRef<HTMLDivElement>(null);
 
   const attach = useCallback((element: HTMLElement) => {
-    if (ref.current && element) {
-      ref.current.insertBefore(element, ref.current.firstChild);
+    if (localRef.current && element) {
+      localRef.current.insertBefore(element, localRef.current.firstChild);
     }
   }, []);
 
@@ -16,5 +17,5 @@ export const Particles: React.FC = () => {
     return () => particles.removeEventListener('create', attach);
   }, [attach, particles]);
 
-  return <div ref={ref} />;
-};
+  return <div ref={mergeRefs([localRef, ref])} />;
+});
