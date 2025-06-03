@@ -9,6 +9,7 @@
 - Added `listen` method to `MergeProperty` so that it can be used as a generic `Property`.
 - Return physics 'body' from `useCirclePhysics` and `useBoxPhysics`, so they can be extended.
 - Fixed a bug in `VariableProperty` where the change event was firing before the new value was set.
+- Prevent `FrameRate` from showing an framerate of infinity.
 
 ## 1.2.0
 

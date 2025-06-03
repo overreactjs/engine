@@ -65,8 +65,8 @@ export const Engine: React.FC<EngineProps> = ({ children, minFrameRate }) => {
     Validator.run();
 
     // Update the FPS/UPS counts.
-    fps?.current.push(1000 / rawDelta);
-    ups?.current.push(1000 / (performance.now() - start));
+    fps?.current.push(Math.min(9999, 1000 / rawDelta));
+    ups?.current.push(Math.min(9999, 1000 / (performance.now() - start)));
   }, [fps, maxDelta, node, ups]);
 
   // Start the game loop.
