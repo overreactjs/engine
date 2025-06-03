@@ -1,5 +1,9 @@
 # Change log
 
+## 2.0.0
+
+- Updated physics engine to use `Position` and `Velocity` types, instead of matter.js types.
+
 ## 1.2.0
 
 - Added `listen` to public interface for `Property`.

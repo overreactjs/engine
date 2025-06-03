@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { Engine, Composite, Events, Body } from "matter-js";
 import { PhysicsContext } from "../context";
 import { useEventListeners, useProperty, useUpdate } from "../hooks";
-import { PhysicsEvent, PhysicsEventType, PhysicsUpdateFunction } from "../types";
+import { PhysicsEvent, PhysicsEventType, PhysicsUpdateFunction, Position, Velocity } from "../types";
 
 type PhysicsProps = {
   children: React.ReactNode;
@@ -37,7 +37,7 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   /**
    * Set the angle of gravity.
    */
-  const setGravity = useCallback((x: number, y: number) => {
+  const setGravity = useCallback(([x, y]: Velocity) => {
     engine.current.gravity.x = x;
     engine.current.gravity.y = y;
   }, [engine]);
@@ -45,7 +45,7 @@ export const Physics: React.FC<PhysicsProps> = ({ children }) => {
   /**
    * Set the velocity of a physics body.
    */
-  const setVelocity = useCallback((body: Matter.Body, x: number, y: number) => {
+  const setVelocity = useCallback((body: Matter.Body, [x, y]: Velocity) => {
     Body.setVelocity(body, { x, y });
   }, []);
 
