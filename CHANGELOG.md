@@ -4,6 +4,7 @@
 
 - Updated physics engine to use `Position` and `Velocity` types, instead of matter.js types.
 - Added `applyForce` function to physics engine.
+- Return body from `useCirclePhysics` and `useBoxPhysics`, so they can be extended.
 
 ## 1.2.0
 

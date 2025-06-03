@@ -25,7 +25,7 @@ export const useBoxPhysics = (
   pos: Property<Position>,
   size: Property<Size>,
   options?: Matter.IBodyDefinition,
-) => {
+): MutableRefObject<Body> => {
   const [x, y] = pos.current;
   const [w, h] = size.current;
 
@@ -33,6 +33,8 @@ export const useBoxPhysics = (
   const update = useSyncPositions(body, pos);
 
   usePhysicsBody(body, update);
+
+  return body;
 };
 
 /**
@@ -42,7 +44,7 @@ export const useCirclePhysics = (
   pos: Property<Position>,
   radius: Property<number>,
   options?: Matter.IBodyDefinition,
-) => {
+): MutableRefObject<Body> => {
   const [x, y] = pos.current;
   const r = radius.current;
 
@@ -50,6 +52,8 @@ export const useCirclePhysics = (
   const update = useSyncPositions(body, pos);
 
   usePhysicsBody(body, update);
+
+  return body;
 };
 
 /**
