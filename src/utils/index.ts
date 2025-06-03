@@ -4,7 +4,6 @@ export type { Body } from "./Body";
 export { BoxBody, PolygonBody } from "./Body";
 export { DynamicProperty } from "./DynamicProperty";
 export { EventTarget } from "./EventTarget";
-export { EventTargetObjectState } from "./EventTargetObjectState";
 export { MapSet } from "./MapSet";
 export { MergeProperty } from "./MergeProperty";
 export { ObjectState } from "./ObjectState";

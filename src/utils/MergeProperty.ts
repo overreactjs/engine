@@ -11,6 +11,15 @@ export class MergeProperty<A, B, OUT> {
     this.b = b;
     this.fn = fn;
   }
+
+  listen(listener: (value: OUT) => void) {
+    const cleanup = [
+      this.a.listen(() => listener(this.current)),
+      this.b.listen(() => listener(this.current))
+    ];
+
+    return () => cleanup.forEach((fn) => fn());
+  }
   
   get current(): OUT {
     return this.fn(this.a.current, this.b.current);
