@@ -10,10 +10,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/engine.js",
       "require": "./dist/engine.umd.cjs"
-    },
-    "./styles.css": {
-      "import": "./dist/style.css",
-      "require": "./dist/style.css"
     }
   },
   "files": [

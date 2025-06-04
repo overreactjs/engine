@@ -3,13 +3,14 @@
 ## 2.0.0
 
 - Removed `ParticleGenerator`. Use `PartcleEngine` instead, it's more flexible and performant.
+- Removed `mode` prop from the `Device` component.
 - Updated physics engine to use `Position` and `Velocity` types, instead of matter.js types.
 - Added `applyForce` function to physics engine.
 - Added `usePropertyListen` hook, to listen for changes to a property.
 - Added `listen` method to `MergeProperty` so that it can be used as a generic `Property`.
 - Return physics 'body' from `useCirclePhysics` and `useBoxPhysics`, so they can be extended.
 - Fixed a bug in `VariableProperty` where the change event was firing before the new value was set.
-- Prevent `FrameRate` from showing an framerate of infinity.
+- Prevent `FrameRate` from showing a value of 'infinity'.
 
 ## 1.2.0
 

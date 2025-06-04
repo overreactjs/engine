@@ -1,15 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { FrameRate } from "./FrameRate";
 import { useElement, useProperty } from "../hooks";
-import { DeviceMode, Size } from "../types";
+import { Size } from "../types";
 import { DeviceContext } from "../context";
-
-import "../styles/device.css";
 
 type DeviceProps = {
   className?: string;
   children: React.ReactNode;
-  mode?: DeviceMode;
   showFPS?: boolean;
   bg?: string;
 };
@@ -24,7 +21,6 @@ type DeviceProps = {
 export const Device: React.FC<DeviceProps> = ({
   className = '',
   children,
-  mode = 'desktop',
   bg = 'white',
   showFPS = false,
 }) => {
@@ -55,13 +51,9 @@ export const Device: React.FC<DeviceProps> = ({
 
   return (
     <DeviceContext.Provider value={context}>
-      <div className={`device-outer device-${mode} ${className}`}>
-        <div className="device-inner">
-          <div className="device-screen shadow-2xl" style={{ background: bg }} ref={screen.ref}>
-            {children}
-            {showFPS && <FrameRate />}
-          </div>
-        </div>
+      <div className={`w-screen h-screen ${className}`} style={{ background: bg }} ref={screen.ref}>
+        {children}
+        {showFPS && <FrameRate />}
       </div>
     </DeviceContext.Provider>
   );

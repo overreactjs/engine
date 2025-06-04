@@ -86,8 +86,6 @@ export type PhysicsEvent = Matter.IEventCollision<Engine>;
 
 export type CameraAxis = 'x' | 'y' | 'xy';
 
-export type DeviceMode = 'mobile' | 'mobile-landscape' | 'tablet' | 'desktop';
-
 export type StateFunction<T> = (fsm: StateMachine<T>, delta: number) => void;
 
 export type StateDefinitions<T> = PartialRecord<string, StateFunction<T>>;
