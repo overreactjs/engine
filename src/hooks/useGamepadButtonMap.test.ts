@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { MockGamepad, nextFrame, renderHook } from '../test';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { MockGamepad, mockGamepads, nextFrame, renderHook, resetGamepads } from '../test';
 import { useGamepadButtonMap } from './useGamepadButtonMap';
 import { useVirtualInput } from './useVirtualInput';
 
@@ -12,17 +12,14 @@ describe('useGamepadButtonMap', () => {
     });
   }
 
-  let original = navigator.getGamepads;
   let gamepad: MockGamepad;
 
   beforeEach(() => {
-    original = navigator.getGamepads;
-    gamepad = new MockGamepad();
-    navigator.getGamepads = vi.fn().mockImplementation(() => ([gamepad]));
+    gamepad = mockGamepads();
   });
 
   afterEach(() => {
-    navigator.getGamepads = original;
+    resetGamepads();
   });
 
   describe('when a mapped button is pressed', () => {

@@ -39,6 +39,7 @@ export const Device: React.FC<DeviceProps> = ({
   }, [screen.ref, size]);
 
   useEffect(() => {
+    console.log('requesting permissions...');
     const motion = DeviceMotionEvent as unknown as { requestPermission?: () => void };
     const orientation = DeviceOrientationEvent as unknown as { requestPermission?: () => void };
     motion.requestPermission?.();

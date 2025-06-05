@@ -1,19 +1,16 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { MockGamepad, renderHook } from '../test';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { mockGamepads, resetGamepads, renderHook, MockGamepad } from '../test';
 import { useGamepad } from "./useGamepad";
 
 describe('useGamepad', () => {
-  let original = navigator.getGamepads;
   let gamepad: MockGamepad;
 
   beforeEach(() => {
-    original = navigator.getGamepads;
-    gamepad = new MockGamepad();
-    navigator.getGamepads = vi.fn().mockImplementation(() => ([gamepad]));
+    gamepad = mockGamepads();
   });
 
   afterEach(() => {
-    navigator.getGamepads = original;
+    resetGamepads();
   });
 
   describe('isButtonDown', () => {

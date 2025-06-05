@@ -1,3 +1,18 @@
+import { vi } from "vitest";
+
+let original: () => (Gamepad | null)[];
+
+export const mockGamepads = () => {
+  original = navigator.getGamepads;
+  const gamepad = new MockGamepad();
+  navigator.getGamepads = vi.fn().mockImplementation(() => ([gamepad]));
+  return gamepad;
+};
+
+export const resetGamepads = () => {
+  navigator.getGamepads = original;
+};
+
 export class MockGamepad implements Gamepad {
   axes: readonly number[];
   buttons: readonly MockGamepadButton[];
@@ -7,7 +22,7 @@ export class MockGamepad implements Gamepad {
   index: number;
   mapping: GamepadMappingType;
   timestamp: number;
-  vibrationActuator: GamepadHapticActuator | null;
+  vibrationActuator: GamepadHapticActuator;
 
   constructor() {
     this.axes = [];
@@ -17,7 +32,7 @@ export class MockGamepad implements Gamepad {
     this.index = 0;
     this.mapping = 'standard';
     this.timestamp = 0;
-    this.vibrationActuator = null;
+    this.vibrationActuator = {} as GamepadHapticActuator;
     this.buttons = (new Array(20)).fill(null).map(() => new MockGamepadButton());
   }
 
