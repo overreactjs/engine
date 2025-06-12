@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { chance, clamp, dist, intersects, lerp, permutator } from './utils';
+import { chance, clamp, dist, intersects, lerp, permutator, randi } from './utils';
 
 describe('utils', () => {
   describe('chance', () => {
@@ -96,5 +96,28 @@ describe('utils', () => {
         [3, 2, 1],
       ]);
     });
-  })
+  });
+
+  describe('randi', () => {
+    it('returns a random integer between 0 and 9', () => {
+      const original = Math.random;
+      
+      Math.random = () => 0.0;
+      expect(randi(10)).toBe(0);
+      
+      Math.random = () => 0.1;
+      expect(randi(10)).toBe(1);
+      
+      Math.random = () => 0.2;
+      expect(randi(10)).toBe(2);
+      
+      Math.random = () => 0.9;
+      expect(randi(10)).toBe(9);
+      
+      Math.random = () => 0.9999999999;
+      expect(randi(10)).toBe(9);
+
+      Math.random = original;
+    });
+  });
 });

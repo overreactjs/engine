@@ -59,3 +59,10 @@ export function permutator<T>(input: T[]): T[][] {
   permute(input);
   return result;
 }
+
+/**
+ * Generate a randome integer between 0 and one less than the size parameter.
+ */
+export const randi = (size: number): number => {
+  return Math.floor(Math.random() * size);
+};
