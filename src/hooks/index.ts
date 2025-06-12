@@ -44,6 +44,7 @@ export { useStateMachine } from './useStateMachine';
 export { useSwipe } from './useSwipe';
 export { useSync } from './useSync';
 export { useTicker } from './useTicker';
+export { useTime } from './useTime';
 export { useUpdate, useUpdateAfter, useFixedUpdate } from './useUpdate';
 export { useViewport } from './useViewport';
 export { useVirtualAction } from './useVirtualAction';
