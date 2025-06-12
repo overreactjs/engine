@@ -19,7 +19,7 @@ export { Physics } from './Physics';
 export { PhysicsBox } from './PhysicsBox';
 export { PhysicsCircle } from './PhysicsCircle';
 export { SpriteSet, SpriteSetContext } from './SpriteSet';
-export { Tilemap } from './Tilemap';
+export { Tilemap, Tiles, useTiles } from './Tilemap';
 export { VectorSprite } from './VectorSprite';
 export { Viewport, ViewportContext } from './Viewport';
 export { VirtualInput } from './VirtualInput';

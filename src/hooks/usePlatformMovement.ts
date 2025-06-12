@@ -111,14 +111,11 @@ export const usePlatformMovement = (collider: string, pos: Property<Position>, v
    */
   useOverlap(collider, (collisions, delta) => {
     if (enabled.current) {
-      console.log('---');
       const change: Position = [0, 0];
       const solids = optimize(collisions.filter((event) => event.tags.includes('solid')));
       const platforms = optimize(collisions.filter((event) => event.tags.includes('platform')));
 
       for (const { overlap } of solids) {
-        console.log(overlap.x, overlap.y);
-
         if (overlap.y > 0 && overlap.y > change[1]) {
           pos.current[1] -= overlap.y;
           change[1] = overlap.y;
