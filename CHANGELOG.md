@@ -1,5 +1,10 @@
 # Change log
 
+## 2.1.0
+
+- Added `useTime` hook, giving the number of ms since the update hook started.
+- Added `randi` utility function for generating random integers.
+
 ## 2.0.0
 
 - Removed `ParticleGenerator`. Use `PartcleEngine` instead, it's more flexible and performant.
