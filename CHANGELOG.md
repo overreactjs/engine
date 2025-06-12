@@ -4,6 +4,7 @@
 
 - Added `useTime` hook, giving the number of ms since the update hook started.
 - Added `randi` utility function for generating random integers.
+- Improved performance by removing invisible elements from the render tree.
 
 ## 2.0.0
 

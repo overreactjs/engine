@@ -139,7 +139,7 @@ export function useElement<E extends ElementType = HTMLDivElement>(element?: Use
 
       if (visible?.invalidated || (force && visible)) {
         // ref.current?.attributeStyleMap.set('visibility', visible.current ? 'visible' : 'hidden');
-        ref.current.style.visibility = visible.current ? 'visible' : 'hidden';
+        ref.current.style.display = visible.current ? 'block' : 'none';
         visible.invalidated = false;
       }
     }
