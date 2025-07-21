@@ -2,6 +2,7 @@ export * from "./utils";
 export { BaseParticle } from "./BaseParticle";
 export type { Body } from "./Body";
 export { BoxBody, PolygonBody } from "./Body";
+export { CalculatedProperty } from "./CalculatedProperty";
 export { DynamicProperty } from "./DynamicProperty";
 export { EventTarget } from "./EventTarget";
 export { MapSet } from "./MapSet";

@@ -1,5 +1,9 @@
 # Change log
 
+## 2.2.0
+
+- Added `useCalculatedProperty` hook, for properties that can only be calculated at read time.
+
 ## 2.1.0
 
 - Updated `Tilemap` to support property based tile data.

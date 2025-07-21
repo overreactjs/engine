@@ -3,6 +3,7 @@ export { useAudio } from './useAudio';
 export { useAudioEngine } from './useAudioEngine';
 export { useBaseStyleProperties } from './useBaseStyleProperties';
 export { useBoxCollider } from './useBoxCollider';
+export { useCalculatedProperty } from './useCalculatedProperty';
 export { useCollision, useTaggedCollision } from './useCollision';
 export { useCollider } from './useCollider';
 export { useDebug } from './useDebug';
