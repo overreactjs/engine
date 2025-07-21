@@ -10,7 +10,8 @@ export class CalculatedProperty<T> extends ObjectState {
   }
 
   listen(fn: (value: T) => void) {
-    return fn(this.fn());
+    fn(this.fn());
+    return () => {};
   }
 
   get current() {
