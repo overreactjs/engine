@@ -1,4 +1,4 @@
-import { useElement, usePosition, useProperty, useRender } from "../hooks";
+import { useElement, usePosition, useProperty, useRender, useRenderProperty } from "../hooks";
 import { Position, Prop, Size } from "../types";
 import { Node } from "./Node";
 
@@ -26,11 +26,10 @@ export const Circle: React.FC<CircleProps> = ({ className, ...props }) => {
 
   useRender(() => {
     element.setBaseStyles({ pos, size });
+  });
 
-    if (color.invalidated) {
-      element.setStyle('background-color', color.current);
-      color.invalidated = false;
-    }
+  useRenderProperty(color, (color) => {
+    element.setStyle('background-color', color);
   });
 
   return (

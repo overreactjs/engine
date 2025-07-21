@@ -38,6 +38,7 @@ export { usePostCollisions } from './usePostCollisions';
 export { useProperty } from './useProperty';
 export { usePropertyListen } from './usePropertyListen';
 export { useRender } from './useRender';
+export { useRenderProperty } from './useRenderProperty';
 export { useShaker } from './useShaker';
 export { useSpeech } from './useSpeech';
 export { useSpriteSet } from './useSpriteSet';

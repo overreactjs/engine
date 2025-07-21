@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { useBaseStyleProperties, useElement, useProperty, useRender } from "../hooks";
+import { useBaseStyleProperties, useElement, useProperty, useRender, useRenderProperty } from "../hooks";
 import { UseElementResult } from "../hooks/useElement";
 import { BaseStyleProps, Prop } from "../types";
 import { Node } from "./Node";
@@ -27,11 +27,10 @@ export const Box: React.FC<BoxProps> = ({ className, style, ...props }) => {
 
   useRender(() => {
     element.setBaseStyles(base);
+  });
 
-    if (color.invalidated) {
-      element.setStyle('background-color', color.current);
-      color.invalidated = false;
-    }
+  useRenderProperty(color, (color) => {
+    element.setStyle('background-color', color);
   });
 
   return (

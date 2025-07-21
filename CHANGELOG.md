@@ -3,6 +3,7 @@
 ## 2.2.0
 
 - Added `useCalculatedProperty` hook, for properties that can only be calculated at read time.
+- Added `useRenderProperty` hook, for the common use-case of rendering to the DOM when a prop changes.
 - Updated `FrameRate` to show the current particle count if available.
 
 ## 2.1.0

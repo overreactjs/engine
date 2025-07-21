@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useMemo, MutableRefObject } from "react";
-import { useProperty, useRender } from "../hooks";
+import { useProperty, useRenderProperty } from "../hooks";
 import { Prop } from "../types";
 
 type AnimationConfig = {
@@ -30,19 +30,15 @@ export const SpriteSet: React.FC<SpriteSetProps> = (props) => {
 
   const context = useMemo(() => ({ register }), [register]);
 
-  useRender(() => {
-    if (animation.invalidated) {
-      for (const [id, { element, reset }] of animations.current) {
-        const elem = element.current as HTMLElement;
+  useRenderProperty(animation, (animation) => {
+    for (const [id, { element, reset }] of animations.current) {
+      const elem = element.current as HTMLElement;
 
-        if (elem.style.display === 'none' && id === animation.current) {
-          reset();
-        }
-
-        elem.style.display = id === animation.current ? 'block' : 'none';
+      if (elem.style.display === 'none' && id === animation) {
+        reset();
       }
 
-      animation.invalidated = false;
+      elem.style.display = id === animation ? 'block' : 'none';
     }
   });
   
