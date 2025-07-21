@@ -1,15 +1,18 @@
 import { createContext, useCallback, useLayoutEffect, useMemo, useRef } from "react";
-import { BaseParticle } from "../utils";
-import { useEventListeners, useUpdate } from "../hooks";
+import { BaseParticle, PlaceholderProperty } from "../utils";
+import { useCalculatedProperty, useEventListeners, useUpdate } from "../hooks";
+import { Property } from "../types";
 
 export type ParticleContextProps = {
   attach: (particle: BaseParticle) => void;
+  size: Property<number | null>;
   addEventListener: (type: "create", fn: (element: HTMLElement) => void) => void
   removeEventListener: (type: "create", fn: (element: HTMLElement) => void) => void
 };
 
 export const ParticleContext = createContext<ParticleContextProps>({
   attach: () => {},
+  size: PlaceholderProperty(null),
   addEventListener: () => {},
   removeEventListener: () => {},
 });
@@ -25,6 +28,7 @@ export type ParticleEngineProps = {
 export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children, pool }) => {
   const active = useRef<Set<BaseParticle>>(new Set());
   const inactive = useRef<Set<HTMLDivElement>>(new Set());
+  const size = useCalculatedProperty(() => active.current.size);
 
   const { addEventListener, removeEventListener, fireEvent } = useEventListeners<'create', HTMLElement>();
 
@@ -85,7 +89,12 @@ export const ParticleEngine: React.FC<ParticleEngineProps> = ({ children, pool }
     }
   }, [fireEvent, pool]);
 
-  const context = useMemo(() => ({ attach, addEventListener, removeEventListener }), [attach, addEventListener, removeEventListener]);
+  const context = useMemo(() => ({
+    attach,
+    size,
+    addEventListener,
+    removeEventListener
+  }), [attach, size, addEventListener, removeEventListener]);
   
   return (
     <ParticleContext.Provider value={context}>

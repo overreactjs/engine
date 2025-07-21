@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useElement, useProperty, useRender } from "../hooks";
+import { useElement, useParticles, useProperty, useRender } from "../hooks";
 import { EngineContext } from "../context";
 
 /**
@@ -11,6 +11,7 @@ import { EngineContext } from "../context";
 export const FrameRate: React.FC = () => {
   const fpsElement = useElement();
   const { fps, ups } = useContext(EngineContext);
+  const particles = useParticles();
 
   const next = useProperty(0);
 
@@ -18,7 +19,8 @@ export const FrameRate: React.FC = () => {
     if (next.current === 0) {
       const fpsStr = fps.current.mean().toFixed(0) + ' fps';
       const upsStr = ups.current.mean().toFixed(0) + ' ups';
-      fpsElement.setText([fpsStr, upsStr].join('\n'));
+      const particlesStr = particles.size.current === null ? '' : particles.size.current + ' particles';
+      fpsElement.setText([fpsStr, upsStr, particlesStr].join('\n'));
       next.current = 10;
     }
 

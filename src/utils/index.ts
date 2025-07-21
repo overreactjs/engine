@@ -9,6 +9,7 @@ export { MapSet } from "./MapSet";
 export { MergeProperty } from "./MergeProperty";
 export { ObjectState } from "./ObjectState";
 export { Particle } from "./Particle";
+export { PlaceholderProperty } from "./PlaceholderProperty";
 export { SlidingWindow } from "./SlidingWindow";
 export { StateMachine } from "./StateMachine";
 export { Validator } from "./Validator";
